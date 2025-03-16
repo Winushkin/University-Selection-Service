@@ -1,7 +1,7 @@
 package postgres
 
 // no env vars
-// add env vars
+// TODO: add env vars
 
 type Config struct {
 	Host     string `yaml:"POSTGRES_HOST" env:"POSTGRES_HOST" env-default:"localhost"`
