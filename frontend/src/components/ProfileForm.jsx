@@ -23,6 +23,12 @@ function ProfileForm() {
         },
     });
 
+    const [submitStatus, setSubmitStatus] = useState({
+        loading: false,
+        success: false,
+        error: null
+    });
+
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
 
@@ -53,11 +59,36 @@ function ProfileForm() {
         }));
     };
 
+    const handleSubmit = async () => {
+        setSubmitStatus({ loading: true, success: false, error: null });
+
+        try {
+            const response = await fetch('http://localhost:8080/profile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(profile),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Ошибка сервера: ${response.status}`);
+            }
+
+            const data = await response.json();
+            setSubmitStatus({ loading: false, success: true, error: null });
+            console.log('Профиль успешно создан:', data);
+        } catch (error) {
+            setSubmitStatus({ loading: false, success: false, error: error.message });
+            console.error('Ошибка при отправке данных:', error);
+        }
+    };
+
     return (
         <div className="form-container">
             <div className="form-card">
                 <h2 className="form-title">Профиль абитуриента</h2>
-                <form>
+                <form onSubmit={(e) => e.preventDefault()}>
                     <div className="form-section">
                         <div className="form-group">
                             <label>Баллы ЕГЭ:</label>
@@ -222,7 +253,26 @@ function ProfileForm() {
                         </div>
                     </div>
 
-                    <button type="button" className="form-button">Создать профиль</button>
+                    {submitStatus.error && (
+                        <div className="error-message" style={{ color: 'red', marginBottom: '15px' }}>
+                            {submitStatus.error}
+                        </div>
+                    )}
+
+                    {submitStatus.success && (
+                        <div className="success-message" style={{ color: 'green', marginBottom: '15px' }}>
+                            Профиль успешно создан!
+                        </div>
+                    )}
+
+                    <button
+                        type="button"
+                        className="form-button"
+                        onClick={handleSubmit}
+                        disabled={submitStatus.loading}
+                    >
+                        {submitStatus.loading ? 'Отправка...' : 'Создать профиль'}
+                    </button>
                 </form>
             </div>
         </div>
