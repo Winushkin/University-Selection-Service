@@ -42,10 +42,13 @@ func createProfileHandler(ctx context.Context) http.HandlerFunc {
 
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(map[string]interface{}{
+		err = json.NewEncoder(w).Encode(map[string]interface{}{
 			"status":  "success",
 			"message": "Профиль успешно создан",
 		})
+		if err != nil {
+			return
+		}
 	}
 }
 
