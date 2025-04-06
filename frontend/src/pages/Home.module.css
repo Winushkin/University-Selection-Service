@@ -1,0 +1,115 @@
+/* Home.module.css */
+
+.pageWrapper {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f9f9f9;
+    color: #333;
+    font-family: 'Arial', sans-serif;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    color: #3b3b3b;
+}
+
+.title {
+    font-size: 36px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.subtitle {
+    font-size: 18px;
+    font-weight: lighter;
+    font-style: italic;
+    color: #2c3e50;
+    margin-top: 5px;
+}
+
+.searchWrapper {
+    display: flex;
+    align-items: center;
+}
+
+.searchInput {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    width: 250px;
+}
+
+.mainContentWrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 40px;
+}
+
+.filterSection {
+    padding: 20px;
+    width: 250px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.filterTitle {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #34495e;
+}
+
+.mainContent {
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1 {
+    font-size: 32px;
+    color: #2c3e50;
+}
+
+p {
+    font-size: 18px;
+    color: #7f8c8d;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.button {
+    background-color: #3498db;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 10px;
+    width: 200px;
+}
+
+.button:hover {
+    background-color: #2980b9;
+}
+
+.buttonsWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
