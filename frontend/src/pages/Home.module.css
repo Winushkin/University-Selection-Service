@@ -11,7 +11,7 @@
 
 .header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
     padding: 20px;
     background-color: #fff;
@@ -19,56 +19,36 @@
 }
 
 .logo {
-    font-size: 28px;
+    font-size: 36px;
     font-weight: bold;
+    text-align: left;
     color: #3b3b3b;
 }
 
 .title {
+    font-style: normal;
+    font-family: "Comic Sans MS";
     font-size: 36px;
-    font-weight: bold;
+    text-align: center;
+    font-weight: 900;
+    font-variant: small-caps;
     color: #2c3e50;
 }
 
 .subtitle {
     font-size: 18px;
+    font-family: "Comic Sans MS";
     font-weight: lighter;
     font-style: italic;
     color: #2c3e50;
     margin-top: 5px;
 }
 
-.searchWrapper {
-    display: flex;
-    align-items: center;
-}
-
-.searchInput {
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    width: 250px;
-}
-
 .mainContentWrapper {
     display: flex;
+    font-family: "Comic Sans MS";
     justify-content: space-between;
     padding: 40px;
-}
-
-.filterSection {
-    padding: 20px;
-    width: 250px;
-    background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-
-.filterTitle {
-    font-size: 22px;
-    margin-bottom: 10px;
-    color: #34495e;
 }
 
 .mainContent {
@@ -81,11 +61,13 @@
 
 h1 {
     font-size: 32px;
+    font-family: "Comic Sans MS";
     color: #2c3e50;
 }
 
 p {
     font-size: 18px;
+    font-family: "Comic Sans MS";
     color: #7f8c8d;
     line-height: 1.6;
     margin-bottom: 20px;
