@@ -15,23 +15,14 @@ const Home = () => {
                 </div>
                 <div className={styles.titleWrapper}>
                     <div className={styles.title}>UniQuest</div>
-                    <div className={styles.subtitle}>Найдите идеальный университет для себя</div> {/* Слоган */}
+                    <div className={styles.subtitle}>Найдите идеальный университет для себя</div>
                 </div>
-                <div className={styles.searchWrapper}>
-                    <input
-                        type="text"
-                        placeholder="Поиск..."
-                        className={styles.searchInput}
-                    />
-                </div>
+
             </div>
 
             {/* основной контентик йоу какой крутой  */}
             <div className={styles.mainContentWrapper}>
-                <div className={styles.filterSection}>
-                    <div className={styles.filterTitle}>Фильтры</div>
-                    {/* место для фильтров в будущем */}
-                </div>
+
 
                 <div className={styles.mainContent}>
                     <h1>Добро пожаловать!</h1>
