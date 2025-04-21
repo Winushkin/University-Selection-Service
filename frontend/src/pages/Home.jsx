@@ -20,7 +20,7 @@ const Home = () => {
 
             </div>
 
-            {/* основной контентик йоу какой крутой  */}
+
             <div className={styles.mainContentWrapper}>
 
 
@@ -35,7 +35,7 @@ const Home = () => {
                         </button>
                         <button
                             className={styles.button}
-                            onClick={() => navigate('/login')}>
+                            onClick={() => navigate('/LoginForm')}>
                             Войти
                         </button>
                     </div>
