@@ -4,6 +4,7 @@ import ProfileForm from './components/ProfileForm';
 import Home from './pages/Home';
 import './App.css';
 import EditProfileForm from "./pages/EditProfileForm.jsx";
+import RegistrationForm from "./pages/RegistrationForm.jsx";
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="ProfileForm" element={<ProfileForm />} />
                 <Route path="EditProfileForm" element={<EditProfileForm />} />
+                <Route path="RegistrationForm" element={<RegistrationForm />} />
             </Routes>
         </div>
     );
