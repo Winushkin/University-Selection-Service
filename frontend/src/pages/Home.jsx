@@ -30,7 +30,7 @@ const Home = () => {
                     <div className={styles.buttonsWrapper}>
                         <button
                             className={styles.button}
-                            onClick={() => navigate('/ProfileForm')}>
+                            onClick={() => navigate('/RegistrationForm')}>
                             Создать профиль
                         </button>
                         <button
