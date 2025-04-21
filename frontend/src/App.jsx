@@ -3,6 +3,7 @@ import { Routes, Route, Link } from 'react-router-dom';
 import ProfileForm from './components/ProfileForm';
 import Home from './pages/Home';
 import './App.css';
+import EditProfileForm from "./pages/EditProfileForm.jsx";
 
 function App() {
     return (
@@ -11,6 +12,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="ProfileForm" element={<ProfileForm />} />
+                <Route path="EditProfileForm" element={<EditProfileForm />} />
             </Routes>
         </div>
     );
