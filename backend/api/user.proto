@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+option go_package = "backend/pkg/api";
+
+package api;
+
+
+import "google/api/annotations.proto";
+
+
+service UserService {
+  rpc SignUp(SignUpRequest) returns (SignUpResponse){
+    option(google.api.http) = {
+      post: "/api/user/signup"
+      body: "*"
+    };
+  }
+  rpc Login(LoginRequest) returns (LoginResponse) {
+    option(google.api.http) = {
+      post: "/api/user/login"
+      body: "*"
+    };
+  }
+  rpc Fill(FillRequest) returns (FillResponse) {
+    option(google.api.http) = {
+      post: "/api/user/fill"
+      body: "*"
+    };
+  }
+  rpc Edit(EditRequest) returns (EditResponse) {
+    option(google.api.http) = {
+      post: "/api/user/edit"
+      body: "*"
+    };
+  }
+}
+
+message SignUpRequest {
+  string login = 1;
+  string password = 2;
+}
+
+message SignUpResponse {
+  int32 status = 1;
+}
+
+message LoginRequest {
+  string login = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  int32 status = 1;
+}
+
+message FillRequest {
+  int32 ege = 1;
+  int32 gpa = 2;
+  string speciality = 3;
+  string eduType = 4;
+  string town = 5;
+  string financing = 6;
+}
+
+message FillResponse {
+  int32 status = 1;
+}
+
+message EditRequest {
+  int32 ege = 1;
+  int32 gpa = 2;
+  string speciality = 3;
+  string eduType = 4;
+  string town = 5;
+  string financing = 6;
+}
+
+message EditResponse {
+  int32 status = 1;
+}
