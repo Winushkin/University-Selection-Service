@@ -5,6 +5,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/golang-migrate/migrate"
+	_ "github.com/golang-migrate/migrate/database/postgres"
+	_ "github.com/golang-migrate/migrate/source/file"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -31,13 +34,13 @@ func New(ctx context.Context, c Config) (*pgxpool.Pool, error) {
 		c.MaxConns)
 	conn, err := pgxpool.New(ctx, connstring)
 	if err != nil {
-		return nil, fmt.Errorf("New: failed to connect to postgres: %w", err)
+		return nil, fmt.Errorf("new: failed to connect to postgres: %w", err)
 	} else {
 		log.Info(ctx, "connected to user_postgres")
 	}
 
 	migration, err := migrate.New(
-		"file://db/user_db_migrations",
+		"file://backend/db/user_db_migrations",
 		fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
 			c.Username,
 			c.Password,
@@ -48,11 +51,11 @@ func New(ctx context.Context, c Config) (*pgxpool.Pool, error) {
 	)
 
 	if err != nil {
-		return nil, fmt.Errorf("New: failed to create migration instance: %w", err)
+		return nil, fmt.Errorf("new: failed to create migration instance: %w", err)
 	}
 
 	if err := migration.Up(); err != nil && !errors.Is(err, migrate.ErrNoChange) {
-		return nil, fmt.Errorf("New: failed to Up migration: %w", err)
+		return nil, fmt.Errorf("new: failed to Up migration: %w", err)
 	}
 	log.Info(ctx, "Successfully Applied Migration")
 	return conn, nil
