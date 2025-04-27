@@ -40,7 +40,7 @@ services:
     container_name: user_service
     build:
       context: ..
-      dockerfile: ./cmd/user/Dockerfile.user
+      dockerfile: ../cmd/user/Dockerfile
     ports:
       - "${INT_PORT}:${REST_PORT}"
     networks:
