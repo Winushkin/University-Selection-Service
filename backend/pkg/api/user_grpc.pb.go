@@ -19,10 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	UserService_SignUp_FullMethodName = "/api.UserService/SignUp"
-	UserService_Login_FullMethodName  = "/api.UserService/Login"
-	UserService_Fill_FullMethodName   = "/api.UserService/Fill"
-	UserService_Edit_FullMethodName   = "/api.UserService/Edit"
+	UserService_SignUp_FullMethodName  = "/api.UserService/SignUp"
+	UserService_Login_FullMethodName   = "/api.UserService/Login"
+	UserService_Refresh_FullMethodName = "/api.UserService/Refresh"
+	UserService_Fill_FullMethodName    = "/api.UserService/Fill"
+	UserService_Edit_FullMethodName    = "/api.UserService/Edit"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -31,6 +32,7 @@ const (
 type UserServiceClient interface {
 	SignUp(ctx context.Context, in *SignUpRequest, opts ...grpc.CallOption) (*SignUpResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+	Refresh(ctx context.Context, in *RefreshRequest, opts ...grpc.CallOption) (*RefreshResponse, error)
 	Fill(ctx context.Context, in *FillRequest, opts ...grpc.CallOption) (*FillResponse, error)
 	Edit(ctx context.Context, in *EditRequest, opts ...grpc.CallOption) (*EditResponse, error)
 }
@@ -63,6 +65,16 @@ func (c *userServiceClient) Login(ctx context.Context, in *LoginRequest, opts ..
 	return out, nil
 }
 
+func (c *userServiceClient) Refresh(ctx context.Context, in *RefreshRequest, opts ...grpc.CallOption) (*RefreshResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RefreshResponse)
+	err := c.cc.Invoke(ctx, UserService_Refresh_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userServiceClient) Fill(ctx context.Context, in *FillRequest, opts ...grpc.CallOption) (*FillResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(FillResponse)
@@ -89,6 +101,7 @@ func (c *userServiceClient) Edit(ctx context.Context, in *EditRequest, opts ...g
 type UserServiceServer interface {
 	SignUp(context.Context, *SignUpRequest) (*SignUpResponse, error)
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
+	Refresh(context.Context, *RefreshRequest) (*RefreshResponse, error)
 	Fill(context.Context, *FillRequest) (*FillResponse, error)
 	Edit(context.Context, *EditRequest) (*EditResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
@@ -106,6 +119,9 @@ func (UnimplementedUserServiceServer) SignUp(context.Context, *SignUpRequest) (*
 }
 func (UnimplementedUserServiceServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedUserServiceServer) Refresh(context.Context, *RefreshRequest) (*RefreshResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Refresh not implemented")
 }
 func (UnimplementedUserServiceServer) Fill(context.Context, *FillRequest) (*FillResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Fill not implemented")
@@ -170,6 +186,24 @@ func _UserService_Login_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_Refresh_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RefreshRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).Refresh(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_Refresh_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).Refresh(ctx, req.(*RefreshRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _UserService_Fill_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(FillRequest)
 	if err := dec(in); err != nil {
@@ -220,6 +254,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Login",
 			Handler:    _UserService_Login_Handler,
+		},
+		{
+			MethodName: "Refresh",
+			Handler:    _UserService_Refresh_Handler,
 		},
 		{
 			MethodName: "Fill",

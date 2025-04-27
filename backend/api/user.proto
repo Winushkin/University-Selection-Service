@@ -6,6 +6,13 @@ package api;
 
 
 import "google/api/annotations.proto";
+import "google/api/openapi.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  host: "localhost:8080",
+  base_path: "/api",
+  schemes: HTTP,
+};
 
 
 service UserService {
@@ -18,6 +25,12 @@ service UserService {
   rpc Login(LoginRequest) returns (LoginResponse) {
     option(google.api.http) = {
       post: "/api/user/login"
+      body: "*"
+    };
+  }
+  rpc Refresh(RefreshRequest) returns (RefreshResponse) {
+    option(google.api.http) = {
+      post: "/api/user/refresh"
       body: "*"
     };
   }
@@ -40,9 +53,7 @@ message SignUpRequest {
   string password = 2;
 }
 
-message SignUpResponse {
-  int32 status = 1;
-}
+message SignUpResponse {}
 
 message LoginRequest {
   string login = 1;
@@ -50,7 +61,17 @@ message LoginRequest {
 }
 
 message LoginResponse {
-  int32 status = 1;
+  string access = 1;
+  string refresh = 2;
+  int64 expires_in = 3;
+}
+
+message RefreshRequest {
+  string refresh = 1;
+}
+
+message RefreshResponse {
+  string access = 1;
 }
 
 message FillRequest {
@@ -62,9 +83,7 @@ message FillRequest {
   string financing = 6;
 }
 
-message FillResponse {
-  int32 status = 1;
-}
+message FillResponse {}
 
 message EditRequest {
   int32 ege = 1;
@@ -75,6 +94,4 @@ message EditRequest {
   string financing = 6;
 }
 
-message EditResponse {
-  int32 status = 1;
-}
+message EditResponse {}

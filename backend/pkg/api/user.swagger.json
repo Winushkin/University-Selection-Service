@@ -9,6 +9,11 @@
       "name": "UserService"
     }
   ],
+  "host": "localhost:8080",
+  "basePath": "/api",
+  "schemes": [
+    "http"
+  ],
   "consumes": [
     "application/json"
   ],
@@ -112,6 +117,38 @@
         ]
       }
     },
+    "/api/user/refresh": {
+      "post": {
+        "operationId": "UserService_Refresh",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiRefreshResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiRefreshRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
     "/api/user/signup": {
       "post": {
         "operationId": "UserService_SignUp",
@@ -172,13 +209,7 @@
       }
     },
     "apiEditResponse": {
-      "type": "object",
-      "properties": {
-        "status": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
+      "type": "object"
     },
     "apiFillRequest": {
       "type": "object",
@@ -206,13 +237,7 @@
       }
     },
     "apiFillResponse": {
-      "type": "object",
-      "properties": {
-        "status": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
+      "type": "object"
     },
     "apiLoginRequest": {
       "type": "object",
@@ -228,9 +253,31 @@
     "apiLoginResponse": {
       "type": "object",
       "properties": {
-        "status": {
-          "type": "integer",
-          "format": "int32"
+        "access": {
+          "type": "string"
+        },
+        "refresh": {
+          "type": "string"
+        },
+        "expiresIn": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "apiRefreshRequest": {
+      "type": "object",
+      "properties": {
+        "refresh": {
+          "type": "string"
+        }
+      }
+    },
+    "apiRefreshResponse": {
+      "type": "object",
+      "properties": {
+        "access": {
+          "type": "string"
         }
       }
     },
@@ -246,13 +293,7 @@
       }
     },
     "apiSignUpResponse": {
-      "type": "object",
-      "properties": {
-        "status": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
+      "type": "object"
     },
     "protobufAny": {
       "type": "object",
