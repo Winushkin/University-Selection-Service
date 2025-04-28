@@ -1,12 +1,17 @@
 import { useState } from 'react';
-import ToggleSwitch from './ToggleSwitch';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import ToggleSwitch from '../components/ToggleSwitch.jsx';
 import './ProfileForm.css';
 
 function ProfileForm() {
+
+    const Navigate=useNavigate();
+
     const [profile, setProfile] = useState({
         egeScores: '',
         gpa: '',
-        olympiads: '',
+
         desiredSpecialty: '',
         educationType: 'очное',
         country: '',
@@ -49,15 +54,7 @@ function ProfileForm() {
         }
     };
 
-    const handleToggleChange = (name, value) => {
-        setProfile((prevProfile) => ({
-            ...prevProfile,
-            importanceFactors: {
-                ...prevProfile.importanceFactors,
-                [name]: value
-            }
-        }));
-    };
+
 
     const handleSubmit = async () => {
         setSubmitStatus({ loading: true, success: false, error: null });
@@ -78,6 +75,7 @@ function ProfileForm() {
             const data = await response.json();
             setSubmitStatus({ loading: false, success: true, error: null });
             console.log('Профиль успешно создан:', data);
+            Navigate('/MainPage');
         } catch (error) {
             setSubmitStatus({ loading: false, success: false, error: error.message });
             console.error('Ошибка при отправке данных:', error);
@@ -110,16 +108,7 @@ function ProfileForm() {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div className="form-group">
-                            <label>Наличие олимпиад:</label>
-                            <input
-                                type="text"
-                                name="olympiads"
-                                className="form-input"
-                                value={profile.olympiads}
-                                onChange={handleChange}
-                            />
-                        </div>
+
                         <div className="form-group">
                             <label>Cпециальность:</label>
                             <input
@@ -177,90 +166,15 @@ function ProfileForm() {
                         </div>
                     </div>
 
-                    <div className="form-section">
-                        <h3>Важность различных факторов</h3>
-                        <div className="form-group">
-                            <label>Местный рейтинг университета: {profile.importanceFactors.localUniversityRating}</label>
-                            <input
-                                type="range"
-                                name="importanceFactors.localUniversityRating"
-                                className="form-range"
-                                min="1"
-                                max="9"
-                                value={profile.importanceFactors.localUniversityRating}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Престиж: {profile.importanceFactors.prestige}</label>
-                            <input
-                                type="range"
-                                name="importanceFactors.prestige"
-                                className="form-range"
-                                min="1"
-                                max="9"
-                                value={profile.importanceFactors.prestige}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Стипендиальные программы: {profile.importanceFactors.scholarshipPrograms}</label>
-                            <input
-                                type="range"
-                                name="importanceFactors.scholarshipPrograms"
-                                className="form-range"
-                                min="1"
-                                max="9"
-                                value={profile.importanceFactors.scholarshipPrograms}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Качество образования: {profile.importanceFactors.educationQuality}</label>
-                            <input
-                                type="range"
-                                name="importanceFactors.educationQuality"
-                                className="form-range"
-                                min="1"
-                                max="9"
-                                value={profile.importanceFactors.educationQuality}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Наличие общежития:</label>
-                            <ToggleSwitch
-                                name="dormitory"
-                                checked={profile.importanceFactors.dormitory}
-                                onChange={(value) => handleToggleChange("dormitory", value)}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Наличие научных лабораторий:</label>
-                            <ToggleSwitch
-                                name="scientificLabs"
-                                checked={profile.importanceFactors.scientificLabs}
-                                onChange={(value) => handleToggleChange("scientificLabs", value)}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Наличие спортивной инфраструктуры:</label>
-                            <ToggleSwitch
-                                name="sportsInfrastructure"
-                                checked={profile.importanceFactors.sportsInfrastructure}
-                                onChange={(value) => handleToggleChange("sportsInfrastructure", value)}
-                            />
-                        </div>
-                    </div>
 
                     {submitStatus.error && (
-                        <div className="error-message" style={{ color: 'red', marginBottom: '15px' }}>
+                        <div className="error-message" style={{color: 'red', marginBottom: '15px'}}>
                             {submitStatus.error}
                         </div>
                     )}
 
                     {submitStatus.success && (
-                        <div className="success-message" style={{ color: 'green', marginBottom: '15px' }}>
+                        <div className="success-message" style={{color: 'green', marginBottom: '15px'}}>
                             Профиль успешно создан!
                         </div>
                     )}
@@ -270,9 +184,13 @@ function ProfileForm() {
                         className="form-button"
                         onClick={handleSubmit}
                         disabled={submitStatus.loading}
+
                     >
                         {submitStatus.loading ? 'Отправка...' : 'Создать профиль'}
+
                     </button>
+
+
                 </form>
             </div>
         </div>
