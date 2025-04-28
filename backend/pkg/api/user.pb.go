@@ -193,7 +193,7 @@ type LoginResponse struct {
 	Refresh       string                 `protobuf:"bytes,2,opt,name=refresh,proto3" json:"refresh,omitempty"`
 	ExpiresAt     int64                  `protobuf:"varint,3,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
 	Ege           int32                  `protobuf:"varint,4,opt,name=ege,proto3" json:"ege,omitempty"`
-	Gpa           int32                  `protobuf:"varint,5,opt,name=gpa,proto3" json:"gpa,omitempty"`
+	Gpa           float32                `protobuf:"fixed32,5,opt,name=gpa,proto3" json:"gpa,omitempty"`
 	Speciality    string                 `protobuf:"bytes,6,opt,name=speciality,proto3" json:"speciality,omitempty"`
 	EduType       string                 `protobuf:"bytes,7,opt,name=eduType,proto3" json:"eduType,omitempty"`
 	Town          string                 `protobuf:"bytes,8,opt,name=town,proto3" json:"town,omitempty"`
@@ -260,7 +260,7 @@ func (x *LoginResponse) GetEge() int32 {
 	return 0
 }
 
-func (x *LoginResponse) GetGpa() int32 {
+func (x *LoginResponse) GetGpa() float32 {
 	if x != nil {
 		return x.Gpa
 	}
@@ -422,6 +422,7 @@ func (x *RefreshRequest) GetRefresh() string {
 type RefreshResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Access        string                 `protobuf:"bytes,1,opt,name=access,proto3" json:"access,omitempty"`
+	ExpiresAt     int64                  `protobuf:"varint,2,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -463,10 +464,17 @@ func (x *RefreshResponse) GetAccess() string {
 	return ""
 }
 
+func (x *RefreshResponse) GetExpiresAt() int64 {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return 0
+}
+
 type FillRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Ege           int32                  `protobuf:"varint,1,opt,name=ege,proto3" json:"ege,omitempty"`
-	Gpa           int32                  `protobuf:"varint,2,opt,name=gpa,proto3" json:"gpa,omitempty"`
+	Gpa           float32                `protobuf:"fixed32,2,opt,name=gpa,proto3" json:"gpa,omitempty"`
 	Speciality    string                 `protobuf:"bytes,3,opt,name=speciality,proto3" json:"speciality,omitempty"`
 	EduType       string                 `protobuf:"bytes,4,opt,name=eduType,proto3" json:"eduType,omitempty"`
 	Town          string                 `protobuf:"bytes,5,opt,name=town,proto3" json:"town,omitempty"`
@@ -512,7 +520,7 @@ func (x *FillRequest) GetEge() int32 {
 	return 0
 }
 
-func (x *FillRequest) GetGpa() int32 {
+func (x *FillRequest) GetGpa() float32 {
 	if x != nil {
 		return x.Gpa
 	}
@@ -586,7 +594,7 @@ func (*FillResponse) Descriptor() ([]byte, []int) {
 type EditRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Ege           int32                  `protobuf:"varint,1,opt,name=ege,proto3" json:"ege,omitempty"`
-	Gpa           int32                  `protobuf:"varint,2,opt,name=gpa,proto3" json:"gpa,omitempty"`
+	Gpa           float32                `protobuf:"fixed32,2,opt,name=gpa,proto3" json:"gpa,omitempty"`
 	Speciality    string                 `protobuf:"bytes,3,opt,name=speciality,proto3" json:"speciality,omitempty"`
 	EduType       string                 `protobuf:"bytes,4,opt,name=eduType,proto3" json:"eduType,omitempty"`
 	Town          string                 `protobuf:"bytes,5,opt,name=town,proto3" json:"town,omitempty"`
@@ -632,7 +640,7 @@ func (x *EditRequest) GetEge() int32 {
 	return 0
 }
 
-func (x *EditRequest) GetGpa() int32 {
+func (x *EditRequest) GetGpa() float32 {
 	if x != nil {
 		return x.Gpa
 	}
@@ -726,7 +734,7 @@ const file_user_proto_rawDesc = "" +
 	"\n" +
 	"expires_at\x18\x03 \x01(\x03R\texpiresAt\x12\x10\n" +
 	"\x03ege\x18\x04 \x01(\x05R\x03ege\x12\x10\n" +
-	"\x03gpa\x18\x05 \x01(\x05R\x03gpa\x12\x1e\n" +
+	"\x03gpa\x18\x05 \x01(\x02R\x03gpa\x12\x1e\n" +
 	"\n" +
 	"speciality\x18\x06 \x01(\tR\n" +
 	"speciality\x12\x18\n" +
@@ -737,12 +745,14 @@ const file_user_proto_rawDesc = "" +
 	"\arefresh\x18\x01 \x01(\tR\arefresh\"\x10\n" +
 	"\x0eLogoutResponse\"*\n" +
 	"\x0eRefreshRequest\x12\x18\n" +
-	"\arefresh\x18\x01 \x01(\tR\arefresh\")\n" +
+	"\arefresh\x18\x01 \x01(\tR\arefresh\"H\n" +
 	"\x0fRefreshResponse\x12\x16\n" +
-	"\x06access\x18\x01 \x01(\tR\x06access\"\x9d\x01\n" +
+	"\x06access\x18\x01 \x01(\tR\x06access\x12\x1d\n" +
+	"\n" +
+	"expires_at\x18\x02 \x01(\x03R\texpiresAt\"\x9d\x01\n" +
 	"\vFillRequest\x12\x10\n" +
 	"\x03ege\x18\x01 \x01(\x05R\x03ege\x12\x10\n" +
-	"\x03gpa\x18\x02 \x01(\x05R\x03gpa\x12\x1e\n" +
+	"\x03gpa\x18\x02 \x01(\x02R\x03gpa\x12\x1e\n" +
 	"\n" +
 	"speciality\x18\x03 \x01(\tR\n" +
 	"speciality\x12\x18\n" +
@@ -752,7 +762,7 @@ const file_user_proto_rawDesc = "" +
 	"\fFillResponse\"\x9d\x01\n" +
 	"\vEditRequest\x12\x10\n" +
 	"\x03ege\x18\x01 \x01(\x05R\x03ege\x12\x10\n" +
-	"\x03gpa\x18\x02 \x01(\x05R\x03gpa\x12\x1e\n" +
+	"\x03gpa\x18\x02 \x01(\x02R\x03gpa\x12\x1e\n" +
 	"\n" +
 	"speciality\x18\x03 \x01(\tR\n" +
 	"speciality\x12\x18\n" +

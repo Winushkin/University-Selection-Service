@@ -223,8 +223,8 @@
           "format": "int32"
         },
         "gpa": {
-          "type": "integer",
-          "format": "int32"
+          "type": "number",
+          "format": "float"
         },
         "speciality": {
           "type": "string"
@@ -251,8 +251,8 @@
           "format": "int32"
         },
         "gpa": {
-          "type": "integer",
-          "format": "int32"
+          "type": "number",
+          "format": "float"
         },
         "speciality": {
           "type": "string"
@@ -300,8 +300,8 @@
           "format": "int32"
         },
         "gpa": {
-          "type": "integer",
-          "format": "int32"
+          "type": "number",
+          "format": "float"
         },
         "speciality": {
           "type": "string"
@@ -341,6 +341,10 @@
       "properties": {
         "access": {
           "type": "string"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },

@@ -76,7 +76,7 @@ message LoginResponse {
   int64 expires_at = 3;
 
   int32 ege = 4;
-  int32 gpa = 5;
+  float gpa = 5;
   string speciality = 6;
   string eduType = 7;
   string town = 8;
@@ -95,11 +95,12 @@ message RefreshRequest {
 
 message RefreshResponse {
   string access = 1;
+  int64 expires_at = 2;
 }
 
 message FillRequest {
   int32 ege = 1;
-  int32 gpa = 2;
+  float gpa = 2;
   string speciality = 3;
   string eduType = 4;
   string town = 5;
@@ -110,7 +111,7 @@ message FillResponse {}
 
 message EditRequest {
   int32 ege = 1;
-  int32 gpa = 2;
+  float gpa = 2;
   string speciality = 3;
   string eduType = 4;
   string town = 5;
