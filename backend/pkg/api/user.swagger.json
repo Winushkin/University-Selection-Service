@@ -289,6 +289,9 @@
         },
         "password": {
           "type": "string"
+        },
+        "name": {
+          "type": "string"
         }
       }
     },
