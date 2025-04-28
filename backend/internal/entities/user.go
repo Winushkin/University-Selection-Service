@@ -5,7 +5,7 @@ type User struct {
 	Login      string
 	Password   string
 	Ege        int
-	Gpa        int
+	Gpa        float32
 	Speciality string
 	EduType    string
 	Town       string
