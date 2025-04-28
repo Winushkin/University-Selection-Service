@@ -231,6 +231,86 @@ func (x *LoginResponse) GetExpiresIn() int64 {
 	return 0
 }
 
+type LogoutRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Refresh       string                 `protobuf:"bytes,1,opt,name=refresh,proto3" json:"refresh,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LogoutRequest) Reset() {
+	*x = LogoutRequest{}
+	mi := &file_user_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LogoutRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LogoutRequest) ProtoMessage() {}
+
+func (x *LogoutRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LogoutRequest.ProtoReflect.Descriptor instead.
+func (*LogoutRequest) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *LogoutRequest) GetRefresh() string {
+	if x != nil {
+		return x.Refresh
+	}
+	return ""
+}
+
+type LogoutResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LogoutResponse) Reset() {
+	*x = LogoutResponse{}
+	mi := &file_user_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LogoutResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LogoutResponse) ProtoMessage() {}
+
+func (x *LogoutResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LogoutResponse.ProtoReflect.Descriptor instead.
+func (*LogoutResponse) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{5}
+}
+
 type RefreshRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Refresh       string                 `protobuf:"bytes,1,opt,name=refresh,proto3" json:"refresh,omitempty"`
@@ -240,7 +320,7 @@ type RefreshRequest struct {
 
 func (x *RefreshRequest) Reset() {
 	*x = RefreshRequest{}
-	mi := &file_user_proto_msgTypes[4]
+	mi := &file_user_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -252,7 +332,7 @@ func (x *RefreshRequest) String() string {
 func (*RefreshRequest) ProtoMessage() {}
 
 func (x *RefreshRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[4]
+	mi := &file_user_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -265,7 +345,7 @@ func (x *RefreshRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RefreshRequest.ProtoReflect.Descriptor instead.
 func (*RefreshRequest) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{4}
+	return file_user_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *RefreshRequest) GetRefresh() string {
@@ -284,7 +364,7 @@ type RefreshResponse struct {
 
 func (x *RefreshResponse) Reset() {
 	*x = RefreshResponse{}
-	mi := &file_user_proto_msgTypes[5]
+	mi := &file_user_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -296,7 +376,7 @@ func (x *RefreshResponse) String() string {
 func (*RefreshResponse) ProtoMessage() {}
 
 func (x *RefreshResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[5]
+	mi := &file_user_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -309,7 +389,7 @@ func (x *RefreshResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RefreshResponse.ProtoReflect.Descriptor instead.
 func (*RefreshResponse) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{5}
+	return file_user_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *RefreshResponse) GetAccess() string {
@@ -333,7 +413,7 @@ type FillRequest struct {
 
 func (x *FillRequest) Reset() {
 	*x = FillRequest{}
-	mi := &file_user_proto_msgTypes[6]
+	mi := &file_user_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -345,7 +425,7 @@ func (x *FillRequest) String() string {
 func (*FillRequest) ProtoMessage() {}
 
 func (x *FillRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[6]
+	mi := &file_user_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -358,7 +438,7 @@ func (x *FillRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FillRequest.ProtoReflect.Descriptor instead.
 func (*FillRequest) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{6}
+	return file_user_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *FillRequest) GetEge() int32 {
@@ -411,7 +491,7 @@ type FillResponse struct {
 
 func (x *FillResponse) Reset() {
 	*x = FillResponse{}
-	mi := &file_user_proto_msgTypes[7]
+	mi := &file_user_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -423,7 +503,7 @@ func (x *FillResponse) String() string {
 func (*FillResponse) ProtoMessage() {}
 
 func (x *FillResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[7]
+	mi := &file_user_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -436,7 +516,7 @@ func (x *FillResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FillResponse.ProtoReflect.Descriptor instead.
 func (*FillResponse) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{7}
+	return file_user_proto_rawDescGZIP(), []int{9}
 }
 
 type EditRequest struct {
@@ -453,7 +533,7 @@ type EditRequest struct {
 
 func (x *EditRequest) Reset() {
 	*x = EditRequest{}
-	mi := &file_user_proto_msgTypes[8]
+	mi := &file_user_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -465,7 +545,7 @@ func (x *EditRequest) String() string {
 func (*EditRequest) ProtoMessage() {}
 
 func (x *EditRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[8]
+	mi := &file_user_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -478,7 +558,7 @@ func (x *EditRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EditRequest.ProtoReflect.Descriptor instead.
 func (*EditRequest) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{8}
+	return file_user_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *EditRequest) GetEge() int32 {
@@ -531,7 +611,7 @@ type EditResponse struct {
 
 func (x *EditResponse) Reset() {
 	*x = EditResponse{}
-	mi := &file_user_proto_msgTypes[9]
+	mi := &file_user_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -543,7 +623,7 @@ func (x *EditResponse) String() string {
 func (*EditResponse) ProtoMessage() {}
 
 func (x *EditResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[9]
+	mi := &file_user_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -556,7 +636,7 @@ func (x *EditResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EditResponse.ProtoReflect.Descriptor instead.
 func (*EditResponse) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{9}
+	return file_user_proto_rawDescGZIP(), []int{11}
 }
 
 var File_user_proto protoreflect.FileDescriptor
@@ -577,7 +657,10 @@ const file_user_proto_rawDesc = "" +
 	"\x06access\x18\x01 \x01(\tR\x06access\x12\x18\n" +
 	"\arefresh\x18\x02 \x01(\tR\arefresh\x12\x1d\n" +
 	"\n" +
-	"expires_in\x18\x03 \x01(\x03R\texpiresIn\"*\n" +
+	"expires_in\x18\x03 \x01(\x03R\texpiresIn\")\n" +
+	"\rLogoutRequest\x12\x18\n" +
+	"\arefresh\x18\x01 \x01(\tR\arefresh\"\x10\n" +
+	"\x0eLogoutResponse\"*\n" +
 	"\x0eRefreshRequest\x12\x18\n" +
 	"\arefresh\x18\x01 \x01(\tR\arefresh\")\n" +
 	"\x0fRefreshResponse\x12\x16\n" +
@@ -601,10 +684,11 @@ const file_user_proto_rawDesc = "" +
 	"\aeduType\x18\x04 \x01(\tR\aeduType\x12\x12\n" +
 	"\x04town\x18\x05 \x01(\tR\x04town\x12\x1c\n" +
 	"\tfinancing\x18\x06 \x01(\tR\tfinancing\"\x0e\n" +
-	"\fEditResponse2\x8d\x03\n" +
+	"\fEditResponse2\xdd\x03\n" +
 	"\vUserService\x12N\n" +
 	"\x06SignUp\x12\x12.api.SignUpRequest\x1a\x13.api.SignUpResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/user/signup\x12J\n" +
-	"\x05Login\x12\x11.api.LoginRequest\x1a\x12.api.LoginResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/api/user/login\x12R\n" +
+	"\x05Login\x12\x11.api.LoginRequest\x1a\x12.api.LoginResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/api/user/login\x12N\n" +
+	"\x06Logout\x12\x12.api.LogoutRequest\x1a\x13.api.LogoutResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/user/logout\x12R\n" +
 	"\aRefresh\x12\x13.api.RefreshRequest\x1a\x14.api.RefreshResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/api/user/refresh\x12F\n" +
 	"\x04Fill\x12\x10.api.FillRequest\x1a\x11.api.FillResponse\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/api/user/fill\x12F\n" +
 	"\x04Edit\x12\x10.api.EditRequest\x1a\x11.api.EditResponse\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/api/user/editB-\x92A\x19\x1a\x0elocalhost:8080\"\x04/api*\x01\x01Z\x0fbackend/pkg/apib\x06proto3"
@@ -621,35 +705,39 @@ func file_user_proto_rawDescGZIP() []byte {
 	return file_user_proto_rawDescData
 }
 
-var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_user_proto_goTypes = []any{
 	(*SignUpRequest)(nil),   // 0: api.SignUpRequest
 	(*SignUpResponse)(nil),  // 1: api.SignUpResponse
 	(*LoginRequest)(nil),    // 2: api.LoginRequest
 	(*LoginResponse)(nil),   // 3: api.LoginResponse
-	(*RefreshRequest)(nil),  // 4: api.RefreshRequest
-	(*RefreshResponse)(nil), // 5: api.RefreshResponse
-	(*FillRequest)(nil),     // 6: api.FillRequest
-	(*FillResponse)(nil),    // 7: api.FillResponse
-	(*EditRequest)(nil),     // 8: api.EditRequest
-	(*EditResponse)(nil),    // 9: api.EditResponse
+	(*LogoutRequest)(nil),   // 4: api.LogoutRequest
+	(*LogoutResponse)(nil),  // 5: api.LogoutResponse
+	(*RefreshRequest)(nil),  // 6: api.RefreshRequest
+	(*RefreshResponse)(nil), // 7: api.RefreshResponse
+	(*FillRequest)(nil),     // 8: api.FillRequest
+	(*FillResponse)(nil),    // 9: api.FillResponse
+	(*EditRequest)(nil),     // 10: api.EditRequest
+	(*EditResponse)(nil),    // 11: api.EditResponse
 }
 var file_user_proto_depIdxs = []int32{
-	0, // 0: api.UserService.SignUp:input_type -> api.SignUpRequest
-	2, // 1: api.UserService.Login:input_type -> api.LoginRequest
-	4, // 2: api.UserService.Refresh:input_type -> api.RefreshRequest
-	6, // 3: api.UserService.Fill:input_type -> api.FillRequest
-	8, // 4: api.UserService.Edit:input_type -> api.EditRequest
-	1, // 5: api.UserService.SignUp:output_type -> api.SignUpResponse
-	3, // 6: api.UserService.Login:output_type -> api.LoginResponse
-	5, // 7: api.UserService.Refresh:output_type -> api.RefreshResponse
-	7, // 8: api.UserService.Fill:output_type -> api.FillResponse
-	9, // 9: api.UserService.Edit:output_type -> api.EditResponse
-	5, // [5:10] is the sub-list for method output_type
-	0, // [0:5] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0,  // 0: api.UserService.SignUp:input_type -> api.SignUpRequest
+	2,  // 1: api.UserService.Login:input_type -> api.LoginRequest
+	4,  // 2: api.UserService.Logout:input_type -> api.LogoutRequest
+	6,  // 3: api.UserService.Refresh:input_type -> api.RefreshRequest
+	8,  // 4: api.UserService.Fill:input_type -> api.FillRequest
+	10, // 5: api.UserService.Edit:input_type -> api.EditRequest
+	1,  // 6: api.UserService.SignUp:output_type -> api.SignUpResponse
+	3,  // 7: api.UserService.Login:output_type -> api.LoginResponse
+	5,  // 8: api.UserService.Logout:output_type -> api.LogoutResponse
+	7,  // 9: api.UserService.Refresh:output_type -> api.RefreshResponse
+	9,  // 10: api.UserService.Fill:output_type -> api.FillResponse
+	11, // 11: api.UserService.Edit:output_type -> api.EditResponse
+	6,  // [6:12] is the sub-list for method output_type
+	0,  // [0:6] is the sub-list for method input_type
+	0,  // [0:0] is the sub-list for extension type_name
+	0,  // [0:0] is the sub-list for extension extendee
+	0,  // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_user_proto_init() }
@@ -663,7 +751,7 @@ func file_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_user_proto_rawDesc), len(file_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

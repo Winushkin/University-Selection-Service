@@ -28,6 +28,12 @@ service UserService {
       body: "*"
     };
   }
+  rpc Logout(LogoutRequest) returns (LogoutResponse) {
+    option(google.api.http) = {
+      post: "/api/user/logout"
+      body: "*"
+    };
+  }
   rpc Refresh(RefreshRequest) returns (RefreshResponse) {
     option(google.api.http) = {
       post: "/api/user/refresh"
@@ -66,6 +72,12 @@ message LoginResponse {
   string refresh = 2;
   int64 expires_in = 3;
 }
+
+message LogoutRequest {
+  string refresh = 1;
+}
+
+message LogoutResponse {}
 
 message RefreshRequest {
   string refresh = 1;
