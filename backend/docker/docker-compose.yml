@@ -1,0 +1,58 @@
+services:
+  postgresql_users:
+    container_name: users_postgres_service
+    image: postgres:latest
+    env_file:
+      - ../env/users_postgres.env
+    ports:
+      - "${INT_PORT}:${REST_PORT}"
+    volumes:
+      - ../backend/database_data/users_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-U $${POSTGRES_USER} -d $${POSTGRES_DB} -p $${POSTGRES_PASSWORD}" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - app_network
+
+
+  postgresql_integration:
+    container_name: integration_postgres_service
+    image: postgres:latest
+    env_file:
+      - ../env/integration_postgres.env
+    ports:
+      - "${INT_PORT}:${REST_PORT}"
+    volumes:
+      - ../backend/database_data/integration_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-U $${POSTGRES_USER} -d $${POSTGRES_DB} -p $${POSTGRES_PASSWORD}"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - app_network
+
+  user_service:
+    container_name: user_service
+    build:
+      context: ..
+      dockerfile: ../cmd/user/Dockerfile
+    ports:
+      - "${INT_PORT}:${REST_PORT}"
+    networks:
+      - app_network
+    restart: unless-stopped
+    env_file:
+      - ../env/users_postgres.env
+      - ../env/user.env
+    depends_on:
+      postgresql_users:
+        condition: service_healthy
+
+networks:
+  app_network:
+    driver: bridge
