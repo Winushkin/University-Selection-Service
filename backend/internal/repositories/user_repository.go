@@ -18,9 +18,11 @@ type UserRepository struct {
 }
 
 const (
-	GetByLoginSQLRequest       = "SELECT * FROM schema_name.users WHERE login=$1"
-	SaveRefreshTokenSQLRequest = "INSERT INTO schema_name.refresh_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)"
-	CreateUserSQLRequest       = "INSERT INTO schema_name.users (login, password, name) VALUES ($1, $2, $3) RETURNING id"
+	GetByLoginSQLRequest                   = "SELECT * FROM schema_name.users WHERE login=$1"
+	SaveRefreshTokenSQLRequest             = "INSERT INTO schema_name.refresh_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)"
+	CreateUserSQLRequest                   = "INSERT INTO schema_name.users (login, password) VALUES ($1, $2, $3) RETURNING Id"
+	RevokeAllActiveTokensForUserSQLRequest = "DELETE FROM schema_name.refresh_tokens WHERE user_id = $1"
+	GetUserIDByRefreshTokenSQLRequest      = "DELETE FROM schema_name.refresh_tokens WHERE token = $1"
 )
 
 func NewUserRepository(ctx context.Context, cfg postgres.Config) (*UserRepository, error) {
@@ -34,7 +36,8 @@ func NewUserRepository(ctx context.Context, cfg postgres.Config) (*UserRepositor
 func (ur *UserRepository) GetByLogin(ctx context.Context, login string) (*entities.User, error) {
 	user := &entities.User{}
 	queryRow := ur.pg.QueryRow(ctx, GetByLoginSQLRequest, login)
-	err := queryRow.Scan(&user.Id, &user.Login, &user.Password, &user.Name)
+	err := queryRow.Scan(&user.Id, &user.Login, &user.Password, &user.Ege, &user.Gpa,
+		&user.Speciality, &user.EduType, &user.Town, &user.Financing)
 	if err != nil && errors.Is(err, pgx.ErrNoRows) {
 		return nil, status.Error(codes.NotFound, "User not found")
 	} else if err != nil {
@@ -54,10 +57,28 @@ func (ur *UserRepository) SaveRefreshToken(ctx context.Context, id int, token st
 
 func (ur *UserRepository) CreateUser(ctx context.Context, user *entities.User) (int, error) {
 	var id int
-	queryRow := ur.pg.QueryRow(ctx, CreateUserSQLRequest, user.Login, user.Password, user.Name)
+	queryRow := ur.pg.QueryRow(ctx, CreateUserSQLRequest, user.Login, user.Password)
 	err := queryRow.Scan(&id)
 	if err != nil {
 		return 0, fmt.Errorf("CreateUser: failed to query user: %w", err)
+	}
+	return id, nil
+}
+
+func (ur *UserRepository) RevokeAllActiveTokensForUser(ctx context.Context, userId int) error {
+	_, err := ur.pg.Exec(ctx, RevokeAllActiveTokensForUserSQLRequest, userId)
+	if err != nil {
+		return fmt.Errorf("RevokeAllActiveTokensForUser: failed to revoke active tokens for user: %w", err)
+	}
+	return nil
+}
+
+func (ur *UserRepository) GetUserIDByRefreshToken(ctx context.Context, refreshToken string) (int, error) {
+	var id int
+	queryRow := ur.pg.QueryRow(ctx, GetUserIDByRefreshTokenSQLRequest, refreshToken)
+	err := queryRow.Scan(&id)
+	if err != nil {
+		return 0, fmt.Errorf("GetUserIDByRefreshToken: failed to query user by refresh token: %w", err)
 	}
 	return id, nil
 }

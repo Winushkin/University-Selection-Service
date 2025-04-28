@@ -56,28 +56,109 @@ func (s *Server) SignUp(ctx context.Context, request *api.SignUpRequest) (*api.S
 	if user != nil {
 		return nil, status.Error(codes.AlreadyExists, "User already exists")
 	}
+
 	user = &entities.User{
 		Login:    request.Login,
 		Password: request.Password,
-		Name:     request.Name,
 	}
 
 	_, err = s.rep.CreateUser(ctx, user)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "error creating user")
 	}
-	return &api.SignUpResponse{}, nil
+
+	accessToken, err := s.generateAccessToken(user.Id)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "error generating access token")
+	}
+	expAt := time.Now().Add(15 * time.Minute).Unix()
+
+	refreshToken, err := s.generateRefreshToken()
+	if err != nil {
+		return nil, status.Error(codes.Internal, "error generating refresh token")
+	}
+
+	err = s.rep.SaveRefreshToken(ctx, user.Id, refreshToken)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "error saving refresh token")
+	}
+
+	return &api.SignUpResponse{
+		Access:    accessToken,
+		Refresh:   refreshToken,
+		ExpiresAt: expAt,
+	}, nil
 }
 
 func (s *Server) Login(ctx context.Context, request *api.LoginRequest) (*api.LoginResponse, error) {
-	return nil, nil
+	user, err := s.rep.GetByLogin(ctx, request.Login)
+	if err != nil {
+		return nil, status.Error(codes.NotFound, "User not found")
+	}
+
+	if user.Login != request.Login || user.Password != request.Password {
+		return nil, status.Error(codes.FailedPrecondition, "User login and password do not match")
+	}
+
+	err = s.rep.RevokeAllActiveTokensForUser(ctx, user.Id)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "error revoking active tokens for user")
+	}
+
+	accessToken, err := s.generateAccessToken(user.Id)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "error generating access token")
+	}
+	expAt := time.Now().Add(15 * time.Minute).Unix()
+
+	refreshToken, err := s.generateRefreshToken()
+	if err != nil {
+		return nil, status.Error(codes.Internal, "error generating refresh token")
+	}
+
+	err = s.rep.SaveRefreshToken(ctx, user.Id, refreshToken)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "error saving refresh token")
+	}
+
+	return &api.LoginResponse{
+		Access:     accessToken,
+		Refresh:    refreshToken,
+		ExpiresAt:  expAt,
+		Ege:        int32(user.Ege),
+		Gpa:        user.Gpa,
+		Speciality: user.Speciality,
+		EduType:    user.EduType,
+		Town:       user.Town,
+		Financing:  user.Financing,
+	}, nil
 }
 
 func (s *Server) Refresh(ctx context.Context, request *api.RefreshRequest) (*api.RefreshResponse, error) {
-	return nil, nil
+	id, err := s.rep.GetUserIDByRefreshToken(ctx, request.Refresh)
+	if err != nil {
+		return nil, status.Error(codes.NotFound, "User not found")
+	}
+
+	err = s.rep.RevokeAllActiveTokensForUser(ctx, id)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "error revoking active tokens for user")
+	}
+
+	accessToken, err := s.generateAccessToken(id)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "error generating access token")
+	}
+	expAt := time.Now().Add(15 * time.Minute).Unix()
+
+	return &api.RefreshResponse{
+		Access:    accessToken,
+		ExpiresAt: expAt,
+	}, nil
 }
 
 func (s *Server) Fill(ctx context.Context, request *api.FillRequest) (*api.FillResponse, error) {
+
 	return nil, nil
 }
 
