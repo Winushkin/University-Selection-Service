@@ -27,7 +27,6 @@ type SignUpRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Login         string                 `protobuf:"bytes,1,opt,name=login,proto3" json:"login,omitempty"`
 	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
-	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -76,15 +75,11 @@ func (x *SignUpRequest) GetPassword() string {
 	return ""
 }
 
-func (x *SignUpRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
 type SignUpResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Access        string                 `protobuf:"bytes,1,opt,name=access,proto3" json:"access,omitempty"`
+	Refresh       string                 `protobuf:"bytes,2,opt,name=refresh,proto3" json:"refresh,omitempty"`
+	ExpiresAt     int64                  `protobuf:"varint,3,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -117,6 +112,27 @@ func (x *SignUpResponse) ProtoReflect() protoreflect.Message {
 // Deprecated: Use SignUpResponse.ProtoReflect.Descriptor instead.
 func (*SignUpResponse) Descriptor() ([]byte, []int) {
 	return file_user_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *SignUpResponse) GetAccess() string {
+	if x != nil {
+		return x.Access
+	}
+	return ""
+}
+
+func (x *SignUpResponse) GetRefresh() string {
+	if x != nil {
+		return x.Refresh
+	}
+	return ""
+}
+
+func (x *SignUpResponse) GetExpiresAt() int64 {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return 0
 }
 
 type LoginRequest struct {
@@ -175,7 +191,13 @@ type LoginResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Access        string                 `protobuf:"bytes,1,opt,name=access,proto3" json:"access,omitempty"`
 	Refresh       string                 `protobuf:"bytes,2,opt,name=refresh,proto3" json:"refresh,omitempty"`
-	ExpiresIn     int64                  `protobuf:"varint,3,opt,name=expires_in,json=expiresIn,proto3" json:"expires_in,omitempty"`
+	ExpiresAt     int64                  `protobuf:"varint,3,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	Ege           int32                  `protobuf:"varint,4,opt,name=ege,proto3" json:"ege,omitempty"`
+	Gpa           int32                  `protobuf:"varint,5,opt,name=gpa,proto3" json:"gpa,omitempty"`
+	Speciality    string                 `protobuf:"bytes,6,opt,name=speciality,proto3" json:"speciality,omitempty"`
+	EduType       string                 `protobuf:"bytes,7,opt,name=eduType,proto3" json:"eduType,omitempty"`
+	Town          string                 `protobuf:"bytes,8,opt,name=town,proto3" json:"town,omitempty"`
+	Financing     string                 `protobuf:"bytes,9,opt,name=financing,proto3" json:"financing,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -224,11 +246,53 @@ func (x *LoginResponse) GetRefresh() string {
 	return ""
 }
 
-func (x *LoginResponse) GetExpiresIn() int64 {
+func (x *LoginResponse) GetExpiresAt() int64 {
 	if x != nil {
-		return x.ExpiresIn
+		return x.ExpiresAt
 	}
 	return 0
+}
+
+func (x *LoginResponse) GetEge() int32 {
+	if x != nil {
+		return x.Ege
+	}
+	return 0
+}
+
+func (x *LoginResponse) GetGpa() int32 {
+	if x != nil {
+		return x.Gpa
+	}
+	return 0
+}
+
+func (x *LoginResponse) GetSpeciality() string {
+	if x != nil {
+		return x.Speciality
+	}
+	return ""
+}
+
+func (x *LoginResponse) GetEduType() string {
+	if x != nil {
+		return x.EduType
+	}
+	return ""
+}
+
+func (x *LoginResponse) GetTown() string {
+	if x != nil {
+		return x.Town
+	}
+	return ""
+}
+
+func (x *LoginResponse) GetFinancing() string {
+	if x != nil {
+		return x.Financing
+	}
+	return ""
 }
 
 type LogoutRequest struct {
@@ -644,20 +708,31 @@ var File_user_proto protoreflect.FileDescriptor
 const file_user_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"user.proto\x12\x03api\x1a\x1cgoogle/api/annotations.proto\x1a\x18google/api/openapi.proto\"U\n" +
+	"user.proto\x12\x03api\x1a\x1cgoogle/api/annotations.proto\x1a\x18google/api/openapi.proto\"A\n" +
 	"\rSignUpRequest\x12\x14\n" +
 	"\x05login\x18\x01 \x01(\tR\x05login\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x12\n" +
-	"\x04name\x18\x03 \x01(\tR\x04name\"\x10\n" +
-	"\x0eSignUpResponse\"@\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\"a\n" +
+	"\x0eSignUpResponse\x12\x16\n" +
+	"\x06access\x18\x01 \x01(\tR\x06access\x12\x18\n" +
+	"\arefresh\x18\x02 \x01(\tR\arefresh\x12\x1d\n" +
+	"\n" +
+	"expires_at\x18\x03 \x01(\x03R\texpiresAt\"@\n" +
 	"\fLoginRequest\x12\x14\n" +
 	"\x05login\x18\x01 \x01(\tR\x05login\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\"`\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\"\xf0\x01\n" +
 	"\rLoginResponse\x12\x16\n" +
 	"\x06access\x18\x01 \x01(\tR\x06access\x12\x18\n" +
 	"\arefresh\x18\x02 \x01(\tR\arefresh\x12\x1d\n" +
 	"\n" +
-	"expires_in\x18\x03 \x01(\x03R\texpiresIn\")\n" +
+	"expires_at\x18\x03 \x01(\x03R\texpiresAt\x12\x10\n" +
+	"\x03ege\x18\x04 \x01(\x05R\x03ege\x12\x10\n" +
+	"\x03gpa\x18\x05 \x01(\x05R\x03gpa\x12\x1e\n" +
+	"\n" +
+	"speciality\x18\x06 \x01(\tR\n" +
+	"speciality\x12\x18\n" +
+	"\aeduType\x18\a \x01(\tR\aeduType\x12\x12\n" +
+	"\x04town\x18\b \x01(\tR\x04town\x12\x1c\n" +
+	"\tfinancing\x18\t \x01(\tR\tfinancing\")\n" +
 	"\rLogoutRequest\x12\x18\n" +
 	"\arefresh\x18\x01 \x01(\tR\arefresh\"\x10\n" +
 	"\x0eLogoutResponse\"*\n" +

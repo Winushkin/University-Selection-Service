@@ -291,9 +291,29 @@
         "refresh": {
           "type": "string"
         },
-        "expiresIn": {
+        "expiresAt": {
           "type": "string",
           "format": "int64"
+        },
+        "ege": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "gpa": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "speciality": {
+          "type": "string"
+        },
+        "eduType": {
+          "type": "string"
+        },
+        "town": {
+          "type": "string"
+        },
+        "financing": {
+          "type": "string"
         }
       }
     },
@@ -332,14 +352,23 @@
         },
         "password": {
           "type": "string"
-        },
-        "name": {
-          "type": "string"
         }
       }
     },
     "apiSignUpResponse": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "access": {
+          "type": "string"
+        },
+        "refresh": {
+          "type": "string"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
     },
     "protobufAny": {
       "type": "object",

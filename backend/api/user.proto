@@ -57,10 +57,13 @@ service UserService {
 message SignUpRequest {
   string login = 1;
   string password = 2;
-  string name = 3;
 }
 
-message SignUpResponse {}
+message SignUpResponse {
+  string access = 1;
+  string refresh = 2;
+  int64 expires_at = 3;
+}
 
 message LoginRequest {
   string login = 1;
@@ -70,7 +73,14 @@ message LoginRequest {
 message LoginResponse {
   string access = 1;
   string refresh = 2;
-  int64 expires_in = 3;
+  int64 expires_at = 3;
+
+  int32 ege = 4;
+  int32 gpa = 5;
+  string speciality = 6;
+  string eduType = 7;
+  string town = 8;
+  string financing = 9;
 }
 
 message LogoutRequest {
