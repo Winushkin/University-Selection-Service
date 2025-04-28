@@ -8,6 +8,7 @@ function RegistrationForm() {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [username, setUsername] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
@@ -41,6 +42,16 @@ function RegistrationForm() {
 
         <h2>Давай знакомиться!</h2>
         <form onSubmit={handleRegister}>
+
+            <div>
+                <label>Ваше имя:</label>
+                <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setLogin(e.target.value)}
+                    required
+                />
+            </div>
             <div>
                 <label>Логин:</label>
                 <input
@@ -50,28 +61,28 @@ function RegistrationForm() {
                     required
                 />
             </div>
-                <div>
-                    <label>Пароль:</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Повторите пароль:</label>
-                    <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                {error && <p style={{color: 'red'}}>{error}</p>}
-                <button type="submit">Зарегистрироваться</button>
-            </form>
-        </div>
+            <div>
+                <label>Пароль:</label>
+                <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+            </div>
+            <div>
+                <label>Повторите пароль:</label>
+                <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                />
+            </div>
+            {error && <p style={{color: 'red'}}>{error}</p>}
+            <button type="submit">Зарегистрироваться</button>
+        </form>
+    </div>
         </div>
     )
         ;
