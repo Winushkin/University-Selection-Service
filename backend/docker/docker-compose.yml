@@ -52,3 +52,7 @@ services:
     depends_on:
       postgresql_users:
         condition: service_healthy
+
+networks:
+  app_network:
+    driver: bridge
