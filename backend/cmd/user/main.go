@@ -27,6 +27,8 @@ func main() {
 		return
 	}
 
+	log.Info(ctx, cfg.Postgres.Port)
+
 	db, err := postgres.New(ctx, cfg.Postgres)
 	if err != nil {
 		log.Error(ctx, "failed to connect to users postgres", zap.Error(err))
