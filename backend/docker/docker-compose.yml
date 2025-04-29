@@ -2,14 +2,20 @@ services:
   postgresql_users:
     container_name: users_postgres_service
     image: postgres:latest
-    env_file:
-      - ../env/users_postgres.env
+    environment:
+      POSTGRES_HOST: localhost
+      POSTGRES_USER: users_pgs_user
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: users
+      POSTGRES_MAX_CONN: 10
+      POSTGRES_MIN_CONN: 1
+      PGDATA: /var/lib/postgresql/data/pgdata
     ports:
-      - "${INT_PORT}:${REST_PORT}"
+      - "5432:5432"
     volumes:
-      - ../backend/database_data/users_data:/var/lib/postgresql/data
+      - ../database_data/users_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready", "-U $${POSTGRES_USER} -d $${POSTGRES_DB} -p $${POSTGRES_PASSWORD}" ]
+      test: [ "CMD-SHELL", "pg_isready -U users_pgs_user -d users -p 5432"  ]
       interval: 10s
       timeout: 10s
       retries: 5
@@ -21,14 +27,20 @@ services:
   postgresql_integration:
     container_name: integration_postgres_service
     image: postgres:latest
-    env_file:
-      - ../env/integration_postgres.env
+    environment:
+      POSTGRES_HOST: localhost
+      POSTGRES_USER: int_pgs_user
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: integration
+      POSTGRES_MAX_CONN: 10
+      POSTGRES_MIN_CONN: 1
+      PGDATA: /var/lib/postgresql/data/pgdata
     ports:
-      - "${INT_PORT}:${REST_PORT}"
+      - "5433:5433"
     volumes:
       - ../backend/database_data/integration_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready", "-U $${POSTGRES_USER} -d $${POSTGRES_DB} -p $${POSTGRES_PASSWORD}"]
+      test: ["CMD-SHELL", "pg_isready -U int_pgs_user -d integration -p 5433"]
       interval: 10s
       timeout: 10s
       retries: 5
@@ -39,16 +51,24 @@ services:
   user_service:
     container_name: user_service
     build:
-      context: ..
-      dockerfile: ../cmd/user/Dockerfile
+      context: ../
+      dockerfile: ../backend/cmd/user/Dockerfile
+    environment:
+      INT_PORT: 8080
+      REST_PORT: 8080
+      JWT_SECRET: 2G7Rnnvt6KCN2gmX2GCU106YOiOJA2fgp3hg2jL5UDA=
+      POSTGRES_HOST: localhost
+      POSTGRES_USER: users_pgs_user
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: users
+      POSTGRES_MAX_CONN: 10
+      POSTGRES_MIN_CONN: 1
+      PGDATA: /var/lib/postgresql/data/pgdata
     ports:
-      - "${INT_PORT}:${REST_PORT}"
+      - "8080:8080"
     networks:
       - app_network
     restart: unless-stopped
-    env_file:
-      - ../env/users_postgres.env
-      - ../env/user.env
     depends_on:
       postgresql_users:
         condition: service_healthy
