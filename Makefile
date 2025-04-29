@@ -12,3 +12,7 @@ gen:
 		--grpc-gateway_out=$(OUT_DIR) --grpc-gateway_opt=paths=source_relative \
 		--openapiv2_out=$(OUT_DIR) --openapiv2_opt=logtostderr=true \
 		$(PROTO_FILES)
+
+build:
+	docker-compose --env-file ./backend/env/users_postgres.env -f ./backend/docker/docker-compose.yml up -d --build postgresql_users
+	docker-compose --env-file ./backend/env/user.env -f ./backend/docker/docker-compose.yml up -d --build user_service
