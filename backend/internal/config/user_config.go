@@ -10,9 +10,10 @@ import (
 )
 
 type UserConfig struct {
-	Postgres postgres.Config `env:"POSTGRES"`
-	INTPort  string          `env:"INT_PORT"`
-	RESTPort string          `env:"REST_PORT"`
+	Postgres  postgres.Config `env-prefix:"POSTGRES_"`
+	INTPort   string          `env:"INT_PORT"`
+	RESTPort  string          `env:"REST_PORT"`
+	JWTSecret string          `env:"JWT_SECRET"`
 }
 
 func New() (*UserConfig, error) {
