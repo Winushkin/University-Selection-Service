@@ -18,13 +18,13 @@ type UserRepository struct {
 }
 
 const (
-	GetByLoginSQLRequest                   = "SELECT * FROM schema_name.users WHERE login=$1"
+	GetByLoginSQLRequest                   = "SELECT Id, Login, Password, coalesce(Ege, 0), coalesce(Gpa, 0), coalesce(Speciality, ''), coalesce(EduType, ''), coalesce(Town, ''), coalesce(Financing, '')  FROM schema_name.users WHERE Login=$1"
 	SaveRefreshTokenSQLRequest             = "INSERT INTO schema_name.refresh_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)"
-	CreateUserSQLRequest                   = "INSERT INTO schema_name.users (login, password) VALUES ($1, $2) RETURNING Id"
+	CreateUserSQLRequest                   = "INSERT INTO schema_name.users (Login, Password) VALUES ($1, $2) RETURNING Id"
 	RevokeAllActiveTokensForUserSQLRequest = "DELETE FROM schema_name.refresh_tokens WHERE user_id = $1"
-	GetUserIDByRefreshTokenSQLRequest      = "DELETE FROM schema_name.refresh_tokens WHERE token = $1"
-	GetByIDSQLRequest                      = "SELECT * FROM schema_name.users WHERE Id = $1"
-	FillInfoSQLRequest                     = "UPDATE schema_name.users SET Ege = $1, Gpa = $2, Speciality = $4, EduType = $5, Town = $6, Financing = $7 WHERE Id = $8"
+	GetUserIDByRefreshTokenSQLRequest      = "SELECT user_id FROM schema_name.refresh_tokens WHERE token = $1"
+	GetByIDSQLRequest                      = "SELECT Id, Login, Password, coalesce(Ege, 0), coalesce(Gpa, 0), coalesce(Speciality, ''), coalesce(EduType, ''), coalesce(Town, ''), coalesce(Financing, '') FROM schema_name.users WHERE Id = $1"
+	FillInfoSQLRequest                     = "UPDATE schema_name.users SET Ege = $1, Gpa = $2, Speciality = $3, EduType = $4, Town = $5, Financing = $6 WHERE Id = $7"
 )
 
 func NewUserRepository(ctx context.Context, cfg postgres.Config) (*UserRepository, error) {
