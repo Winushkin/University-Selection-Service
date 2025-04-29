@@ -20,9 +20,11 @@ type UserRepository struct {
 const (
 	GetByLoginSQLRequest                   = "SELECT * FROM schema_name.users WHERE login=$1"
 	SaveRefreshTokenSQLRequest             = "INSERT INTO schema_name.refresh_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)"
-	CreateUserSQLRequest                   = "INSERT INTO schema_name.users (login, password) VALUES ($1, $2, $3) RETURNING Id"
+	CreateUserSQLRequest                   = "INSERT INTO schema_name.users (login, password) VALUES ($1, $2) RETURNING Id"
 	RevokeAllActiveTokensForUserSQLRequest = "DELETE FROM schema_name.refresh_tokens WHERE user_id = $1"
 	GetUserIDByRefreshTokenSQLRequest      = "DELETE FROM schema_name.refresh_tokens WHERE token = $1"
+	GetByIDSQLRequest                      = "SELECT * FROM schema_name.users WHERE Id = $1"
+	FillInfoSQLRequest                     = "UPDATE schema_name.users SET Ege = $1, Gpa = $2, Speciality = $4, EduType = $5, Town = $6, Financing = $7 WHERE Id = $8"
 )
 
 func NewUserRepository(ctx context.Context, cfg postgres.Config) (*UserRepository, error) {
@@ -42,6 +44,19 @@ func (ur *UserRepository) GetByLogin(ctx context.Context, login string) (*entiti
 		return nil, status.Error(codes.NotFound, "User not found")
 	} else if err != nil {
 		return nil, fmt.Errorf("GetUserByLogin: failed to query user by login: %w", err)
+	}
+	return user, nil
+}
+
+func (ur *UserRepository) GetByID(ctx context.Context, id int) (*entities.User, error) {
+	user := &entities.User{}
+	queryRow := ur.pg.QueryRow(ctx, GetByIDSQLRequest, id)
+	err := queryRow.Scan(&user.Id, &user.Login, &user.Password, &user.Ege, &user.Gpa,
+		&user.Speciality, &user.EduType, &user.Town, &user.Financing)
+	if err != nil && errors.Is(err, pgx.ErrNoRows) {
+		return nil, status.Error(codes.NotFound, "User not found")
+	} else if err != nil {
+		return nil, fmt.Errorf("GetUserByID: failed to query user by id: %w", err)
 	}
 	return user, nil
 }
@@ -81,4 +96,13 @@ func (ur *UserRepository) GetUserIDByRefreshToken(ctx context.Context, refreshTo
 		return 0, fmt.Errorf("GetUserIDByRefreshToken: failed to query user by refresh token: %w", err)
 	}
 	return id, nil
+}
+
+func (ur *UserRepository) FillInfo(ctx context.Context, user *entities.User) error {
+	_, err := ur.pg.Exec(ctx, FillInfoSQLRequest, user.Ege, user.Gpa, user.Speciality, user.EduType,
+		user.Town, user.Financing, user.Id)
+	if err != nil {
+		return fmt.Errorf("FillInfo: failed to fill info: %w", err)
+	}
+	return nil
 }

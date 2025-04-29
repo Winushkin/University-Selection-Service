@@ -158,8 +158,21 @@ func (s *Server) Refresh(ctx context.Context, request *api.RefreshRequest) (*api
 }
 
 func (s *Server) Fill(ctx context.Context, request *api.FillRequest) (*api.FillResponse, error) {
-
-	return nil, nil
+	id := ctx.Value("user_id").(int)
+	usr := &entities.User{
+		Id:         id,
+		Ege:        int(request.Ege),
+		Gpa:        request.Gpa,
+		Speciality: request.Speciality,
+		EduType:    request.EduType,
+		Town:       request.Town,
+		Financing:  request.Financing,
+	}
+	err := s.rep.FillInfo(ctx, usr)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "error filling user")
+	}
+	return &api.FillResponse{}, nil
 }
 
 func (s *Server) Edit(ctx context.Context, request *api.EditRequest) (*api.EditResponse, error) {
