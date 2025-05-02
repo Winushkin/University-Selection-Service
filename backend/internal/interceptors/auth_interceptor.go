@@ -20,7 +20,11 @@ func AuthInterceptor(cfg *config.UserConfig) grpc.UnaryServerInterceptor {
 		info *grpc.UnaryServerInfo,
 		handler grpc.UnaryHandler,
 	) (interface{}, error) {
-		publicMethods := map[string]bool{}
+		publicMethods := map[string]bool{
+			"/api.UserService/SignUp":  true,
+			"/api.UserService/Refresh": true,
+			"/api.UserService/Logout":  true,
+		}
 		if publicMethods[info.FullMethod] {
 			return handler(ctx, req)
 		}

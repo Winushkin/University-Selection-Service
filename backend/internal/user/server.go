@@ -67,6 +67,12 @@ func (s *Server) SignUp(ctx context.Context, request *api.SignUpRequest) (*api.S
 		return nil, status.Error(codes.Internal, "error creating user")
 	}
 
+	user, err = s.rep.GetByLogin(ctx, request.Login)
+
+	if err != nil {
+		return nil, status.Error(codes.Internal, "error getting user")
+	}
+
 	accessToken, err := s.generateAccessToken(user.Id)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "error generating access token")
@@ -118,7 +124,7 @@ func (s *Server) Login(ctx context.Context, request *api.LoginRequest) (*api.Log
 
 	err = s.rep.SaveRefreshToken(ctx, user.Id, refreshToken)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "error saving refresh token")
+		return nil, status.Error(codes.Internal, fmt.Sprintf("error saving refresh token: %v", err))
 	}
 
 	return &api.LoginResponse{
@@ -138,11 +144,6 @@ func (s *Server) Refresh(ctx context.Context, request *api.RefreshRequest) (*api
 	id, err := s.rep.GetUserIDByRefreshToken(ctx, request.Refresh)
 	if err != nil {
 		return nil, status.Error(codes.NotFound, "User not found")
-	}
-
-	err = s.rep.RevokeAllActiveTokensForUser(ctx, id)
-	if err != nil {
-		return nil, status.Error(codes.Internal, "error revoking active tokens for user")
 	}
 
 	accessToken, err := s.generateAccessToken(id)
@@ -170,9 +171,13 @@ func (s *Server) Fill(ctx context.Context, request *api.FillRequest) (*api.FillR
 	}
 	err := s.rep.FillInfo(ctx, usr)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "error filling user")
+		return nil, status.Error(codes.Internal, fmt.Sprintf("error filling user: %s", err))
 	}
 	return &api.FillResponse{}, nil
+}
+
+func (s *Server) Logout(ctx context.Context, request *api.LogoutRequest) (*api.LogoutResponse, error) {
+	return &api.LogoutResponse{}, nil
 }
 
 func (s *Server) Edit(ctx context.Context, request *api.EditRequest) (*api.EditResponse, error) {
