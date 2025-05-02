@@ -10,13 +10,14 @@ import (
 )
 
 type UserConfig struct {
-	Postgres  postgres.Config `env-prefix:"POSTGRES_"`
+	Postgres  postgres.Config `env:"POSTGRES"`
 	INTPort   string          `env:"INT_PORT"`
 	RESTPort  string          `env:"REST_PORT"`
 	JWTSecret string          `env:"JWT_SECRET"`
 }
 
 func New() (*UserConfig, error) {
+
 	err := godotenv.Load()
 	if !errors.Is(err, os.ErrNotExist) && err != nil {
 		return nil, fmt.Errorf("NewUserConfig: error: %w", err)

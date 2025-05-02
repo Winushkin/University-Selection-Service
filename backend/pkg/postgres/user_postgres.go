@@ -40,7 +40,7 @@ func New(ctx context.Context, c Config) (*pgxpool.Pool, error) {
 	}
 
 	migration, err := migrate.New(
-		"file://backend/db/user_db_migrations",
+		"file://db/migrations",
 		fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
 			c.Username,
 			c.Password,
