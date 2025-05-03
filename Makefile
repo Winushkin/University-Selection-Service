@@ -14,5 +14,8 @@ gen:
 		$(PROTO_FILES)
 
 build:
-	docker-compose --env-file ./backend/env/users_postgres.env -f ./backend/docker/docker-compose.yml up -d --build postgresql_users
-	docker-compose --env-file ./backend/env/user.env -f ./backend/docker/docker-compose.yml up -d --build user_service
+	docker compose --env-file ./backend/env/users_postgres.env -f ./backend/docker/docker-compose.yml up -d --build postgresql_users
+	docker compose --env-file ./backend/env/integration_postgres.env -f ./backend/docker/docker-compose.yml up -d --build postgresql_integration
+	docker compose --env-file ./backend/env/user.env -f ./backend/docker/docker-compose.yml up -d --build user_service
+	docker compose -f ./backend/docker/docker-compose.yml up -d --build gateway_service
+	docker compose -f ./backend/docker/docker-compose.yml up -d --build nginx_service
