@@ -28,13 +28,14 @@ services:
     volumes:
       - ../database_data/integration_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready", "-U $${POSTGRES_USER} -d $${POSTGRES_DB} -p $${POSTGRES_PASSWORD}"]
+      test: ["CMD-SHELL", "pg_isready", "-U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 10s
       timeout: 10s
       retries: 5
     restart: unless-stopped
     networks:
       - app_network
+    command: [ "postgres", "-c", "port=5433" ]
 
   user_service:
     container_name: user_service
@@ -49,13 +50,48 @@ services:
     env_file:
       - ../env/user.env
     healthcheck:
-      test: [ "CMD-SHELL", "grpc_health_probe", "-addr=localhost:8080" ]
+      test: [ "CMD", "nc -z localhost 8080 || exit 1" ]
       interval: 10s
-      timeout: 3s
-      retries: 3
+      timeout: 5s
+      retries: 5
     depends_on:
       postgresql_users:
         condition: service_healthy
+
+  nginx_service:
+    image: nginx:latest
+    container_name: nginx_service
+    restart: always
+    build:
+      context: ..
+      dockerfile: ../backend/cmd/nginx/Dockerfile
+    volumes:
+      - ../cmd/nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+    depends_on:
+      - postgresql_users
+      - postgresql_integration
+      - user_service
+    healthcheck:
+      test: [ "CMD", "nginx", "-t" ]
+      interval: 10s
+      retries: 5
+      start_period: 15s
+      timeout: 5s
+    networks:
+      - app_network
+
+  gateway_service:
+    container_name: gateway
+    build:
+      context: ..
+      dockerfile: ../backend/cmd/gateway/Dockerfile
+    ports:
+      - "5555:5555"
+    networks:
+      - app_network
+
 
 networks:
   app_network:
