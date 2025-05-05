@@ -177,5 +177,13 @@ func (s *Server) Fill(ctx context.Context, request *api.FillRequest) (*api.FillR
 }
 
 func (s *Server) Logout(ctx context.Context, request *api.LogoutRequest) (*api.LogoutResponse, error) {
+	id, err := s.rep.GetUserIDByRefreshToken(ctx, request.Refresh)
+	if err != nil {
+		return nil, status.Error(codes.NotFound, "User not found")
+	}
+	err = s.rep.RevokeAllActiveTokensForUser(ctx, id)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "error revoking active tokens for user")
+	}
 	return &api.LogoutResponse{}, nil
 }
