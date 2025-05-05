@@ -24,7 +24,6 @@ const (
 	UserService_Logout_FullMethodName  = "/api.UserService/Logout"
 	UserService_Refresh_FullMethodName = "/api.UserService/Refresh"
 	UserService_Fill_FullMethodName    = "/api.UserService/Fill"
-	UserService_Edit_FullMethodName    = "/api.UserService/Edit"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -36,7 +35,6 @@ type UserServiceClient interface {
 	Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutResponse, error)
 	Refresh(ctx context.Context, in *RefreshRequest, opts ...grpc.CallOption) (*RefreshResponse, error)
 	Fill(ctx context.Context, in *FillRequest, opts ...grpc.CallOption) (*FillResponse, error)
-	Edit(ctx context.Context, in *EditRequest, opts ...grpc.CallOption) (*EditResponse, error)
 }
 
 type userServiceClient struct {
@@ -97,16 +95,6 @@ func (c *userServiceClient) Fill(ctx context.Context, in *FillRequest, opts ...g
 	return out, nil
 }
 
-func (c *userServiceClient) Edit(ctx context.Context, in *EditRequest, opts ...grpc.CallOption) (*EditResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(EditResponse)
-	err := c.cc.Invoke(ctx, UserService_Edit_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility.
@@ -116,7 +104,6 @@ type UserServiceServer interface {
 	Logout(context.Context, *LogoutRequest) (*LogoutResponse, error)
 	Refresh(context.Context, *RefreshRequest) (*RefreshResponse, error)
 	Fill(context.Context, *FillRequest) (*FillResponse, error)
-	Edit(context.Context, *EditRequest) (*EditResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -141,9 +128,6 @@ func (UnimplementedUserServiceServer) Refresh(context.Context, *RefreshRequest) 
 }
 func (UnimplementedUserServiceServer) Fill(context.Context, *FillRequest) (*FillResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Fill not implemented")
-}
-func (UnimplementedUserServiceServer) Edit(context.Context, *EditRequest) (*EditResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Edit not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 func (UnimplementedUserServiceServer) testEmbeddedByValue()                     {}
@@ -256,24 +240,6 @@ func _UserService_Fill_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserService_Edit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EditRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserServiceServer).Edit(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: UserService_Edit_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).Edit(ctx, req.(*EditRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -300,10 +266,6 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Fill",
 			Handler:    _UserService_Fill_Handler,
-		},
-		{
-			MethodName: "Edit",
-			Handler:    _UserService_Edit_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
