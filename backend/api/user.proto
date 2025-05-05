@@ -70,11 +70,10 @@ message LoginResponse {
   int64 expires_at = 3;
 
   int32 ege = 4;
-  float gpa = 5;
-  string speciality = 6;
-  string eduType = 7;
-  string town = 8;
-  string financing = 9;
+  string speciality = 5;
+  string eduType = 6;
+  string town = 7;
+  string financing = 8;
 }
 
 message LogoutRequest {
@@ -94,11 +93,10 @@ message RefreshResponse {
 
 message FillRequest {
   int32 ege = 1;
-  float gpa = 2;
-  string speciality = 3;
-  string eduType = 4;
-  string town = 5;
-  string financing = 6;
+  string speciality = 2;
+  string eduType = 3;
+  string town = 4;
+  string financing = 5;
 }
 
 message FillResponse {}

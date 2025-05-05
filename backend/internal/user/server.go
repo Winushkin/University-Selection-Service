@@ -132,7 +132,6 @@ func (s *Server) Login(ctx context.Context, request *api.LoginRequest) (*api.Log
 		Refresh:    refreshToken,
 		ExpiresAt:  expAt,
 		Ege:        int32(user.Ege),
-		Gpa:        user.Gpa,
 		Speciality: user.Speciality,
 		EduType:    user.EduType,
 		Town:       user.Town,
@@ -163,7 +162,6 @@ func (s *Server) Fill(ctx context.Context, request *api.FillRequest) (*api.FillR
 	usr := &entities.User{
 		Id:         id,
 		Ege:        int(request.Ege),
-		Gpa:        request.Gpa,
 		Speciality: request.Speciality,
 		EduType:    request.EduType,
 		Town:       request.Town,

@@ -193,11 +193,10 @@ type LoginResponse struct {
 	Refresh       string                 `protobuf:"bytes,2,opt,name=refresh,proto3" json:"refresh,omitempty"`
 	ExpiresAt     int64                  `protobuf:"varint,3,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
 	Ege           int32                  `protobuf:"varint,4,opt,name=ege,proto3" json:"ege,omitempty"`
-	Gpa           float32                `protobuf:"fixed32,5,opt,name=gpa,proto3" json:"gpa,omitempty"`
-	Speciality    string                 `protobuf:"bytes,6,opt,name=speciality,proto3" json:"speciality,omitempty"`
-	EduType       string                 `protobuf:"bytes,7,opt,name=eduType,proto3" json:"eduType,omitempty"`
-	Town          string                 `protobuf:"bytes,8,opt,name=town,proto3" json:"town,omitempty"`
-	Financing     string                 `protobuf:"bytes,9,opt,name=financing,proto3" json:"financing,omitempty"`
+	Speciality    string                 `protobuf:"bytes,5,opt,name=speciality,proto3" json:"speciality,omitempty"`
+	EduType       string                 `protobuf:"bytes,6,opt,name=eduType,proto3" json:"eduType,omitempty"`
+	Town          string                 `protobuf:"bytes,7,opt,name=town,proto3" json:"town,omitempty"`
+	Financing     string                 `protobuf:"bytes,8,opt,name=financing,proto3" json:"financing,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -256,13 +255,6 @@ func (x *LoginResponse) GetExpiresAt() int64 {
 func (x *LoginResponse) GetEge() int32 {
 	if x != nil {
 		return x.Ege
-	}
-	return 0
-}
-
-func (x *LoginResponse) GetGpa() float32 {
-	if x != nil {
-		return x.Gpa
 	}
 	return 0
 }
@@ -474,11 +466,10 @@ func (x *RefreshResponse) GetExpiresAt() int64 {
 type FillRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Ege           int32                  `protobuf:"varint,1,opt,name=ege,proto3" json:"ege,omitempty"`
-	Gpa           float32                `protobuf:"fixed32,2,opt,name=gpa,proto3" json:"gpa,omitempty"`
-	Speciality    string                 `protobuf:"bytes,3,opt,name=speciality,proto3" json:"speciality,omitempty"`
-	EduType       string                 `protobuf:"bytes,4,opt,name=eduType,proto3" json:"eduType,omitempty"`
-	Town          string                 `protobuf:"bytes,5,opt,name=town,proto3" json:"town,omitempty"`
-	Financing     string                 `protobuf:"bytes,6,opt,name=financing,proto3" json:"financing,omitempty"`
+	Speciality    string                 `protobuf:"bytes,2,opt,name=speciality,proto3" json:"speciality,omitempty"`
+	EduType       string                 `protobuf:"bytes,3,opt,name=eduType,proto3" json:"eduType,omitempty"`
+	Town          string                 `protobuf:"bytes,4,opt,name=town,proto3" json:"town,omitempty"`
+	Financing     string                 `protobuf:"bytes,5,opt,name=financing,proto3" json:"financing,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -516,13 +507,6 @@ func (*FillRequest) Descriptor() ([]byte, []int) {
 func (x *FillRequest) GetEge() int32 {
 	if x != nil {
 		return x.Ege
-	}
-	return 0
-}
-
-func (x *FillRequest) GetGpa() float32 {
-	if x != nil {
-		return x.Gpa
 	}
 	return 0
 }
@@ -607,20 +591,19 @@ const file_user_proto_rawDesc = "" +
 	"expires_at\x18\x03 \x01(\x03R\texpiresAt\"@\n" +
 	"\fLoginRequest\x12\x14\n" +
 	"\x05login\x18\x01 \x01(\tR\x05login\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\"\xf0\x01\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\"\xde\x01\n" +
 	"\rLoginResponse\x12\x16\n" +
 	"\x06access\x18\x01 \x01(\tR\x06access\x12\x18\n" +
 	"\arefresh\x18\x02 \x01(\tR\arefresh\x12\x1d\n" +
 	"\n" +
 	"expires_at\x18\x03 \x01(\x03R\texpiresAt\x12\x10\n" +
-	"\x03ege\x18\x04 \x01(\x05R\x03ege\x12\x10\n" +
-	"\x03gpa\x18\x05 \x01(\x02R\x03gpa\x12\x1e\n" +
+	"\x03ege\x18\x04 \x01(\x05R\x03ege\x12\x1e\n" +
 	"\n" +
-	"speciality\x18\x06 \x01(\tR\n" +
+	"speciality\x18\x05 \x01(\tR\n" +
 	"speciality\x12\x18\n" +
-	"\aeduType\x18\a \x01(\tR\aeduType\x12\x12\n" +
-	"\x04town\x18\b \x01(\tR\x04town\x12\x1c\n" +
-	"\tfinancing\x18\t \x01(\tR\tfinancing\")\n" +
+	"\aeduType\x18\x06 \x01(\tR\aeduType\x12\x12\n" +
+	"\x04town\x18\a \x01(\tR\x04town\x12\x1c\n" +
+	"\tfinancing\x18\b \x01(\tR\tfinancing\")\n" +
 	"\rLogoutRequest\x12\x18\n" +
 	"\arefresh\x18\x01 \x01(\tR\arefresh\"\x10\n" +
 	"\x0eLogoutResponse\"*\n" +
@@ -629,16 +612,15 @@ const file_user_proto_rawDesc = "" +
 	"\x0fRefreshResponse\x12\x16\n" +
 	"\x06access\x18\x01 \x01(\tR\x06access\x12\x1d\n" +
 	"\n" +
-	"expires_at\x18\x02 \x01(\x03R\texpiresAt\"\x9d\x01\n" +
+	"expires_at\x18\x02 \x01(\x03R\texpiresAt\"\x8b\x01\n" +
 	"\vFillRequest\x12\x10\n" +
-	"\x03ege\x18\x01 \x01(\x05R\x03ege\x12\x10\n" +
-	"\x03gpa\x18\x02 \x01(\x02R\x03gpa\x12\x1e\n" +
+	"\x03ege\x18\x01 \x01(\x05R\x03ege\x12\x1e\n" +
 	"\n" +
-	"speciality\x18\x03 \x01(\tR\n" +
+	"speciality\x18\x02 \x01(\tR\n" +
 	"speciality\x12\x18\n" +
-	"\aeduType\x18\x04 \x01(\tR\aeduType\x12\x12\n" +
-	"\x04town\x18\x05 \x01(\tR\x04town\x12\x1c\n" +
-	"\tfinancing\x18\x06 \x01(\tR\tfinancing\"\x0e\n" +
+	"\aeduType\x18\x03 \x01(\tR\aeduType\x12\x12\n" +
+	"\x04town\x18\x04 \x01(\tR\x04town\x12\x1c\n" +
+	"\tfinancing\x18\x05 \x01(\tR\tfinancing\"\x0e\n" +
 	"\fFillResponse2\x95\x03\n" +
 	"\vUserService\x12N\n" +
 	"\x06SignUp\x12\x12.api.SignUpRequest\x1a\x13.api.SignUpResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/user/signup\x12J\n" +
