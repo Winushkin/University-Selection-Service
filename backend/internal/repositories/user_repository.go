@@ -82,7 +82,7 @@ func (ur *UserRepository) CreateUser(ctx context.Context, user *entities.User) (
 
 func (ur *UserRepository) RevokeAllActiveTokensForUser(ctx context.Context, userId int) error {
 	_, err := ur.pg.Exec(ctx, RevokeAllActiveTokensForUserSQLRequest, userId)
-	if err != nil {
+	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
 		return fmt.Errorf("RevokeAllActiveTokensForUser: failed to revoke active tokens for user: %w", err)
 	}
 	return nil
