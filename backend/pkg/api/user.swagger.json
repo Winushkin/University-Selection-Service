@@ -9,10 +9,11 @@
       "name": "UserService"
     }
   ],
-  "host": "localhost:8080",
+  "host": "localhost:80",
   "basePath": "/api",
   "schemes": [
-    "http"
+    "http",
+    "https"
   ],
   "consumes": [
     "application/json"
@@ -21,38 +22,6 @@
     "application/json"
   ],
   "paths": {
-    "/api/user/edit": {
-      "post": {
-        "operationId": "UserService_Edit",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/apiEditResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/apiEditRequest"
-            }
-          }
-        ],
-        "tags": [
-          "UserService"
-        ]
-      }
-    },
     "/api/user/fill": {
       "post": {
         "operationId": "UserService_Fill",
@@ -215,34 +184,6 @@
     }
   },
   "definitions": {
-    "apiEditRequest": {
-      "type": "object",
-      "properties": {
-        "ege": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "gpa": {
-          "type": "number",
-          "format": "float"
-        },
-        "speciality": {
-          "type": "string"
-        },
-        "eduType": {
-          "type": "string"
-        },
-        "town": {
-          "type": "string"
-        },
-        "financing": {
-          "type": "string"
-        }
-      }
-    },
-    "apiEditResponse": {
-      "type": "object"
-    },
     "apiFillRequest": {
       "type": "object",
       "properties": {
