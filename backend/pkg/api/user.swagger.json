@@ -10,7 +10,6 @@
     }
   ],
   "host": "localhost:80",
-  "basePath": "/api",
   "schemes": [
     "http",
     "https"

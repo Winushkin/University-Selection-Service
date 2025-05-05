@@ -11,6 +11,10 @@ gen:
 		--go-grpc_out=$(OUT_DIR) --go-grpc_opt=paths=source_relative \
 		--grpc-gateway_out=$(OUT_DIR) --grpc-gateway_opt=paths=source_relative \
 		--openapiv2_out=$(OUT_DIR) --openapiv2_opt=logtostderr=true \
+		--openapiv2_opt logtostderr=true 										\
+            --openapiv2_opt generate_unbound_methods=true 					\
+            --openapiv2_opt allow_merge=true 										\
+            --openapiv2_opt merge_file_name=allservices 						\
 		$(PROTO_FILES)
 
 build:

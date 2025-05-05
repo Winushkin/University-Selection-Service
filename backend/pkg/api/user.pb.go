@@ -645,7 +645,7 @@ const file_user_proto_rawDesc = "" +
 	"\x05Login\x12\x11.api.LoginRequest\x1a\x12.api.LoginResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/api/user/login\x12N\n" +
 	"\x06Logout\x12\x12.api.LogoutRequest\x1a\x13.api.LogoutResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/user/logout\x12R\n" +
 	"\aRefresh\x12\x13.api.RefreshRequest\x1a\x14.api.RefreshResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/api/user/refresh\x12F\n" +
-	"\x04Fill\x12\x10.api.FillRequest\x1a\x11.api.FillResponse\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/api/user/fillB,\x92A\x18\x1a\flocalhost:80\"\x04/api*\x02\x01\x02Z\x0fbackend/pkg/apib\x06proto3"
+	"\x04Fill\x12\x10.api.FillRequest\x1a\x11.api.FillResponse\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/api/user/fillB&\x92A\x12\x1a\flocalhost:80*\x02\x01\x02Z\x0fbackend/pkg/apib\x06proto3"
 
 var (
 	file_user_proto_rawDescOnce sync.Once
