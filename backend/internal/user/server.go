@@ -179,7 +179,3 @@ func (s *Server) Fill(ctx context.Context, request *api.FillRequest) (*api.FillR
 func (s *Server) Logout(ctx context.Context, request *api.LogoutRequest) (*api.LogoutResponse, error) {
 	return &api.LogoutResponse{}, nil
 }
-
-func (s *Server) Edit(ctx context.Context, request *api.EditRequest) (*api.EditResponse, error) {
-	return nil, nil
-}
