@@ -9,9 +9,10 @@ import "google/api/annotations.proto";
 import "google/api/openapi.proto";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
-  host: "localhost:8080",
+  host: "localhost:80",
   base_path: "/api",
   schemes: HTTP,
+  schemes: HTTPS,
 };
 
 
@@ -43,12 +44,6 @@ service UserService {
   rpc Fill(FillRequest) returns (FillResponse) {
     option(google.api.http) = {
       post: "/api/user/fill"
-      body: "*"
-    };
-  }
-  rpc Edit(EditRequest) returns (EditResponse) {
-    option(google.api.http) = {
-      post: "/api/user/edit"
       body: "*"
     };
   }
@@ -108,14 +103,3 @@ message FillRequest {
 }
 
 message FillResponse {}
-
-message EditRequest {
-  int32 ege = 1;
-  float gpa = 2;
-  string speciality = 3;
-  string eduType = 4;
-  string town = 5;
-  string financing = 6;
-}
-
-message EditResponse {}
