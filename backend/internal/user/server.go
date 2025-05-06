@@ -13,6 +13,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"time"
 )
 
@@ -182,7 +183,7 @@ func (s *Server) Logout(ctx context.Context, request *api.LogoutRequest) (*api.L
 	return &api.LogoutResponse{}, nil
 }
 
-func (s *Server) Profile(ctx context.Context) (*api.ProfileResponse, error) {
+func (s *Server) Profile(ctx context.Context, _ *emptypb.Empty) (*api.ProfileResponse, error) {
 	id := ctx.Value("user_id").(int)
 	usr, err := s.rep.GetByID(ctx, id)
 	if err != nil {
