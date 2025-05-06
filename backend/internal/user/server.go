@@ -5,6 +5,7 @@ import (
 	"University-Selection-Service/internal/entities"
 	"University-Selection-Service/internal/repositories"
 	"University-Selection-Service/pkg/api"
+	"University-Selection-Service/pkg/security"
 	"context"
 	"crypto/rand"
 	"encoding/base64"
@@ -102,7 +103,7 @@ func (s *Server) Login(ctx context.Context, request *api.LoginRequest) (*api.Log
 		return nil, status.Error(codes.NotFound, "User not found")
 	}
 
-	if user.Login != request.Login || user.Password != request.Password {
+	if user.Login != request.Login || security.CheckPasswordHash(request.Password, user.Password) {
 		return nil, status.Error(codes.FailedPrecondition, "User login and password do not match")
 	}
 

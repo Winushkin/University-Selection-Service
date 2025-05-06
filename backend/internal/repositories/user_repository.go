@@ -3,6 +3,7 @@ package repositories
 import (
 	"University-Selection-Service/internal/entities"
 	"University-Selection-Service/pkg/postgres"
+	"University-Selection-Service/pkg/security"
 	"context"
 	"errors"
 	"fmt"
@@ -72,7 +73,7 @@ func (ur *UserRepository) SaveRefreshToken(ctx context.Context, id int, token st
 
 func (ur *UserRepository) CreateUser(ctx context.Context, user *entities.User) (int, error) {
 	var id int
-	queryRow := ur.pg.QueryRow(ctx, CreateUserSQLRequest, user.Login, user.Password)
+	queryRow := ur.pg.QueryRow(ctx, CreateUserSQLRequest, user.Login, security.HashPassword(user.Password))
 	err := queryRow.Scan(&id)
 	if err != nil {
 		return 0, fmt.Errorf("CreateUser: failed to query user: %w", err)
