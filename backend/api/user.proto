@@ -46,6 +46,12 @@ service UserService {
       body: "*"
     };
   }
+  rpc Profile(ProfileRequest) returns(ProfileResponse) {
+    option(google.api.http) = {
+      post: "/api/user/profile"
+      body: "*"
+    };
+  }
 }
 
 message SignUpRequest {
@@ -68,12 +74,6 @@ message LoginResponse {
   string access = 1;
   string refresh = 2;
   int64 expires_at = 3;
-
-  int32 ege = 4;
-  string speciality = 5;
-  string eduType = 6;
-  string town = 7;
-  string financing = 8;
 }
 
 message LogoutRequest {
@@ -100,3 +100,13 @@ message FillRequest {
 }
 
 message FillResponse {}
+
+message ProfileRequest {}
+
+message ProfileResponse {
+  int32 ege = 1;
+  string speciality = 2;
+  string eduType = 3;
+  string town = 4;
+  string financing = 5;
+}

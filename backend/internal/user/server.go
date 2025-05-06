@@ -129,14 +129,9 @@ func (s *Server) Login(ctx context.Context, request *api.LoginRequest) (*api.Log
 	}
 
 	return &api.LoginResponse{
-		Access:     accessToken,
-		Refresh:    refreshToken,
-		ExpiresAt:  expAt,
-		Ege:        int32(user.Ege),
-		Speciality: user.Speciality,
-		EduType:    user.EduType,
-		Town:       user.Town,
-		Financing:  user.Financing,
+		Access:    accessToken,
+		Refresh:   refreshToken,
+		ExpiresAt: expAt,
 	}, nil
 }
 
@@ -185,4 +180,19 @@ func (s *Server) Logout(ctx context.Context, request *api.LogoutRequest) (*api.L
 		return nil, status.Error(codes.Internal, "error revoking active tokens for user")
 	}
 	return &api.LogoutResponse{}, nil
+}
+
+func (s *Server) Profile(ctx context.Context, _ *api.ProfileRequest) (*api.ProfileResponse, error) {
+	id := ctx.Value("user_id").(int)
+	usr, err := s.rep.GetByID(ctx, id)
+	if err != nil {
+		return nil, status.Error(codes.NotFound, "User not found")
+	}
+	return &api.ProfileResponse{
+		Ege:        int32(usr.Ege),
+		Speciality: usr.Speciality,
+		EduType:    usr.EduType,
+		Town:       usr.Town,
+		Financing:  usr.Financing,
+	}, nil
 }
