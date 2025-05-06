@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option go_package = "backend/pkg/api";
+
+package api;
+
+
+import "google/api/annotations.proto";
+import "google/api/openapi.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  host: "localhost:80",
+  schemes: HTTP,
+  schemes: HTTPS,
+};
+
+service AnalyticService {
+  rpc Factors(FactorsRequest) returns (FactorsResponse) {
+    option(google.api.http) = {
+
+    };
+  }
+}
+
+message FactorsRequest {
+
+}
+
+message FactorsResponse {
+
+}

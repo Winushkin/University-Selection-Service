@@ -1,10 +1,13 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "user.proto",
+    "title": "analytic.proto",
     "version": "version not set"
   },
   "tags": [
+    {
+      "name": "AnalyticService"
+    },
     {
       "name": "UserService"
     }
@@ -118,7 +121,7 @@
       }
     },
     "/api/user/profile": {
-      "post": {
+      "get": {
         "operationId": "UserService_Profile",
         "responses": {
           "200": {
@@ -134,16 +137,6 @@
             }
           }
         },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/apiProfileRequest"
-            }
-          }
-        ],
         "tags": [
           "UserService"
         ]
@@ -215,6 +208,9 @@
     }
   },
   "definitions": {
+    "apiFactorsResponse": {
+      "type": "object"
+    },
     "apiFillRequest": {
       "type": "object",
       "properties": {
@@ -274,9 +270,6 @@
       }
     },
     "apiLogoutResponse": {
-      "type": "object"
-    },
-    "apiProfileRequest": {
       "type": "object"
     },
     "apiProfileResponse": {
