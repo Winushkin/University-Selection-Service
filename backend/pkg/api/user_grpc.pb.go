@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -36,7 +37,7 @@ type UserServiceClient interface {
 	Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutResponse, error)
 	Refresh(ctx context.Context, in *RefreshRequest, opts ...grpc.CallOption) (*RefreshResponse, error)
 	Fill(ctx context.Context, in *FillRequest, opts ...grpc.CallOption) (*FillResponse, error)
-	Profile(ctx context.Context, in *ProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
+	Profile(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ProfileResponse, error)
 }
 
 type userServiceClient struct {
@@ -97,7 +98,7 @@ func (c *userServiceClient) Fill(ctx context.Context, in *FillRequest, opts ...g
 	return out, nil
 }
 
-func (c *userServiceClient) Profile(ctx context.Context, in *ProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error) {
+func (c *userServiceClient) Profile(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ProfileResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ProfileResponse)
 	err := c.cc.Invoke(ctx, UserService_Profile_FullMethodName, in, out, cOpts...)
@@ -116,7 +117,7 @@ type UserServiceServer interface {
 	Logout(context.Context, *LogoutRequest) (*LogoutResponse, error)
 	Refresh(context.Context, *RefreshRequest) (*RefreshResponse, error)
 	Fill(context.Context, *FillRequest) (*FillResponse, error)
-	Profile(context.Context, *ProfileRequest) (*ProfileResponse, error)
+	Profile(context.Context, *emptypb.Empty) (*ProfileResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -142,7 +143,7 @@ func (UnimplementedUserServiceServer) Refresh(context.Context, *RefreshRequest) 
 func (UnimplementedUserServiceServer) Fill(context.Context, *FillRequest) (*FillResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Fill not implemented")
 }
-func (UnimplementedUserServiceServer) Profile(context.Context, *ProfileRequest) (*ProfileResponse, error) {
+func (UnimplementedUserServiceServer) Profile(context.Context, *emptypb.Empty) (*ProfileResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Profile not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
@@ -257,7 +258,7 @@ func _UserService_Fill_Handler(srv interface{}, ctx context.Context, dec func(in
 }
 
 func _UserService_Profile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ProfileRequest)
+	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -269,7 +270,7 @@ func _UserService_Profile_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: UserService_Profile_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).Profile(ctx, req.(*ProfileRequest))
+		return srv.(UserServiceServer).Profile(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }

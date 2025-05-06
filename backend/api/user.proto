@@ -7,6 +7,7 @@ package api;
 
 import "google/api/annotations.proto";
 import "google/api/openapi.proto";
+import "google/api/empty.proto";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   host: "localhost:80",
@@ -46,10 +47,9 @@ service UserService {
       body: "*"
     };
   }
-  rpc Profile(ProfileRequest) returns(ProfileResponse) {
+  rpc Profile(google.protobuf.Empty) returns(ProfileResponse) {
     option(google.api.http) = {
-      post: "/api/user/profile"
-      body: "*"
+      get: "/api/user/profile"
     };
   }
 }
@@ -100,8 +100,6 @@ message FillRequest {
 }
 
 message FillResponse {}
-
-message ProfileRequest {}
 
 message ProfileResponse {
   int32 ege = 1;

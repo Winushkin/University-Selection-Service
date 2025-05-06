@@ -182,7 +182,7 @@ func (s *Server) Logout(ctx context.Context, request *api.LogoutRequest) (*api.L
 	return &api.LogoutResponse{}, nil
 }
 
-func (s *Server) Profile(ctx context.Context, _ *api.ProfileRequest) (*api.ProfileResponse, error) {
+func (s *Server) Profile(ctx context.Context) (*api.ProfileResponse, error) {
 	id := ctx.Value("user_id").(int)
 	usr, err := s.rep.GetByID(ctx, id)
 	if err != nil {
