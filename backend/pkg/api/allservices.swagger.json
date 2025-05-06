@@ -117,6 +117,38 @@
         ]
       }
     },
+    "/api/user/profile": {
+      "post": {
+        "operationId": "UserService_Profile",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiProfileResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiProfileRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
     "/api/user/refresh": {
       "post": {
         "operationId": "UserService_Refresh",
@@ -230,7 +262,26 @@
         "expiresAt": {
           "type": "string",
           "format": "int64"
-        },
+        }
+      }
+    },
+    "apiLogoutRequest": {
+      "type": "object",
+      "properties": {
+        "refresh": {
+          "type": "string"
+        }
+      }
+    },
+    "apiLogoutResponse": {
+      "type": "object"
+    },
+    "apiProfileRequest": {
+      "type": "object"
+    },
+    "apiProfileResponse": {
+      "type": "object",
+      "properties": {
         "ege": {
           "type": "integer",
           "format": "int32"
@@ -248,17 +299,6 @@
           "type": "string"
         }
       }
-    },
-    "apiLogoutRequest": {
-      "type": "object",
-      "properties": {
-        "refresh": {
-          "type": "string"
-        }
-      }
-    },
-    "apiLogoutResponse": {
-      "type": "object"
     },
     "apiRefreshRequest": {
       "type": "object",

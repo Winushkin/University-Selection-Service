@@ -192,11 +192,6 @@ type LoginResponse struct {
 	Access        string                 `protobuf:"bytes,1,opt,name=access,proto3" json:"access,omitempty"`
 	Refresh       string                 `protobuf:"bytes,2,opt,name=refresh,proto3" json:"refresh,omitempty"`
 	ExpiresAt     int64                  `protobuf:"varint,3,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
-	Ege           int32                  `protobuf:"varint,4,opt,name=ege,proto3" json:"ege,omitempty"`
-	Speciality    string                 `protobuf:"bytes,5,opt,name=speciality,proto3" json:"speciality,omitempty"`
-	EduType       string                 `protobuf:"bytes,6,opt,name=eduType,proto3" json:"eduType,omitempty"`
-	Town          string                 `protobuf:"bytes,7,opt,name=town,proto3" json:"town,omitempty"`
-	Financing     string                 `protobuf:"bytes,8,opt,name=financing,proto3" json:"financing,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -250,41 +245,6 @@ func (x *LoginResponse) GetExpiresAt() int64 {
 		return x.ExpiresAt
 	}
 	return 0
-}
-
-func (x *LoginResponse) GetEge() int32 {
-	if x != nil {
-		return x.Ege
-	}
-	return 0
-}
-
-func (x *LoginResponse) GetSpeciality() string {
-	if x != nil {
-		return x.Speciality
-	}
-	return ""
-}
-
-func (x *LoginResponse) GetEduType() string {
-	if x != nil {
-		return x.EduType
-	}
-	return ""
-}
-
-func (x *LoginResponse) GetTown() string {
-	if x != nil {
-		return x.Town
-	}
-	return ""
-}
-
-func (x *LoginResponse) GetFinancing() string {
-	if x != nil {
-		return x.Financing
-	}
-	return ""
 }
 
 type LogoutRequest struct {
@@ -575,6 +535,118 @@ func (*FillResponse) Descriptor() ([]byte, []int) {
 	return file_user_proto_rawDescGZIP(), []int{9}
 }
 
+type ProfileRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ProfileRequest) Reset() {
+	*x = ProfileRequest{}
+	mi := &file_user_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProfileRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProfileRequest) ProtoMessage() {}
+
+func (x *ProfileRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProfileRequest.ProtoReflect.Descriptor instead.
+func (*ProfileRequest) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{10}
+}
+
+type ProfileResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Ege           int32                  `protobuf:"varint,1,opt,name=ege,proto3" json:"ege,omitempty"`
+	Speciality    string                 `protobuf:"bytes,2,opt,name=speciality,proto3" json:"speciality,omitempty"`
+	EduType       string                 `protobuf:"bytes,3,opt,name=eduType,proto3" json:"eduType,omitempty"`
+	Town          string                 `protobuf:"bytes,4,opt,name=town,proto3" json:"town,omitempty"`
+	Financing     string                 `protobuf:"bytes,5,opt,name=financing,proto3" json:"financing,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ProfileResponse) Reset() {
+	*x = ProfileResponse{}
+	mi := &file_user_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProfileResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProfileResponse) ProtoMessage() {}
+
+func (x *ProfileResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProfileResponse.ProtoReflect.Descriptor instead.
+func (*ProfileResponse) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *ProfileResponse) GetEge() int32 {
+	if x != nil {
+		return x.Ege
+	}
+	return 0
+}
+
+func (x *ProfileResponse) GetSpeciality() string {
+	if x != nil {
+		return x.Speciality
+	}
+	return ""
+}
+
+func (x *ProfileResponse) GetEduType() string {
+	if x != nil {
+		return x.EduType
+	}
+	return ""
+}
+
+func (x *ProfileResponse) GetTown() string {
+	if x != nil {
+		return x.Town
+	}
+	return ""
+}
+
+func (x *ProfileResponse) GetFinancing() string {
+	if x != nil {
+		return x.Financing
+	}
+	return ""
+}
+
 var File_user_proto protoreflect.FileDescriptor
 
 const file_user_proto_rawDesc = "" +
@@ -591,19 +663,12 @@ const file_user_proto_rawDesc = "" +
 	"expires_at\x18\x03 \x01(\x03R\texpiresAt\"@\n" +
 	"\fLoginRequest\x12\x14\n" +
 	"\x05login\x18\x01 \x01(\tR\x05login\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\"\xde\x01\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\"`\n" +
 	"\rLoginResponse\x12\x16\n" +
 	"\x06access\x18\x01 \x01(\tR\x06access\x12\x18\n" +
 	"\arefresh\x18\x02 \x01(\tR\arefresh\x12\x1d\n" +
 	"\n" +
-	"expires_at\x18\x03 \x01(\x03R\texpiresAt\x12\x10\n" +
-	"\x03ege\x18\x04 \x01(\x05R\x03ege\x12\x1e\n" +
-	"\n" +
-	"speciality\x18\x05 \x01(\tR\n" +
-	"speciality\x12\x18\n" +
-	"\aeduType\x18\x06 \x01(\tR\aeduType\x12\x12\n" +
-	"\x04town\x18\a \x01(\tR\x04town\x12\x1c\n" +
-	"\tfinancing\x18\b \x01(\tR\tfinancing\")\n" +
+	"expires_at\x18\x03 \x01(\x03R\texpiresAt\")\n" +
 	"\rLogoutRequest\x12\x18\n" +
 	"\arefresh\x18\x01 \x01(\tR\arefresh\"\x10\n" +
 	"\x0eLogoutResponse\"*\n" +
@@ -621,13 +686,23 @@ const file_user_proto_rawDesc = "" +
 	"\aeduType\x18\x03 \x01(\tR\aeduType\x12\x12\n" +
 	"\x04town\x18\x04 \x01(\tR\x04town\x12\x1c\n" +
 	"\tfinancing\x18\x05 \x01(\tR\tfinancing\"\x0e\n" +
-	"\fFillResponse2\x95\x03\n" +
+	"\fFillResponse\"\x10\n" +
+	"\x0eProfileRequest\"\x8f\x01\n" +
+	"\x0fProfileResponse\x12\x10\n" +
+	"\x03ege\x18\x01 \x01(\x05R\x03ege\x12\x1e\n" +
+	"\n" +
+	"speciality\x18\x02 \x01(\tR\n" +
+	"speciality\x12\x18\n" +
+	"\aeduType\x18\x03 \x01(\tR\aeduType\x12\x12\n" +
+	"\x04town\x18\x04 \x01(\tR\x04town\x12\x1c\n" +
+	"\tfinancing\x18\x05 \x01(\tR\tfinancing2\xe9\x03\n" +
 	"\vUserService\x12N\n" +
 	"\x06SignUp\x12\x12.api.SignUpRequest\x1a\x13.api.SignUpResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/user/signup\x12J\n" +
 	"\x05Login\x12\x11.api.LoginRequest\x1a\x12.api.LoginResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/api/user/login\x12N\n" +
 	"\x06Logout\x12\x12.api.LogoutRequest\x1a\x13.api.LogoutResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/user/logout\x12R\n" +
 	"\aRefresh\x12\x13.api.RefreshRequest\x1a\x14.api.RefreshResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/api/user/refresh\x12F\n" +
-	"\x04Fill\x12\x10.api.FillRequest\x1a\x11.api.FillResponse\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/api/user/fillB&\x92A\x12\x1a\flocalhost:80*\x02\x01\x02Z\x0fbackend/pkg/apib\x06proto3"
+	"\x04Fill\x12\x10.api.FillRequest\x1a\x11.api.FillResponse\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/api/user/fill\x12R\n" +
+	"\aProfile\x12\x13.api.ProfileRequest\x1a\x14.api.ProfileResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/api/user/profileB&\x92A\x12\x1a\flocalhost:80*\x02\x01\x02Z\x0fbackend/pkg/apib\x06proto3"
 
 var (
 	file_user_proto_rawDescOnce sync.Once
@@ -641,7 +716,7 @@ func file_user_proto_rawDescGZIP() []byte {
 	return file_user_proto_rawDescData
 }
 
-var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_user_proto_goTypes = []any{
 	(*SignUpRequest)(nil),   // 0: api.SignUpRequest
 	(*SignUpResponse)(nil),  // 1: api.SignUpResponse
@@ -653,23 +728,27 @@ var file_user_proto_goTypes = []any{
 	(*RefreshResponse)(nil), // 7: api.RefreshResponse
 	(*FillRequest)(nil),     // 8: api.FillRequest
 	(*FillResponse)(nil),    // 9: api.FillResponse
+	(*ProfileRequest)(nil),  // 10: api.ProfileRequest
+	(*ProfileResponse)(nil), // 11: api.ProfileResponse
 }
 var file_user_proto_depIdxs = []int32{
-	0, // 0: api.UserService.SignUp:input_type -> api.SignUpRequest
-	2, // 1: api.UserService.Login:input_type -> api.LoginRequest
-	4, // 2: api.UserService.Logout:input_type -> api.LogoutRequest
-	6, // 3: api.UserService.Refresh:input_type -> api.RefreshRequest
-	8, // 4: api.UserService.Fill:input_type -> api.FillRequest
-	1, // 5: api.UserService.SignUp:output_type -> api.SignUpResponse
-	3, // 6: api.UserService.Login:output_type -> api.LoginResponse
-	5, // 7: api.UserService.Logout:output_type -> api.LogoutResponse
-	7, // 8: api.UserService.Refresh:output_type -> api.RefreshResponse
-	9, // 9: api.UserService.Fill:output_type -> api.FillResponse
-	5, // [5:10] is the sub-list for method output_type
-	0, // [0:5] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0,  // 0: api.UserService.SignUp:input_type -> api.SignUpRequest
+	2,  // 1: api.UserService.Login:input_type -> api.LoginRequest
+	4,  // 2: api.UserService.Logout:input_type -> api.LogoutRequest
+	6,  // 3: api.UserService.Refresh:input_type -> api.RefreshRequest
+	8,  // 4: api.UserService.Fill:input_type -> api.FillRequest
+	10, // 5: api.UserService.Profile:input_type -> api.ProfileRequest
+	1,  // 6: api.UserService.SignUp:output_type -> api.SignUpResponse
+	3,  // 7: api.UserService.Login:output_type -> api.LoginResponse
+	5,  // 8: api.UserService.Logout:output_type -> api.LogoutResponse
+	7,  // 9: api.UserService.Refresh:output_type -> api.RefreshResponse
+	9,  // 10: api.UserService.Fill:output_type -> api.FillResponse
+	11, // 11: api.UserService.Profile:output_type -> api.ProfileResponse
+	6,  // [6:12] is the sub-list for method output_type
+	0,  // [0:6] is the sub-list for method input_type
+	0,  // [0:0] is the sub-list for extension type_name
+	0,  // [0:0] is the sub-list for extension extendee
+	0,  // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_user_proto_init() }
@@ -683,7 +762,7 @@ func file_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_user_proto_rawDesc), len(file_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
