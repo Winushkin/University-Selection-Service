@@ -1,14 +1,21 @@
 package parser
 
 import (
-	"University-Selection-Service/integrations/config"
+	"University-Selection-Service/internal/config"
+	"University-Selection-Service/internal/entities"
+	"University-Selection-Service/pkg/logger"
+	"context"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"go.uber.org/zap"
+	"math/rand/v2"
 	"net/http"
+	"strconv"
 	"strings"
+	"sync"
 )
 
-const added_URL = "&ptype=0&glist=0&vuz-abiturients-paid-order=ge&vuz-abiturients-paid-val=&price-order=ge&price-val="
+const addedUrl = "&ptype=0&glist=0&vuz-abiturients-paid-order=ge&vuz-abiturients-paid-val=&price-order=ge&price-val="
 
 var (
 	regions = [84]string{"Алтайский край", "Амурская область", "Архангельская область",
@@ -41,69 +48,103 @@ var (
 		"Чукотский автономный округ", "Ямало-Ненецкий автономный округ", "Ярославская область"}
 )
 
-func Parse(url string) (*[][]string, error) {
+func parse(ctx context.Context, url string) (*[]*entities.University, error) {
+	log := logger.GetLoggerFromCtx(ctx)
 	resp, err := http.Get(url)
 	if err != nil {
-		fmt.Printf("Ошибка при выполнении запроса: %v\n", err)
+		log.Error(ctx, "failed to fetch url", zap.Error(err))
 		return nil, err
 	}
 	defer resp.Body.Close()
 
 	// Check if the request was successful
 	if resp.StatusCode != 200 {
-		fmt.Printf("Ошибка: статус код %d\n", resp.StatusCode)
+		log.Error(ctx, "ERROR, status code: ", zap.Int("status", resp.StatusCode))
 		return nil, err
 	}
 	// Parse the HTML document
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		fmt.Printf("Ошибка при парсинге HTML: %v\n", err)
+		log.Error(ctx, "failed to parse url", zap.Error(err))
 		return nil, err
 	}
 
 	// Find the table and iterate over rows
-	var result [][]string
+	var result []*entities.University
+	var univer *entities.University
 	doc.Find("table tbody tr").Each(func(i int, row *goquery.Selection) {
 		// Extract data from each column
-		broadenedGroup := strings.TrimSpace(row.Find("td").Eq(0).Text())
+		speciality := strings.TrimSpace(row.Find("td").Eq(0).Text())
 		university := strings.TrimSpace(row.Find("td").Eq(1).Text())
-		avgEGEScore := strings.TrimSpace(row.Find("td").Eq(2).Text())
+		avgEGEScore, _ := strconv.ParseFloat(strings.TrimSpace(row.Find("td").Eq(2).Text()), 64)
 
-		Group := []string{broadenedGroup, university, avgEGEScore}
-		result = append(result, Group)
-
+		univer = &entities.University{
+			Name:        university,
+			Rank:        rand.Float64()*2 + 3,
+			Speciality:  speciality,
+			Quality:     rand.IntN(5) + 5,
+			Points:      avgEGEScore,
+			Cost:        rand.IntN(200000) + 100000,
+			Dormitory:   rand.IntN(5) != 0,
+			Labs:        rand.IntN(3) != 0,
+			Sport:       rand.IntN(5) != 0,
+			Scholarship: rand.IntN(8000) + 2000,
+		}
+		result = append(result, univer)
 	})
+
+	result = result[6:]
 	return &result, nil
 }
 
-func ParseAllData(cfg config.IntegrationConfig) (*[][]string, *[][]string, error) {
+func ParseAllData(ctx context.Context, cfg *config.UniversityConfig) (*[]*entities.University,
+	*[]*entities.University, error) {
+
 	var url string
-	var budget [][]string
-	var contract [][]string
+	var budget []*entities.University
+	var contract []*entities.University
 
+	log := logger.GetLoggerFromCtx(ctx)
+
+	wg := &sync.WaitGroup{}
+	var m sync.Mutex
+	var formatedRegion string
 	for _, region := range regions {
-		region = strings.ReplaceAll(region, " ", "+")
+		wg.Add(1)
+		formatedRegion = strings.ReplaceAll(region, " ", "+")
 
-		url = fmt.Sprintf("%s%s%s", cfg.BudgetURL, region, added_URL)
-		subBudget, err := Parse(url)
-		if err != nil {
-			return nil, nil, err
-		}
+		go func(m *sync.Mutex, formatedRegion string, cfg *config.UniversityConfig) {
+			defer wg.Done()
+			url = fmt.Sprintf("%s%s%s", cfg.BudgetURL, formatedRegion, addedUrl)
+			subBudget, err := parse(ctx, url)
+			if err != nil || subBudget == nil {
+				log.Error(ctx, "failed to parse budget", zap.Error(err))
+				return
+			}
+			m.Lock()
+			for _, univer := range *subBudget {
+				univer.Region = region
+				budget = append(budget, univer)
+			}
+			m.Unlock()
 
-		for _, sub := range *subBudget {
-			budget = append(budget, sub)
-		}
+			url = fmt.Sprintf("%s%s%s", cfg.ContractURL, formatedRegion, addedUrl)
+			subContract, err := parse(ctx, url)
+			if err != nil || subContract == nil {
+				log.Error(ctx, "failed to parse contract", zap.Error(err))
+				return
+			}
 
-		url = fmt.Sprintf("%s%s%s", cfg.ContractURL, region, added_URL)
-		subContract, err := Parse(url)
-		if err != nil {
-			return nil, nil, err
-		}
+			m.Lock()
+			for _, univer := range *subBudget {
+				univer.Region = region
+				contract = append(contract, univer)
+			}
+			m.Unlock()
 
-		for _, sub := range *subContract {
-			contract = append(contract, sub)
-		}
+		}(&m, formatedRegion, cfg)
 	}
+	wg.Wait()
 	return &budget, &contract, nil
 
 }
