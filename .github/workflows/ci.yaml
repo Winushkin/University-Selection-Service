@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
+      - Integrations
 jobs:
   test:
     name: Run Tests
@@ -36,3 +40,8 @@ jobs:
       - name: Run tests
         working-directory: backend
         run: go test -v -short ./...
+      - name: Check test coverage
+        working-directory: backend
+        run: |
+          go test -coverprofile=coverage.out -short ./...
+          go tool cover -func=coverage.out
