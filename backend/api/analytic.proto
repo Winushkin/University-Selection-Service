@@ -14,18 +14,28 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   schemes: HTTPS,
 };
 
-service AnalyticService {
-  rpc Factors(FactorsRequest) returns (FactorsResponse) {
+service Analytic {
+  rpc Analyze(AnalyzeRequest) returns (AnalyzeResponse) {
     option(google.api.http) = {
-
+      post: "/api/analytic/analyze"
+      body: "*"
     };
   }
 }
 
-message FactorsRequest {
-
+message AnalyzeRequest {
+  int32 ratingToPrestige = 1;
+  int32 ratingToEducationQuality = 2;
+  int32 ratingToScholarshipPrograms = 3;
+  int32 prestigeToEducationQuality = 4;
+  int32  prestigeToScholarshipPrograms = 5;
+  int32 educationQualityToScholarshipPrograms = 6;
+  bool dormitory = 7;
+  bool scientificLabs = 8;
+  bool sportsInfrastructure = 9;
+  int64 educationCost = 10;
 }
 
-message FactorsResponse {
+message AnalyzeResponse {
 
 }

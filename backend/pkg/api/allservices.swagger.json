@@ -6,7 +6,7 @@
   },
   "tags": [
     {
-      "name": "AnalyticService"
+      "name": "Analytic"
     },
     {
       "name": "UserService"
@@ -24,6 +24,38 @@
     "application/json"
   ],
   "paths": {
+    "/api/analytic/analyze": {
+      "post": {
+        "operationId": "Analytic_Analyze",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiAnalyzeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiAnalyzeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Analytic"
+        ]
+      }
+    },
     "/api/user/fill": {
       "post": {
         "operationId": "UserService_Fill",
@@ -208,7 +240,49 @@
     }
   },
   "definitions": {
-    "apiFactorsResponse": {
+    "apiAnalyzeRequest": {
+      "type": "object",
+      "properties": {
+        "ratingToPrestige": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "ratingToEducationQuality": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "ratingToScholarshipPrograms": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "prestigeToEducationQuality": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "prestigeToScholarshipPrograms": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "educationQualityToScholarshipPrograms": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "dormitory": {
+          "type": "boolean"
+        },
+        "scientificLabs": {
+          "type": "boolean"
+        },
+        "sportsInfrastructure": {
+          "type": "boolean"
+        },
+        "educationCost": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "apiAnalyzeResponse": {
       "type": "object"
     },
     "apiFillRequest": {
