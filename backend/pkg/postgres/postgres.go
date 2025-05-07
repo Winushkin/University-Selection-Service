@@ -6,6 +6,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/golang-migrate/migrate"
+	_ "github.com/golang-migrate/migrate/database/postgres"
+	_ "github.com/golang-migrate/migrate/source/file"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -20,30 +22,30 @@ type Config struct {
 	MaxConns int32 `env:"POSTGRES_MAX_CONNS"`
 }
 
-func New(ctx context.Context, conf Config) (*pgxpool.Pool, error) {
+func New(ctx context.Context, c Config, service string) (*pgxpool.Pool, error) {
 	log := logger.GetLoggerFromCtx(ctx)
-	connString := fmt.Sprintf(
-		"postgres://%s:%s@%s:%s/%s?sslmode=disable&pool_min_conns=%d&pool_max_conns=%d",
-		conf.Username,
-		conf.Password,
-		conf.Host,
-		conf.Port,
-		conf.Database,
-		conf.MinConns,
-		conf.MaxConns)
-
-	conn, err := pgxpool.New(ctx, connString)
+	connstring := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable&pool_min_conns=%d&pool_max_conns=%d",
+		c.Username,
+		c.Password,
+		c.Host,
+		c.Port,
+		c.Database,
+		c.MinConns,
+		c.MaxConns)
+	conn, err := pgxpool.New(ctx, connstring)
 	if err != nil {
-		return nil, fmt.Errorf("new: failed to connect to intetgration postgres: %w", err)
+		return nil, fmt.Errorf("new: failed to connect to postgres: %w", err)
 	}
+	log.Info(ctx, fmt.Sprintf("connected to %s_postgres", service))
+
 	migration, err := migrate.New(
-		"file://db/migrations",
+		fmt.Sprintf("file://db/migrations/%s", service),
 		fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
-			conf.Username,
-			conf.Password,
-			conf.Host,
-			conf.Port,
-			conf.Database,
+			c.Username,
+			c.Password,
+			c.Host,
+			c.Port,
+			c.Database,
 		),
 	)
 
