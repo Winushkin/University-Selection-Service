@@ -28,9 +28,9 @@ const (
 )
 
 func NewUserRepository(ctx context.Context, cfg postgres.Config) (*UserRepository, error) {
-	pool, err := postgres.New(ctx, cfg)
+	pool, err := postgres.New(ctx, cfg, "users")
 	if err != nil {
-		return nil, fmt.Errorf("NewUserRepository: failed to connect to user postgres: %w", err)
+		return nil, fmt.Errorf("NewUserRepository: failed to connect to users postgres: %w", err)
 	}
 	return &UserRepository{pg: pool}, nil
 }
@@ -43,7 +43,7 @@ func (ur *UserRepository) GetByLogin(ctx context.Context, login string) (*entiti
 	if err != nil && errors.Is(err, pgx.ErrNoRows) {
 		return nil, status.Error(codes.NotFound, "User not found")
 	} else if err != nil {
-		return nil, fmt.Errorf("GetUserByLogin: failed to query user by login: %w", err)
+		return nil, fmt.Errorf("GetUserByLogin: failed to query users by login: %w", err)
 	}
 	return user, nil
 }
@@ -56,7 +56,7 @@ func (ur *UserRepository) GetByID(ctx context.Context, id int) (*entities.User, 
 	if err != nil && errors.Is(err, pgx.ErrNoRows) {
 		return nil, status.Error(codes.NotFound, "User not found")
 	} else if err != nil {
-		return nil, fmt.Errorf("GetUserByID: failed to query user by id: %w", err)
+		return nil, fmt.Errorf("GetUserByID: failed to query users by id: %w", err)
 	}
 	return user, nil
 }
@@ -75,7 +75,7 @@ func (ur *UserRepository) CreateUser(ctx context.Context, user *entities.User) (
 	queryRow := ur.pg.QueryRow(ctx, CreateUserSQLRequest, user.Login, user.Password)
 	err := queryRow.Scan(&id)
 	if err != nil {
-		return 0, fmt.Errorf("CreateUser: failed to query user: %w", err)
+		return 0, fmt.Errorf("CreateUser: failed to query users: %w", err)
 	}
 	return id, nil
 }
@@ -83,7 +83,7 @@ func (ur *UserRepository) CreateUser(ctx context.Context, user *entities.User) (
 func (ur *UserRepository) RevokeAllActiveTokensForUser(ctx context.Context, userId int) error {
 	_, err := ur.pg.Exec(ctx, RevokeAllActiveTokensForUserSQLRequest, userId)
 	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
-		return fmt.Errorf("RevokeAllActiveTokensForUser: failed to revoke active tokens for user: %w", err)
+		return fmt.Errorf("RevokeAllActiveTokensForUser: failed to revoke active tokens for users: %w", err)
 	}
 	return nil
 }
@@ -93,7 +93,7 @@ func (ur *UserRepository) GetUserIDByRefreshToken(ctx context.Context, refreshTo
 	queryRow := ur.pg.QueryRow(ctx, GetUserIDByRefreshTokenSQLRequest, refreshToken)
 	err := queryRow.Scan(&id)
 	if err != nil {
-		return 0, fmt.Errorf("GetUserIDByRefreshToken: failed to query user by refresh token: %w", err)
+		return 0, fmt.Errorf("GetUserIDByRefreshToken: failed to query users by refresh token: %w", err)
 	}
 	return id, nil
 }

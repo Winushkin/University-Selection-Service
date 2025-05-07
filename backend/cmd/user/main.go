@@ -21,15 +21,13 @@ func main() {
 	ctx, _ = logger.NewLogger(ctx)
 	log := logger.GetLoggerFromCtx(ctx)
 
-	cfg, err := config.New()
+	cfg, err := config.NewUserConfig()
 	if cfg == nil || err != nil {
 		log.Error(ctx, "failed to load configuration", zap.Error(err))
 		return
 	}
 
-	log.Info(ctx, cfg.Postgres.Port)
-
-	db, err := postgres.New(ctx, cfg.Postgres)
+	db, err := postgres.New(ctx, cfg.Postgres, "users")
 	if err != nil {
 		log.Error(ctx, "failed to connect to users postgres", zap.Error(err))
 		return
@@ -46,7 +44,7 @@ func main() {
 
 	srv, err := user.New(ctx, cfg, cfg.JWTSecret)
 	if err != nil {
-		log.Error(ctx, "failed to create user service", zap.Error(err))
+		log.Error(ctx, "failed to create users service", zap.Error(err))
 		return
 	}
 	server := grpc.NewServer(
