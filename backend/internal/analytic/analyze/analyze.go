@@ -4,7 +4,7 @@ import "University-Selection-Service/internal/entities"
 
 type Analyser struct{}
 
-func (a *Analyser) GetCriteriaWeights(crt *entities.Criteria, cmp *entities.Comparisons) (*entities.Criteria, error) {
+func (a *Analyser) GetCriteriaWeights(crt *entities.Criteria, cmp *entities.Comparisons) *entities.Criteria {
 	var matrix [4][4]float64
 
 	var col0 float64 = 0
@@ -75,5 +75,13 @@ func (a *Analyser) GetCriteriaWeights(crt *entities.Criteria, cmp *entities.Comp
 	crt.EducationQuality = crt.EducationQuality / 4.0
 	crt.ScholarshipPrograms = crt.ScholarshipPrograms / 4.0
 
-	return crt, nil
+	return crt
+}
+
+func (a *Analyser) FilterUniversities(profile *entities.User) {
+
+}
+
+func (a *Analyser) Analyze(profile *entities.User) {
+
 }
