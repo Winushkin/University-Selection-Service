@@ -50,11 +50,11 @@ func main() {
 		return
 	}
 	server := grpc.NewServer(
-		grpc.UnaryInterceptor(interceptors.AuthInterceptor(cfg)),
+		grpc.UnaryInterceptor(interceptors.AuthInterceptor(cfg.JWTSecret)),
 	)
 	api.RegisterUserServiceServer(server, srv)
 	reflection.Register(server)
-	if err := server.Serve(lis); err != nil {
+	if err = server.Serve(lis); err != nil {
 		log.Error(ctx, "failed to serve gRPC server", zap.Error(err))
 	}
 	healthServer := health.NewServer()
