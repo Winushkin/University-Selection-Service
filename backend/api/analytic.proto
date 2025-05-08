@@ -23,6 +23,21 @@ service Analytic {
   }
 }
 
+message Universities {
+  string name = 1;
+  string region = 2;
+  string speciality = 3;
+  int32 points = 4;
+  int64 cost = 5;
+  int32 prestige = 6;
+  int32 rank = 7;
+  int32 quality = 8;
+  bool dormitory = 9;
+  bool labs = 10;
+  bool sport = 11;
+  bool scholarship = 12;
+}
+
 message AnalyzeRequest {
   int32 ratingToPrestige = 1;
   int32 ratingToEducationQuality = 2;
@@ -37,5 +52,5 @@ message AnalyzeRequest {
 }
 
 message AnalyzeResponse {
-
+  repeated Universities university = 1;
 }
