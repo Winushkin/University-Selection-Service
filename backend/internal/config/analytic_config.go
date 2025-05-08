@@ -10,9 +10,10 @@ import (
 )
 
 type AnalyticConfig struct {
-	Postgres postgres.Config `env:"POSTGRES"`
-	INTPort  string          `env:"INT_PORT"`
-	RESTPort string          `env:"REST_PORT"`
+	Postgres  postgres.Config `env:"POSTGRES"`
+	INTPort   string          `env:"INT_PORT"`
+	RESTPort  string          `env:"REST_PORT"`
+	JWTSecret string          `env:"JWT_SECRET"`
 }
 
 func NewAnalyticCfg() (*AnalyticConfig, error) {
