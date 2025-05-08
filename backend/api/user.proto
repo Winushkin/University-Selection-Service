@@ -52,6 +52,7 @@ service UserService {
       get: "/api/user/profile"
     };
   }
+  rpc ProfileDataForAnalytic(ProfileDataForAnalyticRequest) returns(ProfileDataForAnalyticResponse);
 }
 
 message SignUpRequest {
@@ -102,6 +103,18 @@ message FillRequest {
 message FillResponse {}
 
 message ProfileResponse {
+  int32 ege = 1;
+  string speciality = 2;
+  string eduType = 3;
+  string town = 4;
+  string financing = 5;
+}
+
+message ProfileDataForAnalyticRequest {
+  int32 id = 1;
+}
+
+message ProfileDataForAnalyticResponse {
   int32 ege = 1;
   string speciality = 2;
   string eduType = 3;
