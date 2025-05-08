@@ -612,6 +612,126 @@ func (x *ProfileResponse) GetFinancing() string {
 	return ""
 }
 
+type ProfileDataForAnalyticRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ProfileDataForAnalyticRequest) Reset() {
+	*x = ProfileDataForAnalyticRequest{}
+	mi := &file_user_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProfileDataForAnalyticRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProfileDataForAnalyticRequest) ProtoMessage() {}
+
+func (x *ProfileDataForAnalyticRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProfileDataForAnalyticRequest.ProtoReflect.Descriptor instead.
+func (*ProfileDataForAnalyticRequest) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *ProfileDataForAnalyticRequest) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+type ProfileDataForAnalyticResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Ege           int32                  `protobuf:"varint,1,opt,name=ege,proto3" json:"ege,omitempty"`
+	Speciality    string                 `protobuf:"bytes,2,opt,name=speciality,proto3" json:"speciality,omitempty"`
+	EduType       string                 `protobuf:"bytes,3,opt,name=eduType,proto3" json:"eduType,omitempty"`
+	Town          string                 `protobuf:"bytes,4,opt,name=town,proto3" json:"town,omitempty"`
+	Financing     string                 `protobuf:"bytes,5,opt,name=financing,proto3" json:"financing,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ProfileDataForAnalyticResponse) Reset() {
+	*x = ProfileDataForAnalyticResponse{}
+	mi := &file_user_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProfileDataForAnalyticResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProfileDataForAnalyticResponse) ProtoMessage() {}
+
+func (x *ProfileDataForAnalyticResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProfileDataForAnalyticResponse.ProtoReflect.Descriptor instead.
+func (*ProfileDataForAnalyticResponse) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *ProfileDataForAnalyticResponse) GetEge() int32 {
+	if x != nil {
+		return x.Ege
+	}
+	return 0
+}
+
+func (x *ProfileDataForAnalyticResponse) GetSpeciality() string {
+	if x != nil {
+		return x.Speciality
+	}
+	return ""
+}
+
+func (x *ProfileDataForAnalyticResponse) GetEduType() string {
+	if x != nil {
+		return x.EduType
+	}
+	return ""
+}
+
+func (x *ProfileDataForAnalyticResponse) GetTown() string {
+	if x != nil {
+		return x.Town
+	}
+	return ""
+}
+
+func (x *ProfileDataForAnalyticResponse) GetFinancing() string {
+	if x != nil {
+		return x.Financing
+	}
+	return ""
+}
+
 var File_user_proto protoreflect.FileDescriptor
 
 const file_user_proto_rawDesc = "" +
@@ -659,14 +779,25 @@ const file_user_proto_rawDesc = "" +
 	"speciality\x12\x18\n" +
 	"\aeduType\x18\x03 \x01(\tR\aeduType\x12\x12\n" +
 	"\x04town\x18\x04 \x01(\tR\x04town\x12\x1c\n" +
-	"\tfinancing\x18\x05 \x01(\tR\tfinancing2\xe9\x03\n" +
+	"\tfinancing\x18\x05 \x01(\tR\tfinancing\"/\n" +
+	"\x1dProfileDataForAnalyticRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\"\x9e\x01\n" +
+	"\x1eProfileDataForAnalyticResponse\x12\x10\n" +
+	"\x03ege\x18\x01 \x01(\x05R\x03ege\x12\x1e\n" +
+	"\n" +
+	"speciality\x18\x02 \x01(\tR\n" +
+	"speciality\x12\x18\n" +
+	"\aeduType\x18\x03 \x01(\tR\aeduType\x12\x12\n" +
+	"\x04town\x18\x04 \x01(\tR\x04town\x12\x1c\n" +
+	"\tfinancing\x18\x05 \x01(\tR\tfinancing2\xcc\x04\n" +
 	"\vUserService\x12N\n" +
 	"\x06SignUp\x12\x12.api.SignUpRequest\x1a\x13.api.SignUpResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/user/signup\x12J\n" +
 	"\x05Login\x12\x11.api.LoginRequest\x1a\x12.api.LoginResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/api/user/login\x12N\n" +
 	"\x06Logout\x12\x12.api.LogoutRequest\x1a\x13.api.LogoutResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/user/logout\x12R\n" +
 	"\aRefresh\x12\x13.api.RefreshRequest\x1a\x14.api.RefreshResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/api/user/refresh\x12F\n" +
 	"\x04Fill\x12\x10.api.FillRequest\x1a\x11.api.FillResponse\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/api/user/fill\x12R\n" +
-	"\aProfile\x12\x16.google.protobuf.Empty\x1a\x14.api.ProfileResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/api/user/profileB&\x92A\x12\x1a\flocalhost:80*\x02\x01\x02Z\x0fbackend/pkg/apib\x06proto3"
+	"\aProfile\x12\x16.google.protobuf.Empty\x1a\x14.api.ProfileResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/api/user/profile\x12a\n" +
+	"\x16ProfileDataForAnalytic\x12\".api.ProfileDataForAnalyticRequest\x1a#.api.ProfileDataForAnalyticResponseB&\x92A\x12\x1a\flocalhost:80*\x02\x01\x02Z\x0fbackend/pkg/apib\x06proto3"
 
 var (
 	file_user_proto_rawDescOnce sync.Once
@@ -680,20 +811,22 @@ func file_user_proto_rawDescGZIP() []byte {
 	return file_user_proto_rawDescData
 }
 
-var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_user_proto_goTypes = []any{
-	(*SignUpRequest)(nil),   // 0: api.SignUpRequest
-	(*SignUpResponse)(nil),  // 1: api.SignUpResponse
-	(*LoginRequest)(nil),    // 2: api.LoginRequest
-	(*LoginResponse)(nil),   // 3: api.LoginResponse
-	(*LogoutRequest)(nil),   // 4: api.LogoutRequest
-	(*LogoutResponse)(nil),  // 5: api.LogoutResponse
-	(*RefreshRequest)(nil),  // 6: api.RefreshRequest
-	(*RefreshResponse)(nil), // 7: api.RefreshResponse
-	(*FillRequest)(nil),     // 8: api.FillRequest
-	(*FillResponse)(nil),    // 9: api.FillResponse
-	(*ProfileResponse)(nil), // 10: api.ProfileResponse
-	(*emptypb.Empty)(nil),   // 11: google.protobuf.Empty
+	(*SignUpRequest)(nil),                  // 0: api.SignUpRequest
+	(*SignUpResponse)(nil),                 // 1: api.SignUpResponse
+	(*LoginRequest)(nil),                   // 2: api.LoginRequest
+	(*LoginResponse)(nil),                  // 3: api.LoginResponse
+	(*LogoutRequest)(nil),                  // 4: api.LogoutRequest
+	(*LogoutResponse)(nil),                 // 5: api.LogoutResponse
+	(*RefreshRequest)(nil),                 // 6: api.RefreshRequest
+	(*RefreshResponse)(nil),                // 7: api.RefreshResponse
+	(*FillRequest)(nil),                    // 8: api.FillRequest
+	(*FillResponse)(nil),                   // 9: api.FillResponse
+	(*ProfileResponse)(nil),                // 10: api.ProfileResponse
+	(*ProfileDataForAnalyticRequest)(nil),  // 11: api.ProfileDataForAnalyticRequest
+	(*ProfileDataForAnalyticResponse)(nil), // 12: api.ProfileDataForAnalyticResponse
+	(*emptypb.Empty)(nil),                  // 13: google.protobuf.Empty
 }
 var file_user_proto_depIdxs = []int32{
 	0,  // 0: api.UserService.SignUp:input_type -> api.SignUpRequest
@@ -701,15 +834,17 @@ var file_user_proto_depIdxs = []int32{
 	4,  // 2: api.UserService.Logout:input_type -> api.LogoutRequest
 	6,  // 3: api.UserService.Refresh:input_type -> api.RefreshRequest
 	8,  // 4: api.UserService.Fill:input_type -> api.FillRequest
-	11, // 5: api.UserService.Profile:input_type -> google.protobuf.Empty
-	1,  // 6: api.UserService.SignUp:output_type -> api.SignUpResponse
-	3,  // 7: api.UserService.Login:output_type -> api.LoginResponse
-	5,  // 8: api.UserService.Logout:output_type -> api.LogoutResponse
-	7,  // 9: api.UserService.Refresh:output_type -> api.RefreshResponse
-	9,  // 10: api.UserService.Fill:output_type -> api.FillResponse
-	10, // 11: api.UserService.Profile:output_type -> api.ProfileResponse
-	6,  // [6:12] is the sub-list for method output_type
-	0,  // [0:6] is the sub-list for method input_type
+	13, // 5: api.UserService.Profile:input_type -> google.protobuf.Empty
+	11, // 6: api.UserService.ProfileDataForAnalytic:input_type -> api.ProfileDataForAnalyticRequest
+	1,  // 7: api.UserService.SignUp:output_type -> api.SignUpResponse
+	3,  // 8: api.UserService.Login:output_type -> api.LoginResponse
+	5,  // 9: api.UserService.Logout:output_type -> api.LogoutResponse
+	7,  // 10: api.UserService.Refresh:output_type -> api.RefreshResponse
+	9,  // 11: api.UserService.Fill:output_type -> api.FillResponse
+	10, // 12: api.UserService.Profile:output_type -> api.ProfileResponse
+	12, // 13: api.UserService.ProfileDataForAnalytic:output_type -> api.ProfileDataForAnalyticResponse
+	7,  // [7:14] is the sub-list for method output_type
+	0,  // [0:7] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name
@@ -726,7 +861,7 @@ func file_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_user_proto_rawDesc), len(file_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

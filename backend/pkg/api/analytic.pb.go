@@ -23,6 +23,138 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type Universities struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Region        string                 `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
+	Speciality    string                 `protobuf:"bytes,3,opt,name=speciality,proto3" json:"speciality,omitempty"`
+	Points        int32                  `protobuf:"varint,4,opt,name=points,proto3" json:"points,omitempty"`
+	Cost          int64                  `protobuf:"varint,5,opt,name=cost,proto3" json:"cost,omitempty"`
+	Prestige      int32                  `protobuf:"varint,6,opt,name=prestige,proto3" json:"prestige,omitempty"`
+	Rank          int32                  `protobuf:"varint,7,opt,name=rank,proto3" json:"rank,omitempty"`
+	Quality       int32                  `protobuf:"varint,8,opt,name=quality,proto3" json:"quality,omitempty"`
+	Dormitory     bool                   `protobuf:"varint,9,opt,name=dormitory,proto3" json:"dormitory,omitempty"`
+	Labs          bool                   `protobuf:"varint,10,opt,name=labs,proto3" json:"labs,omitempty"`
+	Sport         bool                   `protobuf:"varint,11,opt,name=sport,proto3" json:"sport,omitempty"`
+	Scholarship   bool                   `protobuf:"varint,12,opt,name=scholarship,proto3" json:"scholarship,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Universities) Reset() {
+	*x = Universities{}
+	mi := &file_analytic_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Universities) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Universities) ProtoMessage() {}
+
+func (x *Universities) ProtoReflect() protoreflect.Message {
+	mi := &file_analytic_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Universities.ProtoReflect.Descriptor instead.
+func (*Universities) Descriptor() ([]byte, []int) {
+	return file_analytic_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *Universities) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *Universities) GetRegion() string {
+	if x != nil {
+		return x.Region
+	}
+	return ""
+}
+
+func (x *Universities) GetSpeciality() string {
+	if x != nil {
+		return x.Speciality
+	}
+	return ""
+}
+
+func (x *Universities) GetPoints() int32 {
+	if x != nil {
+		return x.Points
+	}
+	return 0
+}
+
+func (x *Universities) GetCost() int64 {
+	if x != nil {
+		return x.Cost
+	}
+	return 0
+}
+
+func (x *Universities) GetPrestige() int32 {
+	if x != nil {
+		return x.Prestige
+	}
+	return 0
+}
+
+func (x *Universities) GetRank() int32 {
+	if x != nil {
+		return x.Rank
+	}
+	return 0
+}
+
+func (x *Universities) GetQuality() int32 {
+	if x != nil {
+		return x.Quality
+	}
+	return 0
+}
+
+func (x *Universities) GetDormitory() bool {
+	if x != nil {
+		return x.Dormitory
+	}
+	return false
+}
+
+func (x *Universities) GetLabs() bool {
+	if x != nil {
+		return x.Labs
+	}
+	return false
+}
+
+func (x *Universities) GetSport() bool {
+	if x != nil {
+		return x.Sport
+	}
+	return false
+}
+
+func (x *Universities) GetScholarship() bool {
+	if x != nil {
+		return x.Scholarship
+	}
+	return false
+}
+
 type AnalyzeRequest struct {
 	state                                 protoimpl.MessageState `protogen:"open.v1"`
 	RatingToPrestige                      int32                  `protobuf:"varint,1,opt,name=ratingToPrestige,proto3" json:"ratingToPrestige,omitempty"`
@@ -41,7 +173,7 @@ type AnalyzeRequest struct {
 
 func (x *AnalyzeRequest) Reset() {
 	*x = AnalyzeRequest{}
-	mi := &file_analytic_proto_msgTypes[0]
+	mi := &file_analytic_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -53,7 +185,7 @@ func (x *AnalyzeRequest) String() string {
 func (*AnalyzeRequest) ProtoMessage() {}
 
 func (x *AnalyzeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_analytic_proto_msgTypes[0]
+	mi := &file_analytic_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -66,7 +198,7 @@ func (x *AnalyzeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AnalyzeRequest.ProtoReflect.Descriptor instead.
 func (*AnalyzeRequest) Descriptor() ([]byte, []int) {
-	return file_analytic_proto_rawDescGZIP(), []int{0}
+	return file_analytic_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *AnalyzeRequest) GetRatingToPrestige() int32 {
@@ -141,13 +273,14 @@ func (x *AnalyzeRequest) GetEducationCost() int64 {
 
 type AnalyzeResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	University    []*Universities        `protobuf:"bytes,1,rep,name=university,proto3" json:"university,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AnalyzeResponse) Reset() {
 	*x = AnalyzeResponse{}
-	mi := &file_analytic_proto_msgTypes[1]
+	mi := &file_analytic_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -159,7 +292,7 @@ func (x *AnalyzeResponse) String() string {
 func (*AnalyzeResponse) ProtoMessage() {}
 
 func (x *AnalyzeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_analytic_proto_msgTypes[1]
+	mi := &file_analytic_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -172,14 +305,37 @@ func (x *AnalyzeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AnalyzeResponse.ProtoReflect.Descriptor instead.
 func (*AnalyzeResponse) Descriptor() ([]byte, []int) {
-	return file_analytic_proto_rawDescGZIP(), []int{1}
+	return file_analytic_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *AnalyzeResponse) GetUniversity() []*Universities {
+	if x != nil {
+		return x.University
+	}
+	return nil
 }
 
 var File_analytic_proto protoreflect.FileDescriptor
 
 const file_analytic_proto_rawDesc = "" +
 	"\n" +
-	"\x0eanalytic.proto\x12\x03api\x1a\x1cgoogle/api/annotations.proto\x1a\x18google/api/openapi.proto\"\xb6\x04\n" +
+	"\x0eanalytic.proto\x12\x03api\x1a\x1cgoogle/api/annotations.proto\x1a\x18google/api/openapi.proto\"\xba\x02\n" +
+	"\fUniversities\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x16\n" +
+	"\x06region\x18\x02 \x01(\tR\x06region\x12\x1e\n" +
+	"\n" +
+	"speciality\x18\x03 \x01(\tR\n" +
+	"speciality\x12\x16\n" +
+	"\x06points\x18\x04 \x01(\x05R\x06points\x12\x12\n" +
+	"\x04cost\x18\x05 \x01(\x03R\x04cost\x12\x1a\n" +
+	"\bprestige\x18\x06 \x01(\x05R\bprestige\x12\x12\n" +
+	"\x04rank\x18\a \x01(\x05R\x04rank\x12\x18\n" +
+	"\aquality\x18\b \x01(\x05R\aquality\x12\x1c\n" +
+	"\tdormitory\x18\t \x01(\bR\tdormitory\x12\x12\n" +
+	"\x04labs\x18\n" +
+	" \x01(\bR\x04labs\x12\x14\n" +
+	"\x05sport\x18\v \x01(\bR\x05sport\x12 \n" +
+	"\vscholarship\x18\f \x01(\bR\vscholarship\"\xb6\x04\n" +
 	"\x0eAnalyzeRequest\x12*\n" +
 	"\x10ratingToPrestige\x18\x01 \x01(\x05R\x10ratingToPrestige\x12:\n" +
 	"\x18ratingToEducationQuality\x18\x02 \x01(\x05R\x18ratingToEducationQuality\x12@\n" +
@@ -191,8 +347,11 @@ const file_analytic_proto_rawDesc = "" +
 	"\x0escientificLabs\x18\b \x01(\bR\x0escientificLabs\x122\n" +
 	"\x14sportsInfrastructure\x18\t \x01(\bR\x14sportsInfrastructure\x12$\n" +
 	"\reducationCost\x18\n" +
-	" \x01(\x03R\reducationCost\"\x11\n" +
-	"\x0fAnalyzeResponse2b\n" +
+	" \x01(\x03R\reducationCost\"D\n" +
+	"\x0fAnalyzeResponse\x121\n" +
+	"\n" +
+	"university\x18\x01 \x03(\v2\x11.api.UniversitiesR\n" +
+	"university2b\n" +
 	"\bAnalytic\x12V\n" +
 	"\aAnalyze\x12\x13.api.AnalyzeRequest\x1a\x14.api.AnalyzeResponse\" \x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/api/analytic/analyzeB&\x92A\x12\x1a\flocalhost:80*\x02\x01\x02Z\x0fbackend/pkg/apib\x06proto3"
 
@@ -208,19 +367,21 @@ func file_analytic_proto_rawDescGZIP() []byte {
 	return file_analytic_proto_rawDescData
 }
 
-var file_analytic_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_analytic_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_analytic_proto_goTypes = []any{
-	(*AnalyzeRequest)(nil),  // 0: api.AnalyzeRequest
-	(*AnalyzeResponse)(nil), // 1: api.AnalyzeResponse
+	(*Universities)(nil),    // 0: api.Universities
+	(*AnalyzeRequest)(nil),  // 1: api.AnalyzeRequest
+	(*AnalyzeResponse)(nil), // 2: api.AnalyzeResponse
 }
 var file_analytic_proto_depIdxs = []int32{
-	0, // 0: api.Analytic.Analyze:input_type -> api.AnalyzeRequest
-	1, // 1: api.Analytic.Analyze:output_type -> api.AnalyzeResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0, // 0: api.AnalyzeResponse.university:type_name -> api.Universities
+	1, // 1: api.Analytic.Analyze:input_type -> api.AnalyzeRequest
+	2, // 2: api.Analytic.Analyze:output_type -> api.AnalyzeResponse
+	2, // [2:3] is the sub-list for method output_type
+	1, // [1:2] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_analytic_proto_init() }
@@ -234,7 +395,7 @@ func file_analytic_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_analytic_proto_rawDesc), len(file_analytic_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
