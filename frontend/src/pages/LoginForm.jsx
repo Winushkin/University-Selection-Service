@@ -15,8 +15,8 @@ function LoginForm() {
         e.preventDefault();
 
         /*
-                const foundUser = user.find (
-            (user) => user.login === login && user.password === password
+                const foundUser = users.find (
+            (users) => users.login === login && users.password === password
         );
 
         if (!foundUser) {
