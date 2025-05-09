@@ -1,0 +1,371 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "analytic.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "AnalyticService"
+    },
+    {
+      "name": "UserService"
+    }
+  ],
+  "host": "localhost:80",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/user/fill": {
+      "post": {
+        "operationId": "UserService_Fill",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiFillResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiFillRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/api/user/login": {
+      "post": {
+        "operationId": "UserService_Login",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiLoginResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiLoginRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/api/user/logout": {
+      "post": {
+        "operationId": "UserService_Logout",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiLogoutResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiLogoutRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/api/user/profile": {
+      "get": {
+        "operationId": "UserService_Profile",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiProfileResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/api/user/refresh": {
+      "post": {
+        "operationId": "UserService_Refresh",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiRefreshResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiRefreshRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/api/user/signup": {
+      "post": {
+        "operationId": "UserService_SignUp",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiSignUpResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiSignUpRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "apiFactorsResponse": {
+      "type": "object"
+    },
+    "apiFillRequest": {
+      "type": "object",
+      "properties": {
+        "ege": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "speciality": {
+          "type": "string"
+        },
+        "eduType": {
+          "type": "string"
+        },
+        "town": {
+          "type": "string"
+        },
+        "financing": {
+          "type": "string"
+        }
+      }
+    },
+    "apiFillResponse": {
+      "type": "object"
+    },
+    "apiLoginRequest": {
+      "type": "object",
+      "properties": {
+        "login": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "apiLoginResponse": {
+      "type": "object",
+      "properties": {
+        "access": {
+          "type": "string"
+        },
+        "refresh": {
+          "type": "string"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "apiLogoutRequest": {
+      "type": "object",
+      "properties": {
+        "refresh": {
+          "type": "string"
+        }
+      }
+    },
+    "apiLogoutResponse": {
+      "type": "object"
+    },
+    "apiProfileResponse": {
+      "type": "object",
+      "properties": {
+        "ege": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "speciality": {
+          "type": "string"
+        },
+        "eduType": {
+          "type": "string"
+        },
+        "town": {
+          "type": "string"
+        },
+        "financing": {
+          "type": "string"
+        }
+      }
+    },
+    "apiRefreshRequest": {
+      "type": "object",
+      "properties": {
+        "refresh": {
+          "type": "string"
+        }
+      }
+    },
+    "apiRefreshResponse": {
+      "type": "object",
+      "properties": {
+        "access": {
+          "type": "string"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "apiSignUpRequest": {
+      "type": "object",
+      "properties": {
+        "login": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "apiSignUpResponse": {
+      "type": "object",
+      "properties": {
+        "access": {
+          "type": "string"
+        },
+        "refresh": {
+          "type": "string"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

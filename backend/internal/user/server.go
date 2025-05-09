@@ -5,6 +5,7 @@ import (
 	"University-Selection-Service/internal/entities"
 	"University-Selection-Service/internal/repositories"
 	"University-Selection-Service/pkg/api"
+	"University-Selection-Service/pkg/security"
 	"context"
 	"crypto/rand"
 	"encoding/base64"
@@ -12,6 +13,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"time"
 )
 
@@ -102,7 +104,7 @@ func (s *Server) Login(ctx context.Context, request *api.LoginRequest) (*api.Log
 		return nil, status.Error(codes.NotFound, "User not found")
 	}
 
-	if user.Login != request.Login || user.Password != request.Password {
+	if user.Login != request.Login || security.CheckPasswordHash(request.Password, user.Password) {
 		return nil, status.Error(codes.FailedPrecondition, "User login and password do not match")
 	}
 
@@ -128,15 +130,9 @@ func (s *Server) Login(ctx context.Context, request *api.LoginRequest) (*api.Log
 	}
 
 	return &api.LoginResponse{
-		Access:     accessToken,
-		Refresh:    refreshToken,
-		ExpiresAt:  expAt,
-		Ege:        int32(user.Ege),
-		Gpa:        user.Gpa,
-		Speciality: user.Speciality,
-		EduType:    user.EduType,
-		Town:       user.Town,
-		Financing:  user.Financing,
+		Access:    accessToken,
+		Refresh:   refreshToken,
+		ExpiresAt: expAt,
 	}, nil
 }
 
@@ -163,7 +159,6 @@ func (s *Server) Fill(ctx context.Context, request *api.FillRequest) (*api.FillR
 	usr := &entities.User{
 		Id:         id,
 		Ege:        int(request.Ege),
-		Gpa:        request.Gpa,
 		Speciality: request.Speciality,
 		EduType:    request.EduType,
 		Town:       request.Town,
@@ -186,4 +181,19 @@ func (s *Server) Logout(ctx context.Context, request *api.LogoutRequest) (*api.L
 		return nil, status.Error(codes.Internal, "error revoking active tokens for users")
 	}
 	return &api.LogoutResponse{}, nil
+}
+
+func (s *Server) Profile(ctx context.Context, _ *emptypb.Empty) (*api.ProfileResponse, error) {
+	id := ctx.Value("user_id").(int)
+	usr, err := s.rep.GetByID(ctx, id)
+	if err != nil {
+		return nil, status.Error(codes.NotFound, "User not found")
+	}
+	return &api.ProfileResponse{
+		Ege:        int32(usr.Ege),
+		Speciality: usr.Speciality,
+		EduType:    usr.EduType,
+		Town:       usr.Town,
+		Financing:  usr.Financing,
+	}, nil
 }

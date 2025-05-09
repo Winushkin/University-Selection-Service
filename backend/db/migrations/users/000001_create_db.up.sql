@@ -5,7 +5,6 @@ create table if not exists schema_name.users (
     Login TEXT UNIQUE NOT NULL,
     Password TEXT,
     Ege INT,
-    Gpa FLOAT,
     Speciality TEXT,
     EduType TEXT,
     Town TEXT,

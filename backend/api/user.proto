@@ -7,6 +7,7 @@ package api;
 
 import "google/api/annotations.proto";
 import "google/api/openapi.proto";
+import "google/api/empty.proto";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   host: "localhost:80",
@@ -46,6 +47,11 @@ service UserService {
       body: "*"
     };
   }
+  rpc Profile(google.protobuf.Empty) returns(ProfileResponse) {
+    option(google.api.http) = {
+      get: "/api/user/profile"
+    };
+  }
 }
 
 message SignUpRequest {
@@ -68,13 +74,6 @@ message LoginResponse {
   string access = 1;
   string refresh = 2;
   int64 expires_at = 3;
-
-  int32 ege = 4;
-  float gpa = 5;
-  string speciality = 6;
-  string eduType = 7;
-  string town = 8;
-  string financing = 9;
 }
 
 message LogoutRequest {
@@ -94,11 +93,18 @@ message RefreshResponse {
 
 message FillRequest {
   int32 ege = 1;
-  float gpa = 2;
-  string speciality = 3;
-  string eduType = 4;
-  string town = 5;
-  string financing = 6;
+  string speciality = 2;
+  string eduType = 3;
+  string town = 4;
+  string financing = 5;
 }
 
 message FillResponse {}
+
+message ProfileResponse {
+  int32 ege = 1;
+  string speciality = 2;
+  string eduType = 3;
+  string town = 4;
+  string financing = 5;
+}
