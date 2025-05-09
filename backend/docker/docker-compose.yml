@@ -18,15 +18,15 @@ services:
       - app_network
 
 
-  postgresql_integration:
-    container_name: integration_postgres_service
+  postgresql_universities:
+    container_name: universities_postgres_service
     image: postgres:latest
     env_file:
-      - ../env/integration_postgres.env
+      - ../env/universities.env
     ports:
       - "5433:5433"
     volumes:
-      - ../database_data/integration_data:/var/lib/postgresql/data
+      - ../database_data/universities_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready", "-U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 10s
@@ -71,7 +71,7 @@ services:
       - "80:80"
     depends_on:
       - postgresql_users
-      - postgresql_integration
+      - postgresql_universities
       - user_service
     healthcheck:
       test: [ "CMD", "nginx", "-t" ]

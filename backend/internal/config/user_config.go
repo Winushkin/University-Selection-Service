@@ -16,7 +16,7 @@ type UserConfig struct {
 	JWTSecret string          `env:"JWT_SECRET"`
 }
 
-func New() (*UserConfig, error) {
+func NewUserConfig() (*UserConfig, error) {
 
 	err := godotenv.Load()
 	if !errors.Is(err, os.ErrNotExist) && err != nil {

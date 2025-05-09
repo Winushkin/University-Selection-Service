@@ -12,17 +12,17 @@ import (
 )
 
 type Config struct {
-	Host     string `yaml:"POSTGRES_HOST" env:"POSTGRES_HOST"`
-	Port     string `yaml:"POSTGRES_PORT" env:"POSTGRES_PORT"`
-	Username string `yaml:"POSTGRES_USER" env:"POSTGRES_USER"`
-	Password string `yaml:"POSTGRES_PASSWORD" env:"POSTGRES_PASSWORD"`
-	Database string `yaml:"POSTGRES_DB" env:"POSTGRES_DB"`
+	Host     string `env:"POSTGRES_HOST"`
+	Port     string `env:"POSTGRES_PORT"`
+	Username string `env:"POSTGRES_USER"`
+	Password string `env:"POSTGRES_PASSWORD"`
+	Database string `env:"POSTGRES_DB"`
 
-	MinConns int32 `yaml:"MIN_CONNS" env:"POSTGRES_MIN_CONN"`
-	MaxConns int32 `yaml:"MAX_CONNS" env:"POSTGRES_MAX_CONN"`
+	MinConns int32 `env:"POSTGRES_MIN_CONNS"`
+	MaxConns int32 `env:"POSTGRES_MAX_CONNS"`
 }
 
-func New(ctx context.Context, c Config) (*pgxpool.Pool, error) {
+func New(ctx context.Context, c Config, service string) (*pgxpool.Pool, error) {
 	log := logger.GetLoggerFromCtx(ctx)
 	connstring := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable&pool_min_conns=%d&pool_max_conns=%d",
 		c.Username,
@@ -35,12 +35,11 @@ func New(ctx context.Context, c Config) (*pgxpool.Pool, error) {
 	conn, err := pgxpool.New(ctx, connstring)
 	if err != nil {
 		return nil, fmt.Errorf("new: failed to connect to postgres: %w", err)
-	} else {
-		log.Info(ctx, "connected to user_postgres")
 	}
+	log.Info(ctx, fmt.Sprintf("connected to %s_postgres", service))
 
 	migration, err := migrate.New(
-		"file://db/migrations",
+		fmt.Sprintf("file://db/migrations/%s", service),
 		fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
 			c.Username,
 			c.Password,

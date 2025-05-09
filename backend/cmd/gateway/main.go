@@ -47,7 +47,7 @@ func main() {
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 
 	if err := pb.RegisterUserServiceHandlerFromEndpoint(ctx, mux, "user_service:8080", opts); err != nil {
-		log.Error(ctx, "Failed register user grpc service", zap.Error(err))
+		log.Error(ctx, "Failed register users grpc service", zap.Error(err))
 		return
 	}
 

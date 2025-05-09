@@ -70,7 +70,7 @@ func validateToken(accessToken string, cfg *config.UserConfig) (int, error) {
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		userID, ok := claims["user_id"].(float64)
 		if !ok {
-			return 0, fmt.Errorf("validateToken: invalid user id: %v", claims["user_id"])
+			return 0, fmt.Errorf("validateToken: invalid users id: %v", claims["user_id"])
 		}
 		exp, ok := claims["exp"].(float64)
 		if !ok || time.Unix(int64(exp), 0).Before(time.Now()) {

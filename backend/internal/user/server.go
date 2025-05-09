@@ -66,13 +66,13 @@ func (s *Server) SignUp(ctx context.Context, request *api.SignUpRequest) (*api.S
 
 	_, err = s.rep.CreateUser(ctx, user)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "error creating user")
+		return nil, status.Error(codes.Internal, "error creating users")
 	}
 
 	user, err = s.rep.GetByLogin(ctx, request.Login)
 
 	if err != nil {
-		return nil, status.Error(codes.Internal, "error getting user")
+		return nil, status.Error(codes.Internal, "error getting users")
 	}
 
 	accessToken, err := s.generateAccessToken(user.Id)
@@ -110,7 +110,7 @@ func (s *Server) Login(ctx context.Context, request *api.LoginRequest) (*api.Log
 
 	err = s.rep.RevokeAllActiveTokensForUser(ctx, user.Id)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "error revoking active tokens for user")
+		return nil, status.Error(codes.Internal, "error revoking active tokens for users")
 	}
 
 	accessToken, err := s.generateAccessToken(user.Id)
@@ -166,7 +166,7 @@ func (s *Server) Fill(ctx context.Context, request *api.FillRequest) (*api.FillR
 	}
 	err := s.rep.FillInfo(ctx, usr)
 	if err != nil {
-		return nil, status.Error(codes.Internal, fmt.Sprintf("error filling user: %s", err))
+		return nil, status.Error(codes.Internal, fmt.Sprintf("error filling users: %s", err))
 	}
 	return &api.FillResponse{}, nil
 }
@@ -178,7 +178,7 @@ func (s *Server) Logout(ctx context.Context, request *api.LogoutRequest) (*api.L
 	}
 	err = s.rep.RevokeAllActiveTokensForUser(ctx, id)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "error revoking active tokens for user")
+		return nil, status.Error(codes.Internal, "error revoking active tokens for users")
 	}
 	return &api.LogoutResponse{}, nil
 }
