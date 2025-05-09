@@ -9,8 +9,7 @@ import (
 
 type UniversityConfig struct {
 	Postgres    postgres.Config `env:"POSTGRES"`
-	BudgetURL   string          `env:"BUDGET_URL"`
-	ContractURL string          `env:"CONTRACT_URL"`
+	DatasetPath string          `env:"DATASET_PATH"`
 }
 
 func NewUniversityConfig() (*UniversityConfig, error) {
