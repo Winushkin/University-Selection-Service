@@ -428,9 +428,8 @@ type FillRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Ege           int32                  `protobuf:"varint,1,opt,name=ege,proto3" json:"ege,omitempty"`
 	Speciality    string                 `protobuf:"bytes,2,opt,name=speciality,proto3" json:"speciality,omitempty"`
-	EduType       string                 `protobuf:"bytes,3,opt,name=eduType,proto3" json:"eduType,omitempty"`
-	Town          string                 `protobuf:"bytes,4,opt,name=town,proto3" json:"town,omitempty"`
-	Financing     string                 `protobuf:"bytes,5,opt,name=financing,proto3" json:"financing,omitempty"`
+	Town          string                 `protobuf:"bytes,3,opt,name=town,proto3" json:"town,omitempty"`
+	Financing     string                 `protobuf:"bytes,4,opt,name=financing,proto3" json:"financing,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -475,13 +474,6 @@ func (x *FillRequest) GetEge() int32 {
 func (x *FillRequest) GetSpeciality() string {
 	if x != nil {
 		return x.Speciality
-	}
-	return ""
-}
-
-func (x *FillRequest) GetEduType() string {
-	if x != nil {
-		return x.EduType
 	}
 	return ""
 }
@@ -540,9 +532,8 @@ type ProfileResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Ege           int32                  `protobuf:"varint,1,opt,name=ege,proto3" json:"ege,omitempty"`
 	Speciality    string                 `protobuf:"bytes,2,opt,name=speciality,proto3" json:"speciality,omitempty"`
-	EduType       string                 `protobuf:"bytes,3,opt,name=eduType,proto3" json:"eduType,omitempty"`
-	Town          string                 `protobuf:"bytes,4,opt,name=town,proto3" json:"town,omitempty"`
-	Financing     string                 `protobuf:"bytes,5,opt,name=financing,proto3" json:"financing,omitempty"`
+	Town          string                 `protobuf:"bytes,3,opt,name=town,proto3" json:"town,omitempty"`
+	Financing     string                 `protobuf:"bytes,4,opt,name=financing,proto3" json:"financing,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -587,13 +578,6 @@ func (x *ProfileResponse) GetEge() int32 {
 func (x *ProfileResponse) GetSpeciality() string {
 	if x != nil {
 		return x.Speciality
-	}
-	return ""
-}
-
-func (x *ProfileResponse) GetEduType() string {
-	if x != nil {
-		return x.EduType
 	}
 	return ""
 }
@@ -660,9 +644,8 @@ type ProfileDataForAnalyticResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Ege           int32                  `protobuf:"varint,1,opt,name=ege,proto3" json:"ege,omitempty"`
 	Speciality    string                 `protobuf:"bytes,2,opt,name=speciality,proto3" json:"speciality,omitempty"`
-	EduType       string                 `protobuf:"bytes,3,opt,name=eduType,proto3" json:"eduType,omitempty"`
-	Town          string                 `protobuf:"bytes,4,opt,name=town,proto3" json:"town,omitempty"`
-	Financing     string                 `protobuf:"bytes,5,opt,name=financing,proto3" json:"financing,omitempty"`
+	Town          string                 `protobuf:"bytes,3,opt,name=town,proto3" json:"town,omitempty"`
+	Financing     string                 `protobuf:"bytes,4,opt,name=financing,proto3" json:"financing,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -711,13 +694,6 @@ func (x *ProfileDataForAnalyticResponse) GetSpeciality() string {
 	return ""
 }
 
-func (x *ProfileDataForAnalyticResponse) GetEduType() string {
-	if x != nil {
-		return x.EduType
-	}
-	return ""
-}
-
 func (x *ProfileDataForAnalyticResponse) GetTown() string {
 	if x != nil {
 		return x.Town
@@ -762,34 +738,31 @@ const file_user_proto_rawDesc = "" +
 	"\x0fRefreshResponse\x12\x16\n" +
 	"\x06access\x18\x01 \x01(\tR\x06access\x12\x1d\n" +
 	"\n" +
-	"expires_at\x18\x02 \x01(\x03R\texpiresAt\"\x8b\x01\n" +
+	"expires_at\x18\x02 \x01(\x03R\texpiresAt\"q\n" +
 	"\vFillRequest\x12\x10\n" +
 	"\x03ege\x18\x01 \x01(\x05R\x03ege\x12\x1e\n" +
 	"\n" +
 	"speciality\x18\x02 \x01(\tR\n" +
-	"speciality\x12\x18\n" +
-	"\aeduType\x18\x03 \x01(\tR\aeduType\x12\x12\n" +
-	"\x04town\x18\x04 \x01(\tR\x04town\x12\x1c\n" +
-	"\tfinancing\x18\x05 \x01(\tR\tfinancing\"\x0e\n" +
-	"\fFillResponse\"\x8f\x01\n" +
+	"speciality\x12\x12\n" +
+	"\x04town\x18\x03 \x01(\tR\x04town\x12\x1c\n" +
+	"\tfinancing\x18\x04 \x01(\tR\tfinancing\"\x0e\n" +
+	"\fFillResponse\"u\n" +
 	"\x0fProfileResponse\x12\x10\n" +
 	"\x03ege\x18\x01 \x01(\x05R\x03ege\x12\x1e\n" +
 	"\n" +
 	"speciality\x18\x02 \x01(\tR\n" +
-	"speciality\x12\x18\n" +
-	"\aeduType\x18\x03 \x01(\tR\aeduType\x12\x12\n" +
-	"\x04town\x18\x04 \x01(\tR\x04town\x12\x1c\n" +
-	"\tfinancing\x18\x05 \x01(\tR\tfinancing\"/\n" +
+	"speciality\x12\x12\n" +
+	"\x04town\x18\x03 \x01(\tR\x04town\x12\x1c\n" +
+	"\tfinancing\x18\x04 \x01(\tR\tfinancing\"/\n" +
 	"\x1dProfileDataForAnalyticRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\"\x9e\x01\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\"\x84\x01\n" +
 	"\x1eProfileDataForAnalyticResponse\x12\x10\n" +
 	"\x03ege\x18\x01 \x01(\x05R\x03ege\x12\x1e\n" +
 	"\n" +
 	"speciality\x18\x02 \x01(\tR\n" +
-	"speciality\x12\x18\n" +
-	"\aeduType\x18\x03 \x01(\tR\aeduType\x12\x12\n" +
-	"\x04town\x18\x04 \x01(\tR\x04town\x12\x1c\n" +
-	"\tfinancing\x18\x05 \x01(\tR\tfinancing2\xcc\x04\n" +
+	"speciality\x12\x12\n" +
+	"\x04town\x18\x03 \x01(\tR\x04town\x12\x1c\n" +
+	"\tfinancing\x18\x04 \x01(\tR\tfinancing2\xcc\x04\n" +
 	"\vUserService\x12N\n" +
 	"\x06SignUp\x12\x12.api.SignUpRequest\x1a\x13.api.SignUpResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/user/signup\x12J\n" +
 	"\x05Login\x12\x11.api.LoginRequest\x1a\x12.api.LoginResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/api/user/login\x12N\n" +

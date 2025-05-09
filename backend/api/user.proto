@@ -95,9 +95,8 @@ message RefreshResponse {
 message FillRequest {
   int32 ege = 1;
   string speciality = 2;
-  string eduType = 3;
-  string town = 4;
-  string financing = 5;
+  string town = 3;
+  string financing = 4;
 }
 
 message FillResponse {}
@@ -105,9 +104,8 @@ message FillResponse {}
 message ProfileResponse {
   int32 ege = 1;
   string speciality = 2;
-  string eduType = 3;
-  string town = 4;
-  string financing = 5;
+  string town = 3;
+  string financing = 4;
 }
 
 message ProfileDataForAnalyticRequest {
@@ -117,7 +115,6 @@ message ProfileDataForAnalyticRequest {
 message ProfileDataForAnalyticResponse {
   int32 ege = 1;
   string speciality = 2;
-  string eduType = 3;
-  string town = 4;
-  string financing = 5;
+  string town = 3;
+  string financing = 4;
 }

@@ -19,13 +19,13 @@ type UserRepository struct {
 }
 
 const (
-	GetByLoginSQLRequest                   = "SELECT Id, Login, Password, coalesce(Ege, 0), coalesce(Speciality, ''), coalesce(EduType, ''), coalesce(Town, ''), coalesce(Financing, '')  FROM schema_name.users WHERE Login=$1"
+	GetByLoginSQLRequest                   = "SELECT Id, Login, Password, coalesce(Ege, 0), coalesce(Speciality, ''), coalesce(Town, ''), coalesce(Financing, '')  FROM schema_name.users WHERE Login=$1"
 	SaveRefreshTokenSQLRequest             = "INSERT INTO schema_name.refresh_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)"
 	CreateUserSQLRequest                   = "INSERT INTO schema_name.users (Login, Password) VALUES ($1, $2) RETURNING Id"
 	RevokeAllActiveTokensForUserSQLRequest = "DELETE FROM schema_name.refresh_tokens WHERE user_id = $1"
 	GetUserIDByRefreshTokenSQLRequest      = "SELECT user_id FROM schema_name.refresh_tokens WHERE token = $1"
-	GetByIDSQLRequest                      = "SELECT Id, Login, Password, coalesce(Ege, 0), coalesce(Speciality, ''), coalesce(EduType, ''), coalesce(Town, ''), coalesce(Financing, '') FROM schema_name.users WHERE Id = $1"
-	FillInfoSQLRequest                     = "UPDATE schema_name.users SET Ege = $1, Speciality = $2, EduType = $3, Town = $4, Financing = $5 WHERE Id = $6"
+	GetByIDSQLRequest                      = "SELECT Id, Login, Password, coalesce(Ege, 0), coalesce(Speciality, ''), coalesce(Town, ''), coalesce(Financing, '') FROM schema_name.users WHERE Id = $1"
+	FillInfoSQLRequest                     = "UPDATE schema_name.users SET Ege = $1, Speciality = $2, Town = $3, Financing = $4 WHERE Id = $5"
 )
 
 func NewUserRepository(ctx context.Context, cfg postgres.Config) (*UserRepository, error) {
@@ -40,7 +40,7 @@ func (ur *UserRepository) GetByLogin(ctx context.Context, login string) (*entiti
 	user := &entities.User{}
 	queryRow := ur.pg.QueryRow(ctx, GetByLoginSQLRequest, login)
 	err := queryRow.Scan(&user.Id, &user.Login, &user.Password, &user.Ege,
-		&user.Speciality, &user.EduType, &user.Town, &user.Financing)
+		&user.Speciality, &user.Town, &user.Financing)
 	if err != nil && errors.Is(err, pgx.ErrNoRows) {
 		return nil, status.Error(codes.NotFound, "User not found")
 	} else if err != nil {
@@ -53,7 +53,7 @@ func (ur *UserRepository) GetByID(ctx context.Context, id int) (*entities.User, 
 	user := &entities.User{}
 	queryRow := ur.pg.QueryRow(ctx, GetByIDSQLRequest, id)
 	err := queryRow.Scan(&user.Id, &user.Login, &user.Password, &user.Ege,
-		&user.Speciality, &user.EduType, &user.Town, &user.Financing)
+		&user.Speciality, &user.Town, &user.Financing)
 	if err != nil && errors.Is(err, pgx.ErrNoRows) {
 		return nil, status.Error(codes.NotFound, "User not found")
 	} else if err != nil {
@@ -100,7 +100,7 @@ func (ur *UserRepository) GetUserIDByRefreshToken(ctx context.Context, refreshTo
 }
 
 func (ur *UserRepository) FillInfo(ctx context.Context, user *entities.User) error {
-	_, err := ur.pg.Exec(ctx, FillInfoSQLRequest, user.Ege, user.Speciality, user.EduType,
+	_, err := ur.pg.Exec(ctx, FillInfoSQLRequest, user.Ege, user.Speciality,
 		user.Town, user.Financing, user.Id)
 	if err != nil {
 		return fmt.Errorf("FillInfo: failed to fill info: %w", err)

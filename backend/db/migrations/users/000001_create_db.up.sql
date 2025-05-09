@@ -6,7 +6,6 @@ create table if not exists schema_name.users (
     Password TEXT,
     Ege INT,
     Speciality TEXT,
-    EduType TEXT,
     Town TEXT,
     Financing TEXT
 );

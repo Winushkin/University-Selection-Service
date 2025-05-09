@@ -160,7 +160,6 @@ func (s *Server) Fill(ctx context.Context, request *api.FillRequest) (*api.FillR
 		Id:         id,
 		Ege:        int(request.Ege),
 		Speciality: request.Speciality,
-		EduType:    request.EduType,
 		Town:       request.Town,
 		Financing:  request.Financing,
 	}
@@ -192,7 +191,6 @@ func (s *Server) Profile(ctx context.Context, _ *emptypb.Empty) (*api.ProfileRes
 	return &api.ProfileResponse{
 		Ege:        int32(usr.Ege),
 		Speciality: usr.Speciality,
-		EduType:    usr.EduType,
 		Town:       usr.Town,
 		Financing:  usr.Financing,
 	}, nil
@@ -206,7 +204,6 @@ func (s *Server) ProfileDataForAnalytic(ctx context.Context, request *api.Profil
 	return &api.ProfileDataForAnalyticResponse{
 		Ege:        int32(usr.Ege),
 		Speciality: usr.Speciality,
-		EduType:    usr.EduType,
 		Town:       usr.Town,
 		Financing:  usr.Financing,
 	}, nil

@@ -6,7 +6,6 @@ type User struct {
 	Password   string
 	Ege        int
 	Speciality string
-	EduType    string
 	Town       string
 	Financing  string
 }

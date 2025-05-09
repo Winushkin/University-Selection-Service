@@ -339,9 +339,6 @@
         "speciality": {
           "type": "string"
         },
-        "eduType": {
-          "type": "string"
-        },
         "town": {
           "type": "string"
         },
@@ -409,9 +406,6 @@
         "speciality": {
           "type": "string"
         },
-        "eduType": {
-          "type": "string"
-        },
         "town": {
           "type": "string"
         },
@@ -428,9 +422,6 @@
           "format": "int32"
         },
         "speciality": {
-          "type": "string"
-        },
-        "eduType": {
           "type": "string"
         },
         "town": {
