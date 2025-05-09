@@ -17,13 +17,13 @@ func Set(collection []string) ([]string, error) {
 		CollectionMap[item] = true
 	}
 
-	for item, _ := range CollectionMap {
+	for item := range CollectionMap {
 		CollectionSet = append(CollectionSet, item)
 	}
 	return CollectionSet, nil
 }
 
-func ParseUniversities(ctx context.Context, path string) ([]entities.University, []string, []string, error) {
+func ParseUniversities(_ context.Context, path string) ([]entities.University, []string, []string, error) {
 	f, err := excelize.OpenFile(path)
 	if err != nil {
 		fmt.Println(err)
