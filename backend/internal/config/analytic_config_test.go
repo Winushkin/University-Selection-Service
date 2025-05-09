@@ -75,7 +75,7 @@ func TestNewEnvFileError(t *testing.T) {
 	})
 	defer unset()
 
-	cfg, err := New()
+	cfg, err := NewAnalyticCfg()
 	assert.NoError(t, err)
 	assert.NotNil(t, cfg)
 }
