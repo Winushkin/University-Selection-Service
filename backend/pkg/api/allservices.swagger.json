@@ -320,11 +320,11 @@
         "speciality": {
           "type": "string"
         },
-        "university": {
+        "universities": {
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/apiUniversities"
+            "$ref": "#/definitions/apiUniversity"
           }
         }
       }
@@ -478,7 +478,7 @@
         }
       }
     },
-    "apiUniversities": {
+    "apiUniversity": {
       "type": "object",
       "properties": {
         "name": {

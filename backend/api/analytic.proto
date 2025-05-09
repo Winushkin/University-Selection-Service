@@ -23,7 +23,7 @@ service Analytic {
   }
 }
 
-message Universities {
+message University {
   string name = 1;
   string region = 2;
   int32 BudgetPoints = 3;
@@ -53,5 +53,5 @@ message AnalyzeRequest {
 
 message AnalyzeResponse {
   string speciality = 1;
-  repeated Universities university = 2;
+  repeated University universities = 2;
 }

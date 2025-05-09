@@ -23,7 +23,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type Universities struct {
+type University struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	Name           string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Region         string                 `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
@@ -41,20 +41,20 @@ type Universities struct {
 	sizeCache      protoimpl.SizeCache
 }
 
-func (x *Universities) Reset() {
-	*x = Universities{}
+func (x *University) Reset() {
+	*x = University{}
 	mi := &file_analytic_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Universities) String() string {
+func (x *University) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Universities) ProtoMessage() {}
+func (*University) ProtoMessage() {}
 
-func (x *Universities) ProtoReflect() protoreflect.Message {
+func (x *University) ProtoReflect() protoreflect.Message {
 	mi := &file_analytic_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -66,89 +66,89 @@ func (x *Universities) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Universities.ProtoReflect.Descriptor instead.
-func (*Universities) Descriptor() ([]byte, []int) {
+// Deprecated: Use University.ProtoReflect.Descriptor instead.
+func (*University) Descriptor() ([]byte, []int) {
 	return file_analytic_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Universities) GetName() string {
+func (x *University) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *Universities) GetRegion() string {
+func (x *University) GetRegion() string {
 	if x != nil {
 		return x.Region
 	}
 	return ""
 }
 
-func (x *Universities) GetBudgetPoints() int32 {
+func (x *University) GetBudgetPoints() int32 {
 	if x != nil {
 		return x.BudgetPoints
 	}
 	return 0
 }
 
-func (x *Universities) GetContractPoints() int32 {
+func (x *University) GetContractPoints() int32 {
 	if x != nil {
 		return x.ContractPoints
 	}
 	return 0
 }
 
-func (x *Universities) GetCost() int64 {
+func (x *University) GetCost() int64 {
 	if x != nil {
 		return x.Cost
 	}
 	return 0
 }
 
-func (x *Universities) GetPrestige() int32 {
+func (x *University) GetPrestige() int32 {
 	if x != nil {
 		return x.Prestige
 	}
 	return 0
 }
 
-func (x *Universities) GetRank() int32 {
+func (x *University) GetRank() int32 {
 	if x != nil {
 		return x.Rank
 	}
 	return 0
 }
 
-func (x *Universities) GetQuality() int32 {
+func (x *University) GetQuality() int32 {
 	if x != nil {
 		return x.Quality
 	}
 	return 0
 }
 
-func (x *Universities) GetDormitory() bool {
+func (x *University) GetDormitory() bool {
 	if x != nil {
 		return x.Dormitory
 	}
 	return false
 }
 
-func (x *Universities) GetLabs() bool {
+func (x *University) GetLabs() bool {
 	if x != nil {
 		return x.Labs
 	}
 	return false
 }
 
-func (x *Universities) GetSport() bool {
+func (x *University) GetSport() bool {
 	if x != nil {
 		return x.Sport
 	}
 	return false
 }
 
-func (x *Universities) GetScholarship() bool {
+func (x *University) GetScholarship() bool {
 	if x != nil {
 		return x.Scholarship
 	}
@@ -274,7 +274,7 @@ func (x *AnalyzeRequest) GetEducationCost() int64 {
 type AnalyzeResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Speciality    string                 `protobuf:"bytes,1,opt,name=speciality,proto3" json:"speciality,omitempty"`
-	University    []*Universities        `protobuf:"bytes,2,rep,name=university,proto3" json:"university,omitempty"`
+	Universities  []*University          `protobuf:"bytes,2,rep,name=universities,proto3" json:"universities,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -316,9 +316,9 @@ func (x *AnalyzeResponse) GetSpeciality() string {
 	return ""
 }
 
-func (x *AnalyzeResponse) GetUniversity() []*Universities {
+func (x *AnalyzeResponse) GetUniversities() []*University {
 	if x != nil {
-		return x.University
+		return x.Universities
 	}
 	return nil
 }
@@ -327,8 +327,9 @@ var File_analytic_proto protoreflect.FileDescriptor
 
 const file_analytic_proto_rawDesc = "" +
 	"\n" +
-	"\x0eanalytic.proto\x12\x03api\x1a\x1cgoogle/api/annotations.proto\x1a\x18google/api/openapi.proto\"\xce\x02\n" +
-	"\fUniversities\x12\x12\n" +
+	"\x0eanalytic.proto\x12\x03api\x1a\x1cgoogle/api/annotations.proto\x1a\x18google/api/openapi.proto\"\xcc\x02\n" +
+	"\n" +
+	"University\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x16\n" +
 	"\x06region\x18\x02 \x01(\tR\x06region\x12\"\n" +
 	"\fBudgetPoints\x18\x03 \x01(\x05R\fBudgetPoints\x12&\n" +
@@ -353,14 +354,12 @@ const file_analytic_proto_rawDesc = "" +
 	"\x0escientificLabs\x18\b \x01(\bR\x0escientificLabs\x122\n" +
 	"\x14sportsInfrastructure\x18\t \x01(\bR\x14sportsInfrastructure\x12$\n" +
 	"\reducationCost\x18\n" +
-	" \x01(\x03R\reducationCost\"d\n" +
+	" \x01(\x03R\reducationCost\"f\n" +
 	"\x0fAnalyzeResponse\x12\x1e\n" +
 	"\n" +
 	"speciality\x18\x01 \x01(\tR\n" +
-	"speciality\x121\n" +
-	"\n" +
-	"university\x18\x02 \x03(\v2\x11.api.UniversitiesR\n" +
-	"university2b\n" +
+	"speciality\x123\n" +
+	"\funiversities\x18\x02 \x03(\v2\x0f.api.UniversityR\funiversities2b\n" +
 	"\bAnalytic\x12V\n" +
 	"\aAnalyze\x12\x13.api.AnalyzeRequest\x1a\x14.api.AnalyzeResponse\" \x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/api/analytic/analyzeB&\x92A\x12\x1a\flocalhost:80*\x02\x01\x02Z\x0fbackend/pkg/apib\x06proto3"
 
@@ -378,12 +377,12 @@ func file_analytic_proto_rawDescGZIP() []byte {
 
 var file_analytic_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_analytic_proto_goTypes = []any{
-	(*Universities)(nil),    // 0: api.Universities
+	(*University)(nil),      // 0: api.University
 	(*AnalyzeRequest)(nil),  // 1: api.AnalyzeRequest
 	(*AnalyzeResponse)(nil), // 2: api.AnalyzeResponse
 }
 var file_analytic_proto_depIdxs = []int32{
-	0, // 0: api.AnalyzeResponse.university:type_name -> api.Universities
+	0, // 0: api.AnalyzeResponse.universities:type_name -> api.University
 	1, // 1: api.Analytic.Analyze:input_type -> api.AnalyzeRequest
 	2, // 2: api.Analytic.Analyze:output_type -> api.AnalyzeResponse
 	2, // [2:3] is the sub-list for method output_type
