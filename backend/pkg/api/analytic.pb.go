@@ -24,21 +24,21 @@ const (
 )
 
 type Universities struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Region        string                 `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
-	Speciality    string                 `protobuf:"bytes,3,opt,name=speciality,proto3" json:"speciality,omitempty"`
-	Points        int32                  `protobuf:"varint,4,opt,name=points,proto3" json:"points,omitempty"`
-	Cost          int64                  `protobuf:"varint,5,opt,name=cost,proto3" json:"cost,omitempty"`
-	Prestige      int32                  `protobuf:"varint,6,opt,name=prestige,proto3" json:"prestige,omitempty"`
-	Rank          int32                  `protobuf:"varint,7,opt,name=rank,proto3" json:"rank,omitempty"`
-	Quality       int32                  `protobuf:"varint,8,opt,name=quality,proto3" json:"quality,omitempty"`
-	Dormitory     bool                   `protobuf:"varint,9,opt,name=dormitory,proto3" json:"dormitory,omitempty"`
-	Labs          bool                   `protobuf:"varint,10,opt,name=labs,proto3" json:"labs,omitempty"`
-	Sport         bool                   `protobuf:"varint,11,opt,name=sport,proto3" json:"sport,omitempty"`
-	Scholarship   bool                   `protobuf:"varint,12,opt,name=scholarship,proto3" json:"scholarship,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Name           string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Region         string                 `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
+	BudgetPoints   int32                  `protobuf:"varint,3,opt,name=BudgetPoints,proto3" json:"BudgetPoints,omitempty"`
+	ContractPoints int32                  `protobuf:"varint,4,opt,name=ContractPoints,proto3" json:"ContractPoints,omitempty"`
+	Cost           int64                  `protobuf:"varint,5,opt,name=cost,proto3" json:"cost,omitempty"`
+	Prestige       int32                  `protobuf:"varint,6,opt,name=prestige,proto3" json:"prestige,omitempty"`
+	Rank           int32                  `protobuf:"varint,7,opt,name=rank,proto3" json:"rank,omitempty"`
+	Quality        int32                  `protobuf:"varint,8,opt,name=quality,proto3" json:"quality,omitempty"`
+	Dormitory      bool                   `protobuf:"varint,9,opt,name=dormitory,proto3" json:"dormitory,omitempty"`
+	Labs           bool                   `protobuf:"varint,10,opt,name=labs,proto3" json:"labs,omitempty"`
+	Sport          bool                   `protobuf:"varint,11,opt,name=sport,proto3" json:"sport,omitempty"`
+	Scholarship    bool                   `protobuf:"varint,12,opt,name=scholarship,proto3" json:"scholarship,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Universities) Reset() {
@@ -85,16 +85,16 @@ func (x *Universities) GetRegion() string {
 	return ""
 }
 
-func (x *Universities) GetSpeciality() string {
+func (x *Universities) GetBudgetPoints() int32 {
 	if x != nil {
-		return x.Speciality
+		return x.BudgetPoints
 	}
-	return ""
+	return 0
 }
 
-func (x *Universities) GetPoints() int32 {
+func (x *Universities) GetContractPoints() int32 {
 	if x != nil {
-		return x.Points
+		return x.ContractPoints
 	}
 	return 0
 }
@@ -273,7 +273,8 @@ func (x *AnalyzeRequest) GetEducationCost() int64 {
 
 type AnalyzeResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	University    []*Universities        `protobuf:"bytes,1,rep,name=university,proto3" json:"university,omitempty"`
+	Speciality    string                 `protobuf:"bytes,1,opt,name=speciality,proto3" json:"speciality,omitempty"`
+	University    []*Universities        `protobuf:"bytes,2,rep,name=university,proto3" json:"university,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -308,6 +309,13 @@ func (*AnalyzeResponse) Descriptor() ([]byte, []int) {
 	return file_analytic_proto_rawDescGZIP(), []int{2}
 }
 
+func (x *AnalyzeResponse) GetSpeciality() string {
+	if x != nil {
+		return x.Speciality
+	}
+	return ""
+}
+
 func (x *AnalyzeResponse) GetUniversity() []*Universities {
 	if x != nil {
 		return x.University
@@ -319,14 +327,12 @@ var File_analytic_proto protoreflect.FileDescriptor
 
 const file_analytic_proto_rawDesc = "" +
 	"\n" +
-	"\x0eanalytic.proto\x12\x03api\x1a\x1cgoogle/api/annotations.proto\x1a\x18google/api/openapi.proto\"\xba\x02\n" +
+	"\x0eanalytic.proto\x12\x03api\x1a\x1cgoogle/api/annotations.proto\x1a\x18google/api/openapi.proto\"\xce\x02\n" +
 	"\fUniversities\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x16\n" +
-	"\x06region\x18\x02 \x01(\tR\x06region\x12\x1e\n" +
-	"\n" +
-	"speciality\x18\x03 \x01(\tR\n" +
-	"speciality\x12\x16\n" +
-	"\x06points\x18\x04 \x01(\x05R\x06points\x12\x12\n" +
+	"\x06region\x18\x02 \x01(\tR\x06region\x12\"\n" +
+	"\fBudgetPoints\x18\x03 \x01(\x05R\fBudgetPoints\x12&\n" +
+	"\x0eContractPoints\x18\x04 \x01(\x05R\x0eContractPoints\x12\x12\n" +
 	"\x04cost\x18\x05 \x01(\x03R\x04cost\x12\x1a\n" +
 	"\bprestige\x18\x06 \x01(\x05R\bprestige\x12\x12\n" +
 	"\x04rank\x18\a \x01(\x05R\x04rank\x12\x18\n" +
@@ -347,10 +353,13 @@ const file_analytic_proto_rawDesc = "" +
 	"\x0escientificLabs\x18\b \x01(\bR\x0escientificLabs\x122\n" +
 	"\x14sportsInfrastructure\x18\t \x01(\bR\x14sportsInfrastructure\x12$\n" +
 	"\reducationCost\x18\n" +
-	" \x01(\x03R\reducationCost\"D\n" +
-	"\x0fAnalyzeResponse\x121\n" +
+	" \x01(\x03R\reducationCost\"d\n" +
+	"\x0fAnalyzeResponse\x12\x1e\n" +
 	"\n" +
-	"university\x18\x01 \x03(\v2\x11.api.UniversitiesR\n" +
+	"speciality\x18\x01 \x01(\tR\n" +
+	"speciality\x121\n" +
+	"\n" +
+	"university\x18\x02 \x03(\v2\x11.api.UniversitiesR\n" +
 	"university2b\n" +
 	"\bAnalytic\x12V\n" +
 	"\aAnalyze\x12\x13.api.AnalyzeRequest\x1a\x14.api.AnalyzeResponse\" \x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/api/analytic/analyzeB&\x92A\x12\x1a\flocalhost:80*\x02\x01\x02Z\x0fbackend/pkg/apib\x06proto3"

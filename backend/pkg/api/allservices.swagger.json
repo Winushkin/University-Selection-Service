@@ -317,6 +317,9 @@
     "apiAnalyzeResponse": {
       "type": "object",
       "properties": {
+        "speciality": {
+          "type": "string"
+        },
         "university": {
           "type": "array",
           "items": {
@@ -493,10 +496,11 @@
         "region": {
           "type": "string"
         },
-        "speciality": {
-          "type": "string"
+        "BudgetPoints": {
+          "type": "integer",
+          "format": "int32"
         },
-        "points": {
+        "ContractPoints": {
           "type": "integer",
           "format": "int32"
         },

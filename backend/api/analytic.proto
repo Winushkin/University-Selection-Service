@@ -26,17 +26,16 @@ service Analytic {
 message Universities {
   string name = 1;
   string region = 2;
-  string speciality = 3;
-  int32 BudgetPoints = 4;
-  int32 ContractPoints = 5;
-  int64 cost = 6;
-  int32 prestige = 7;
-  int32 rank = 8;
-  int32 quality = 9;
-  bool dormitory = 10;
-  bool labs = 11;
-  bool sport = 12;
-  bool scholarship = 13;
+  int32 BudgetPoints = 3;
+  int32 ContractPoints = 4;
+  int64 cost = 5;
+  int32 prestige = 6;
+  int32 rank = 7;
+  int32 quality = 8;
+  bool dormitory = 9;
+  bool labs = 10;
+  bool sport = 11;
+  bool scholarship = 12;
 }
 
 message AnalyzeRequest {
@@ -53,5 +52,6 @@ message AnalyzeRequest {
 }
 
 message AnalyzeResponse {
-  repeated Universities university = 1;
+  string speciality = 1;
+  repeated Universities university = 2;
 }
