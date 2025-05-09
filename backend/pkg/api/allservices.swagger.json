@@ -6,7 +6,7 @@
   },
   "tags": [
     {
-      "name": "AnalyticService"
+      "name": "Analytic"
     },
     {
       "name": "UserService"
@@ -24,6 +24,70 @@
     "application/json"
   ],
   "paths": {
+    "/api.UserService/ProfileDataForAnalytic": {
+      "post": {
+        "operationId": "UserService_ProfileDataForAnalytic",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiProfileDataForAnalyticResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiProfileDataForAnalyticRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/api/analytic/analyze": {
+      "post": {
+        "operationId": "Analytic_Analyze",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiAnalyzeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiAnalyzeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Analytic"
+        ]
+      }
+    },
     "/api/user/fill": {
       "post": {
         "operationId": "UserService_Fill",
@@ -208,8 +272,59 @@
     }
   },
   "definitions": {
-    "apiFactorsResponse": {
-      "type": "object"
+    "apiAnalyzeRequest": {
+      "type": "object",
+      "properties": {
+        "ratingToPrestige": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "ratingToEducationQuality": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "ratingToScholarshipPrograms": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "prestigeToEducationQuality": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "prestigeToScholarshipPrograms": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "educationQualityToScholarshipPrograms": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "dormitory": {
+          "type": "boolean"
+        },
+        "scientificLabs": {
+          "type": "boolean"
+        },
+        "sportsInfrastructure": {
+          "type": "boolean"
+        },
+        "educationCost": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "apiAnalyzeResponse": {
+      "type": "object",
+      "properties": {
+        "university": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/apiUniversities"
+          }
+        }
+      }
     },
     "apiFillRequest": {
       "type": "object",
@@ -271,6 +386,36 @@
     },
     "apiLogoutResponse": {
       "type": "object"
+    },
+    "apiProfileDataForAnalyticRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "apiProfileDataForAnalyticResponse": {
+      "type": "object",
+      "properties": {
+        "ege": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "speciality": {
+          "type": "string"
+        },
+        "eduType": {
+          "type": "string"
+        },
+        "town": {
+          "type": "string"
+        },
+        "financing": {
+          "type": "string"
+        }
+      }
     },
     "apiProfileResponse": {
       "type": "object",
@@ -336,6 +481,52 @@
         "expiresAt": {
           "type": "string",
           "format": "int64"
+        }
+      }
+    },
+    "apiUniversities": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "speciality": {
+          "type": "string"
+        },
+        "points": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "cost": {
+          "type": "string",
+          "format": "int64"
+        },
+        "prestige": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "rank": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "quality": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "dormitory": {
+          "type": "boolean"
+        },
+        "labs": {
+          "type": "boolean"
+        },
+        "sport": {
+          "type": "boolean"
+        },
+        "scholarship": {
+          "type": "boolean"
         }
       }
     },

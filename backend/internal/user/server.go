@@ -197,3 +197,17 @@ func (s *Server) Profile(ctx context.Context, _ *emptypb.Empty) (*api.ProfileRes
 		Financing:  usr.Financing,
 	}, nil
 }
+
+func (s *Server) ProfileDataForAnalytic(ctx context.Context, request *api.ProfileDataForAnalyticRequest) (*api.ProfileDataForAnalyticResponse, error) {
+	usr, err := s.rep.GetByID(ctx, int(request.Id))
+	if err != nil {
+		return nil, status.Error(codes.NotFound, "User not found")
+	}
+	return &api.ProfileDataForAnalyticResponse{
+		Ege:        int32(usr.Ege),
+		Speciality: usr.Speciality,
+		EduType:    usr.EduType,
+		Town:       usr.Town,
+		Financing:  usr.Financing,
+	}, nil
+}

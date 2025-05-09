@@ -20,12 +20,13 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	UserService_SignUp_FullMethodName  = "/api.UserService/SignUp"
-	UserService_Login_FullMethodName   = "/api.UserService/Login"
-	UserService_Logout_FullMethodName  = "/api.UserService/Logout"
-	UserService_Refresh_FullMethodName = "/api.UserService/Refresh"
-	UserService_Fill_FullMethodName    = "/api.UserService/Fill"
-	UserService_Profile_FullMethodName = "/api.UserService/Profile"
+	UserService_SignUp_FullMethodName                 = "/api.UserService/SignUp"
+	UserService_Login_FullMethodName                  = "/api.UserService/Login"
+	UserService_Logout_FullMethodName                 = "/api.UserService/Logout"
+	UserService_Refresh_FullMethodName                = "/api.UserService/Refresh"
+	UserService_Fill_FullMethodName                   = "/api.UserService/Fill"
+	UserService_Profile_FullMethodName                = "/api.UserService/Profile"
+	UserService_ProfileDataForAnalytic_FullMethodName = "/api.UserService/ProfileDataForAnalytic"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -38,6 +39,7 @@ type UserServiceClient interface {
 	Refresh(ctx context.Context, in *RefreshRequest, opts ...grpc.CallOption) (*RefreshResponse, error)
 	Fill(ctx context.Context, in *FillRequest, opts ...grpc.CallOption) (*FillResponse, error)
 	Profile(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ProfileResponse, error)
+	ProfileDataForAnalytic(ctx context.Context, in *ProfileDataForAnalyticRequest, opts ...grpc.CallOption) (*ProfileDataForAnalyticResponse, error)
 }
 
 type userServiceClient struct {
@@ -108,6 +110,16 @@ func (c *userServiceClient) Profile(ctx context.Context, in *emptypb.Empty, opts
 	return out, nil
 }
 
+func (c *userServiceClient) ProfileDataForAnalytic(ctx context.Context, in *ProfileDataForAnalyticRequest, opts ...grpc.CallOption) (*ProfileDataForAnalyticResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ProfileDataForAnalyticResponse)
+	err := c.cc.Invoke(ctx, UserService_ProfileDataForAnalytic_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility.
@@ -118,6 +130,7 @@ type UserServiceServer interface {
 	Refresh(context.Context, *RefreshRequest) (*RefreshResponse, error)
 	Fill(context.Context, *FillRequest) (*FillResponse, error)
 	Profile(context.Context, *emptypb.Empty) (*ProfileResponse, error)
+	ProfileDataForAnalytic(context.Context, *ProfileDataForAnalyticRequest) (*ProfileDataForAnalyticResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -145,6 +158,9 @@ func (UnimplementedUserServiceServer) Fill(context.Context, *FillRequest) (*Fill
 }
 func (UnimplementedUserServiceServer) Profile(context.Context, *emptypb.Empty) (*ProfileResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Profile not implemented")
+}
+func (UnimplementedUserServiceServer) ProfileDataForAnalytic(context.Context, *ProfileDataForAnalyticRequest) (*ProfileDataForAnalyticResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProfileDataForAnalytic not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 func (UnimplementedUserServiceServer) testEmbeddedByValue()                     {}
@@ -275,6 +291,24 @@ func _UserService_Profile_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_ProfileDataForAnalytic_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProfileDataForAnalyticRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).ProfileDataForAnalytic(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_ProfileDataForAnalytic_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).ProfileDataForAnalytic(ctx, req.(*ProfileDataForAnalyticRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -305,6 +339,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Profile",
 			Handler:    _UserService_Profile_Handler,
+		},
+		{
+			MethodName: "ProfileDataForAnalytic",
+			Handler:    _UserService_ProfileDataForAnalytic_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

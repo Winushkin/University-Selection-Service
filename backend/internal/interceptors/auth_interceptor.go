@@ -1,7 +1,6 @@
 package interceptors
 
 import (
-	"University-Selection-Service/internal/config"
 	"context"
 	"fmt"
 	"github.com/golang-jwt/jwt/v5"
@@ -13,7 +12,7 @@ import (
 	"time"
 )
 
-func AuthInterceptor(cfg *config.UserConfig) grpc.UnaryServerInterceptor {
+func AuthInterceptor(secret string) grpc.UnaryServerInterceptor {
 	return func(
 		ctx context.Context,
 		req interface{},
@@ -45,7 +44,7 @@ func AuthInterceptor(cfg *config.UserConfig) grpc.UnaryServerInterceptor {
 			return nil, status.Error(codes.Unauthenticated, "Invalid Authorization header: must start with Bearer")
 		}
 
-		id, err := validateToken(token, cfg)
+		id, err := validateToken(token, secret)
 		if err != nil {
 			return nil, status.Error(codes.Unauthenticated, err.Error())
 		}
@@ -55,12 +54,12 @@ func AuthInterceptor(cfg *config.UserConfig) grpc.UnaryServerInterceptor {
 	}
 }
 
-func validateToken(accessToken string, cfg *config.UserConfig) (int, error) {
+func validateToken(accessToken string, secret string) (int, error) {
 	token, err := jwt.Parse(accessToken, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("ValidateToken: unexpected signing method: %v", token.Header["alg"])
 		}
-		return []byte(cfg.JWTSecret), nil
+		return []byte(secret), nil
 	})
 
 	if err != nil {

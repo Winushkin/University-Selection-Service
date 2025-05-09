@@ -1,15 +1,16 @@
 package main
 
 import (
+	analytic "University-Selection-Service/internal/analytic/server"
 	"University-Selection-Service/internal/config"
 	"University-Selection-Service/internal/interceptors"
-	"University-Selection-Service/internal/user"
 	"University-Selection-Service/pkg/api"
 	"University-Selection-Service/pkg/logger"
 	"University-Selection-Service/pkg/postgres"
 	"context"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/reflection"
@@ -21,19 +22,21 @@ func main() {
 	ctx, _ = logger.NewLogger(ctx)
 	log := logger.GetLoggerFromCtx(ctx)
 
-	cfg, err := config.NewUserConfig()
+	cfg, err := config.NewAnalyticCfg()
 	if cfg == nil || err != nil {
 		log.Error(ctx, "failed to load configuration", zap.Error(err))
 		return
 	}
 
-	db, err := postgres.New(ctx, cfg.Postgres, "users")
+	log.Info(ctx, cfg.Postgres.Port)
+
+	db, err := postgres.New(ctx, cfg.Postgres)
 	if err != nil {
-		log.Error(ctx, "failed to connect to users postgres", zap.Error(err))
+		log.Error(ctx, "failed to connect to integration postgres", zap.Error(err))
 		return
 	}
 	defer db.Close()
-	log.Info(ctx, "Successfully connected to users postgres")
+	log.Info(ctx, "Successfully connected to integration postgres")
 
 	lis, err := net.Listen("tcp", ":"+cfg.RESTPort)
 	if err != nil {
@@ -42,23 +45,39 @@ func main() {
 	}
 	log.Info(ctx, "Listening on", zap.String("port", cfg.RESTPort))
 
-	srv, err := user.New(ctx, cfg, cfg.JWTSecret)
+	conn, err := grpc.NewClient(":", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		log.Error(ctx, "failed to create users service", zap.Error(err))
+		log.Error(ctx, "failed to connect to user server", zap.Error(err))
+	}
+	defer func(conn *grpc.ClientConn) {
+		err := conn.Close()
+		if err != nil {
+			log.Error(ctx, "failed to close client connection", zap.Error(err))
+		}
+	}(conn)
+	client := api.NewUserServiceClient(conn)
+
+	srv, err := analytic.New(ctx, cfg, client)
+	if err != nil {
+		log.Error(ctx, "failed to create analytic service", zap.Error(err))
 		return
 	}
+
 	server := grpc.NewServer(
 		grpc.UnaryInterceptor(interceptors.AuthInterceptor(cfg.JWTSecret)),
 	)
-	api.RegisterUserServiceServer(server, srv)
+
+	api.RegisterAnalyticServer(server, srv)
 	reflection.Register(server)
+
 	if err = server.Serve(lis); err != nil {
-		log.Error(ctx, "failed to serve gRPC server", zap.Error(err))
+		log.Error(ctx, "failed to serve analytic server", zap.Error(err))
+		return
 	}
+
 	healthServer := health.NewServer()
 
 	grpc_health_v1.RegisterHealthServer(server, healthServer)
 
 	healthServer.SetServingStatus("", grpc_health_v1.HealthCheckResponse_SERVING)
-
 }
