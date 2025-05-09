@@ -2,10 +2,12 @@ package repositories
 
 import (
 	"University-Selection-Service/internal/entities"
+	"University-Selection-Service/pkg/logger"
 	"University-Selection-Service/pkg/postgres"
 	"context"
 	"fmt"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"go.uber.org/zap"
 	"strings"
 )
 
@@ -15,6 +17,13 @@ const (
 	getRegionIdByNameRequest     = "SELECT id FROM universities.regions WHERE name = $1"
 	getUniversityIdByNameRequest = "SELECT id FROM universities.universities WHERE name = $1"
 )
+
+type UniversityRepo interface {
+	FillRegions(ctx context.Context, regions []string) error
+	InsertUniversity(ctx context.Context, u *entities.University) error
+	InsertSpeciality(ctx context.Context, s *entities.Speciality) error
+	GetUniversitiesBySpeciality(ctx context.Context, specialityName string) ([]*entities.University, error)
+}
 
 type UniversityRepository struct {
 	pg *pgxpool.Pool
@@ -77,6 +86,7 @@ func (ur *UniversityRepository) InsertUniversity(ctx context.Context, u *entitie
 		u.Quality, u.Scholarship, u.Dormitory,
 		u.Labs, u.Sport, regionId)
 	if err != nil {
+		logger.GetLoggerFromCtx(ctx).Info(ctx, "", zap.String("Name", u.Name))
 		return fmt.Errorf("FillUniversity: %w", err)
 	}
 	return nil
