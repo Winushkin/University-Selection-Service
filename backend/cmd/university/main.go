@@ -5,11 +5,11 @@ import (
 	"University-Selection-Service/internal/entities"
 	"University-Selection-Service/internal/parser"
 	"University-Selection-Service/internal/repositories"
+	"University-Selection-Service/internal/university"
 	"University-Selection-Service/pkg/logger"
 	"University-Selection-Service/pkg/postgres"
 	"context"
 	"go.uber.org/zap"
-	"sync"
 )
 
 func main() {
@@ -23,11 +23,20 @@ func main() {
 		return
 	}
 
-	budget, contract, err := parser.ParseAllData(ctx, cfg)
+	universities, specialitiesSet, regions, err := parser.ParseUniversities(ctx, cfg.DatasetPath)
+	if err != nil {
+		log.Error(ctx, "cannot parse universities", zap.Error(err))
+	}
 
-	if err != nil || budget == nil || contract == nil {
-		log.Error(ctx, "failed to parse all data", zap.Error(err))
-		return
+	for i := 0; i < len(universities); i++ {
+		university.FillUniversityData(&universities[i], i+1)
+
+	}
+
+	specialities := make([]*entities.Speciality, 0)
+	for _, univer := range universities {
+		specs := university.CreateSpecialitiesByUniversity(specialitiesSet, &univer)
+		specialities = append(specialities, specs...)
 	}
 
 	db, err := postgres.New(ctx, cfg.Postgres, "universities")
@@ -43,37 +52,23 @@ func main() {
 		return
 	}
 
-	var wg sync.WaitGroup
-	wg.Add(2)
+	err = repository.FillRegions(ctx, regions)
+	if err != nil {
+		log.Error(ctx, "failed to fill regions", zap.Error(err))
+	}
 
-	go func(ctx context.Context, ctrc *[]*entities.University, rep *repositories.UniversityRepository) {
-		defer wg.Done()
-		prestige := 0
-		for _, university := range *ctrc {
-			prestige++
-			university.Prestige = prestige
-			err = rep.FillContract(ctx, university)
-			if err != nil {
-				log.Error(ctx, "failed to fill contract", zap.Error(err))
-				return
-			}
+	for _, univer := range universities {
+		err = repository.InsertUniversity(ctx, &univer)
+		if err != nil {
+			log.Error(ctx, "failed to fill university", zap.Error(err))
 		}
-	}(ctx, contract, repository)
+	}
 
-	go func(ctx context.Context, bdg *[]*entities.University, rep *repositories.UniversityRepository) {
-		defer wg.Done()
-		prestige := 0
-		for _, university := range *bdg {
-			prestige++
-			university.Prestige = prestige
-			err = rep.FillBudget(ctx, university)
-			if err != nil {
-				log.Error(ctx, "failed to fill budget", zap.Error(err))
-				return
-			}
+	for _, speciality := range specialities {
+		err = repository.InsertSpeciality(ctx, speciality)
+		if err != nil {
+			log.Error(ctx, "failed to insert speciality", zap.Error(err))
 		}
-	}(ctx, budget, repository)
-
-	wg.Wait()
+	}
 
 }
