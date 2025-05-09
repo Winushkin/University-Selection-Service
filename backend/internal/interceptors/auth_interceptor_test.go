@@ -133,7 +133,7 @@ func TestValidateToken(t *testing.T) {
 		tokenStr, _ := token.SignedString([]byte(cfg.JWTSecret))
 		_, err := validateToken(tokenStr, cfg)
 		assert.Error(t, err)
-		assert.Contains(t, err.Error(), "validateToken: invalid user id")
+		assert.Contains(t, err.Error(), "validateToken: invalid users id: invalid")
 	})
 }
 
