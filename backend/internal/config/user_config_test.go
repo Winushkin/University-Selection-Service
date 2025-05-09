@@ -49,7 +49,7 @@ func TestNew_Success(t *testing.T) {
 	})
 	defer unset()
 
-	cfg, err := New()
+	cfg, err := NewUserConfig()
 	assert.NoError(t, err)
 	assert.NotNil(t, cfg)
 	assert.Equal(t, "localhost", cfg.Postgres.Host)
@@ -78,7 +78,7 @@ JWT_SECRET=secret
 	err := godotenv.Load(envFile)
 	assert.NoError(t, err)
 
-	cfg, err := New()
+	cfg, err := NewUserConfig()
 	assert.NoError(t, err)
 	assert.NotNil(t, cfg)
 	assert.Equal(t, "localhost", cfg.Postgres.Host)
@@ -105,7 +105,7 @@ func TestNew_EnvFileError(t *testing.T) {
 	})
 	defer unset()
 
-	cfg, err := New()
+	cfg, err := NewUserConfig()
 	assert.NoError(t, err)
 	assert.NotNil(t, cfg)
 }
