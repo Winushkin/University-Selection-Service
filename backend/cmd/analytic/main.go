@@ -30,7 +30,7 @@ func main() {
 
 	log.Info(ctx, cfg.Postgres.Port)
 
-	db, err := postgres.New(ctx, cfg.Postgres)
+	db, err := postgres.New(ctx, cfg.Postgres, "universities")
 	if err != nil {
 		log.Error(ctx, "failed to connect to integration postgres", zap.Error(err))
 		return
