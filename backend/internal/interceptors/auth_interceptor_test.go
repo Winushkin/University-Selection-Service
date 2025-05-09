@@ -20,7 +20,7 @@ func mockHandler(_ context.Context, _ interface{}) (interface{}, error) {
 
 func TestAuthInterceptor_PublicMethods(t *testing.T) {
 	cfg := &config.UserConfig{JWTSecret: "testsecret"}
-	interceptor := AuthInterceptor(cfg)
+	interceptor := AuthInterceptor(cfg.JWTSecret)
 
 	tests := []struct {
 		method string
@@ -44,7 +44,7 @@ func TestAuthInterceptor_PublicMethods(t *testing.T) {
 
 func TestAuthInterceptor_ProtectedMethods(t *testing.T) {
 	cfg := &config.UserConfig{JWTSecret: "testsecret"}
-	interceptor := AuthInterceptor(cfg)
+	interceptor := AuthInterceptor(cfg.JWTSecret)
 	method := "/api.UserService/ProtectedMethod"
 
 	t.Run("missing metadata", func(t *testing.T) {
@@ -102,14 +102,14 @@ func TestValidateToken(t *testing.T) {
 
 	t.Run("valid token", func(t *testing.T) {
 		token, _ := generateTestToken(cfg, 1)
-		id, err := validateToken(token, cfg)
+		id, err := validateToken(token, cfg.JWTSecret)
 		assert.NoError(t, err)
 		assert.Equal(t, 1, id)
 	})
 
 	t.Run("expired token", func(t *testing.T) {
 		token, _ := generateTestTokenWithExp(cfg, 1, time.Now().Add(-1*time.Hour))
-		_, err := validateToken(token, cfg)
+		_, err := validateToken(token, cfg.JWTSecret)
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "validateToken: token has invalid claims: token is expired")
 	})
@@ -120,7 +120,7 @@ func TestValidateToken(t *testing.T) {
 			"exp":     time.Now().Add(15 * time.Minute).Unix(),
 		})
 		tokenStr, _ := token.SignedString(jwt.UnsafeAllowNoneSignatureType)
-		_, err := validateToken(tokenStr, cfg)
+		_, err := validateToken(tokenStr, cfg.JWTSecret)
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "ValidateToken: unexpected signing method")
 	})
@@ -131,7 +131,7 @@ func TestValidateToken(t *testing.T) {
 			"exp":     time.Now().Add(15 * time.Minute).Unix(),
 		})
 		tokenStr, _ := token.SignedString([]byte(cfg.JWTSecret))
-		_, err := validateToken(tokenStr, cfg)
+		_, err := validateToken(tokenStr, cfg.JWTSecret)
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "validateToken: invalid user id")
 	})
