@@ -1,5 +1,4 @@
-BUDGET_URL=url_with_budget_universities_data
-CONTRACT_URL=url_with_contract_universities_data
+DATASET_PATH=path_to_university_dataset
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5433
 POSTGRES_USER=your_user
