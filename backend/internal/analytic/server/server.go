@@ -1,7 +1,7 @@
 package analytic
 
 import (
-	"University-Selection-Service/internal/config"
+	"University-Selection-Service/internal/repositories"
 	"University-Selection-Service/pkg/api"
 	"context"
 	"fmt"
@@ -9,10 +9,11 @@ import (
 
 type Server struct {
 	api.AnalyticServer
-	userCli api.UserServiceClient
+	userCli      api.UserServiceClient
+	RepInterface repositories.AnalyticRepositoryInterface
 }
 
-func New(ctx context.Context, cfg *config.AnalyticConfig, client api.UserServiceClient) (*Server, error) {
+func New(client api.UserServiceClient) (*Server, error) {
 	return &Server{
 		userCli: client,
 	}, nil
