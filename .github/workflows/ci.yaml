@@ -103,4 +103,4 @@ jobs:
           fi
       - name: Build Docker images
         run: |
-          docker compose -f docker/docker-compose.yml build user_service analytic_service
+          docker compose -f backend/docker/docker-compose.yml build user_service analytic_service
