@@ -36,7 +36,7 @@ func createTempEnvFile(t *testing.T, content string) (string, func()) {
 	}
 }
 
-func TestNew_Success(t *testing.T) {
+func TestNewUserConfig_Success(t *testing.T) {
 	unset := setEnvVars(t, map[string]string{
 		"POSTGRES_HOST":     "localhost",
 		"POSTGRES_PORT":     "5432",
@@ -61,7 +61,7 @@ func TestNew_Success(t *testing.T) {
 	assert.Equal(t, "secret", cfg.JWTSecret)
 }
 
-func TestNew_WithEnvFile(t *testing.T) {
+func TestNewUserConfig_WithEnvFile(t *testing.T) {
 	envContent := `
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
@@ -90,7 +90,7 @@ JWT_SECRET=secret
 	assert.Equal(t, "secret", cfg.JWTSecret)
 }
 
-func TestNew_EnvFileError(t *testing.T) {
+func TestNewUserConfig_EnvFileError(t *testing.T) {
 	err := godotenv.Load("nonexistent.env")
 	assert.Error(t, err)
 

@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestNewSuccess(t *testing.T) {
+func TestNewAnalyticCfg_Success(t *testing.T) {
 	unset := setEnvVars(t, map[string]string{
 		"POSTGRES_HOST":     "localhost",
 		"POSTGRES_PORT":     "5432",
@@ -31,7 +31,7 @@ func TestNewSuccess(t *testing.T) {
 	assert.Equal(t, "secret", cfg.JWTSecret)
 }
 
-func TestNewWithEnvFile(t *testing.T) {
+func TestNewAnalyticCfg_WithEnvFile(t *testing.T) {
 	envContent := `
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
@@ -60,7 +60,7 @@ JWT_SECRET=secret
 	assert.Equal(t, "secret", cfg.JWTSecret)
 }
 
-func TestNewEnvFileError(t *testing.T) {
+func TestNewAnalyticCfg_EnvFileError(t *testing.T) {
 	err := godotenv.Load("nonexistent.env")
 	assert.Error(t, err)
 
