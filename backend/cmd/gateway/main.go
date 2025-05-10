@@ -51,6 +51,11 @@ func main() {
 		return
 	}
 
+	if err := pb.RegisterUserServiceHandlerFromEndpoint(ctx, mux, "analytic_service:8081", opts); err != nil {
+		log.Error(ctx, "Failed register analytic grpc service", zap.Error(err))
+		return
+	}
+
 	err := mux.HandlePath("GET", "/ping", func(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
 		_, err := w.Write([]byte("pong"))
 		if err != nil {
