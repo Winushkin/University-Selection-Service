@@ -15,4 +15,5 @@ type University struct {
 	Sport          bool
 	Scholarship    int
 	Region         string
+	Relevancy      float64
 }
