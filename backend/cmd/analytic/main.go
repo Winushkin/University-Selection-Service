@@ -60,12 +60,11 @@ func main() {
 
 	r, err := repositories.NewAnalyticRepository(ctx, cfg.Postgres)
 
-	srv, err := analytic.New(client)
+	srv, err := analytic.New(client, r)
 	if err != nil {
 		log.Error(ctx, "failed to create analytic service", zap.Error(err))
 		return
 	}
-	srv.RepInterface = r
 
 	server := grpc.NewServer(
 		grpc.UnaryInterceptor(interceptors.AuthInterceptor(cfg.JWTSecret)),

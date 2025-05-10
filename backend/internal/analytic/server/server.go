@@ -1,6 +1,7 @@
 package analytic
 
 import (
+	"University-Selection-Service/internal/entities"
 	"University-Selection-Service/internal/repositories"
 	"University-Selection-Service/pkg/api"
 	"context"
@@ -13,9 +14,12 @@ type Server struct {
 	RepInterface repositories.AnalyticRepositoryInterface
 }
 
-func New(client api.UserServiceClient) (*Server, error) {
+func New(client api.UserServiceClient, r interface {
+	GetUniversitiesBySpeciality(ctx context.Context, specialityName string) ([]*entities.University, error)
+}) (*Server, error) {
 	return &Server{
-		userCli: client,
+		userCli:      client,
+		RepInterface: r,
 	}, nil
 }
 
