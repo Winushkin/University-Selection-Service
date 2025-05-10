@@ -13,16 +13,15 @@ import (
 
 const (
 	insertSpecialityRequest      = "Insert INTO universities.specialities (university_id, name, budget_points, contract_points, cost) VALUES ($1, $2, $3, $4, $5)"
-	insertUniversityRequest      = "INSERT INTO universities.universities (name, prestige, rank, quality, scholarship, dormitory, labs, sport, region_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)"
+	insertUniversityRequest      = "INSERT INTO universities.universities (name, site, prestige, rank, quality, scholarship, dormitory, labs, sport, region_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)"
 	getRegionIdByNameRequest     = "SELECT id FROM universities.regions WHERE name = $1"
 	getUniversityIdByNameRequest = "SELECT id FROM universities.universities WHERE name = $1"
 )
 
-type UniversityRepo interface {
+type UniversityRepoInterface interface {
 	FillRegions(ctx context.Context, regions []string) error
 	InsertUniversity(ctx context.Context, u *entities.University) error
 	InsertSpeciality(ctx context.Context, s *entities.Speciality) error
-	GetUniversitiesBySpeciality(ctx context.Context, specialityName string) ([]*entities.University, error)
 }
 
 type UniversityRepository struct {
@@ -82,7 +81,7 @@ func (ur *UniversityRepository) InsertUniversity(ctx context.Context, u *entitie
 		return fmt.Errorf("GetRegionIdByName: %w", err)
 	}
 	_, err = ur.pg.Exec(ctx, insertUniversityRequest,
-		u.Name, u.Prestige, u.Rank,
+		u.Name, u.Site, u.Prestige, u.Rank,
 		u.Quality, u.Scholarship, u.Dormitory,
 		u.Labs, u.Sport, regionId)
 	if err != nil {

@@ -46,7 +46,8 @@ func main() {
 	}
 	defer db.Close()
 
-	repository, err := repositories.NewUniversityRepository(ctx, cfg.Postgres)
+	var repository repositories.UniversityRepoInterface
+	repository, err = repositories.NewUniversityRepository(ctx, cfg.Postgres)
 	if err != nil {
 		log.Error(ctx, "failed to connect to university repository", zap.Error(err))
 		return
@@ -70,5 +71,4 @@ func main() {
 			log.Error(ctx, "failed to insert speciality", zap.Error(err))
 		}
 	}
-
 }

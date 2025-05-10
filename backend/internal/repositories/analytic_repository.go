@@ -9,11 +9,11 @@ import (
 )
 
 const (
-	getUniversitiesBySpecialityRequest = "SELECT u.*, r.name FROM universities.universities u JOIN universities.regions r ON u.region_id = r.id JOIN universities.specialities s ON u.id = s.university_id WHERE s.name = $1"
+	getUniversitiesBySpecialityRequest = "SELECT u.*, r.name, s.cost, s.budget_points, s.contract_points FROM universities.universities u JOIN universities.regions r ON u.region_id = r.id JOIN universities.specialities s ON u.id = s.university_id WHERE s.name = $1"
 )
 
 type AnalyticRepositoryInterface interface {
-	GetUniversitiesBySpeciality(ctx context.Context, specialityName string)
+	GetUniversitiesBySpeciality(ctx context.Context, specialityName string) ([]*entities.University, error)
 }
 
 type AnalyticRepository struct {
@@ -38,8 +38,8 @@ func (ur *AnalyticRepository) GetUniversitiesBySpeciality(ctx context.Context,
 	for queryRows.Next() {
 		var u entities.University
 		region := 0
-		err = queryRows.Scan(&u.Id, &u.Name, &u.Prestige, &u.Rank, &u.Quality, &u.Scholarship,
-			&u.Dormitory, &u.Labs, &u.Sport, &region, &u.Region)
+		err = queryRows.Scan(&u.Id, &u.Name, &u.Site, &u.Prestige, &u.Rank, &u.Quality, &u.Scholarship,
+			&u.Dormitory, &u.Labs, &u.Sport, &region, &u.Region, &u.Cost, &u.BudgetPoints, &u.ContractPoints)
 		if err != nil {
 			return nil, fmt.Errorf("GetUniversityBySpeciality Scanning: %w", err)
 		}
