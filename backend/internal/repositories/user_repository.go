@@ -19,13 +19,13 @@ type UserRepository struct {
 }
 
 const (
-	GetByLoginSQLRequest                   = "SELECT Id, Login, Password, coalesce(Ege, 0), coalesce(Speciality, ''), coalesce(Town, ''), coalesce(Financing, '')  FROM schema_name.users WHERE Login=$1"
-	SaveRefreshTokenSQLRequest             = "INSERT INTO schema_name.refresh_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)"
-	CreateUserSQLRequest                   = "INSERT INTO schema_name.users (Login, Password) VALUES ($1, $2) RETURNING Id"
-	RevokeAllActiveTokensForUserSQLRequest = "DELETE FROM schema_name.refresh_tokens WHERE user_id = $1"
-	GetUserIDByRefreshTokenSQLRequest      = "SELECT user_id FROM schema_name.refresh_tokens WHERE token = $1"
-	GetByIDSQLRequest                      = "SELECT Id, Login, Password, coalesce(Ege, 0), coalesce(Speciality, ''), coalesce(Town, ''), coalesce(Financing, '') FROM schema_name.users WHERE Id = $1"
-	FillInfoSQLRequest                     = "UPDATE schema_name.users SET Ege = $1, Speciality = $2, Town = $3, Financing = $4 WHERE Id = $5"
+	GetByLoginSQLRequest                   = "SELECT id, login, password, coalesce(ege, 0), coalesce(speciality, ''), coalesce(region, ''), coalesce(financing, '')  FROM users.users WHERE login=$1"
+	SaveRefreshTokenSQLRequest             = "INSERT INTO users.refresh_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)"
+	CreateUserSQLRequest                   = "INSERT INTO users.users (login, password) VALUES ($1, $2) RETURNING id"
+	RevokeAllActiveTokensForUserSQLRequest = "DELETE FROM users.refresh_tokens WHERE user_id = $1"
+	GetUserIDByRefreshTokenSQLRequest      = "SELECT user_id FROM users.refresh_tokens WHERE token = $1"
+	GetByIDSQLRequest                      = "SELECT id, login, password, coalesce(ege, 0), coalesce(speciality, ''), coalesce(region, ''), coalesce(financing, '') FROM users.users WHERE id = $1"
+	FillInfoSQLRequest                     = "UPDATE users.users SET ege = $1, speciality = $2, region = $3, financing = $4 WHERE id = $5"
 )
 
 func NewUserRepository(ctx context.Context, cfg postgres.Config) (*UserRepository, error) {

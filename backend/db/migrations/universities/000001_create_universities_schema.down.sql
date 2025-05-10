@@ -1,1 +1,1 @@
-drop schema if exists universities;
+DROP SCHEMA if exists universities;
