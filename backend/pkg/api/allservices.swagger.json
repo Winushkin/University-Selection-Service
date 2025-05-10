@@ -504,8 +504,8 @@
           "format": "int32"
         },
         "rank": {
-          "type": "integer",
-          "format": "int32"
+          "type": "number",
+          "format": "float"
         },
         "quality": {
           "type": "integer",
@@ -521,7 +521,8 @@
           "type": "boolean"
         },
         "scholarship": {
-          "type": "boolean"
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

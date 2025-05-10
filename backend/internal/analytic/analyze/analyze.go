@@ -1,6 +1,9 @@
 package analyze
 
-import "University-Selection-Service/internal/entities"
+import (
+	"University-Selection-Service/internal/entities"
+	"slices"
+)
 
 type Analyser struct{}
 
@@ -78,10 +81,25 @@ func (a *Analyser) GetCriteriaWeights(crt *entities.Criteria, cmp *entities.Comp
 	return crt
 }
 
-func (a *Analyser) FilterUniversities(profile *entities.User) {
+func (a *Analyser) Analyze(universities []*entities.University, cmp *entities.Comparisons, rankSum float64, prestigeSum, educationQualitySum, scholarshipProgramsSum int) ([]*entities.University, error) {
+	criteria := &entities.Criteria{}
+	criteria = a.GetCriteriaWeights(criteria, cmp)
 
-}
-
-func (a *Analyser) Analyze(profile *entities.User) {
-
+	for _, univ := range universities {
+		univ.Relevancy = univ.Relevancy/rankSum*criteria.LocalUniversityRating +
+			float64(univ.Prestige)/float64(prestigeSum)*criteria.Prestige +
+			float64(univ.Quality)/float64(educationQualitySum)*criteria.EducationQuality +
+			float64(univ.Scholarship)/float64(scholarshipProgramsSum)*criteria.ScholarshipPrograms
+	}
+	slices.SortFunc(universities, func(u1 *entities.University, u2 *entities.University) int {
+		switch u1.Relevancy < u2.Relevancy {
+		case true:
+			return -1
+		case false:
+			return 1
+		default:
+			return 0
+		}
+	})
+	return universities, nil
 }
