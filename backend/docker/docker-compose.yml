@@ -9,7 +9,7 @@ services:
     volumes:
       - ../database_data/users_data:/var/lib/postgresql/data
     healthcheck:
-      test: "pg_isready -d $$POSTGRES_DB -U $$POSTGRES_USER" #-p $$POSTGRES_PASSWORD"
+      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} -p 5432" ]
       interval: 10s
       timeout: 10s
       retries: 5
@@ -28,7 +28,7 @@ services:
     volumes:
       - ../database_data/universities_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready", "-U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} -p 5433" ]
       interval: 10s
       timeout: 10s
       retries: 5
