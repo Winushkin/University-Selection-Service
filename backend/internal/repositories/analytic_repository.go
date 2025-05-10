@@ -13,7 +13,7 @@ const (
 )
 
 type AnalyticRepositoryInterface interface {
-	GetUniversitiesBySpeciality(ctx context.Context, specialityName string)
+	GetUniversitiesBySpeciality(ctx context.Context, specialityName string) ([]*entities.University, error)
 }
 
 type AnalyticRepository struct {
