@@ -31,12 +31,12 @@ type University struct {
 	ContractPoints int32                  `protobuf:"varint,4,opt,name=ContractPoints,proto3" json:"ContractPoints,omitempty"`
 	Cost           int64                  `protobuf:"varint,5,opt,name=cost,proto3" json:"cost,omitempty"`
 	Prestige       int32                  `protobuf:"varint,6,opt,name=prestige,proto3" json:"prestige,omitempty"`
-	Rank           int32                  `protobuf:"varint,7,opt,name=rank,proto3" json:"rank,omitempty"`
+	Rank           float32                `protobuf:"fixed32,7,opt,name=rank,proto3" json:"rank,omitempty"`
 	Quality        int32                  `protobuf:"varint,8,opt,name=quality,proto3" json:"quality,omitempty"`
 	Dormitory      bool                   `protobuf:"varint,9,opt,name=dormitory,proto3" json:"dormitory,omitempty"`
 	Labs           bool                   `protobuf:"varint,10,opt,name=labs,proto3" json:"labs,omitempty"`
 	Sport          bool                   `protobuf:"varint,11,opt,name=sport,proto3" json:"sport,omitempty"`
-	Scholarship    bool                   `protobuf:"varint,12,opt,name=scholarship,proto3" json:"scholarship,omitempty"`
+	Scholarship    int32                  `protobuf:"varint,12,opt,name=scholarship,proto3" json:"scholarship,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -113,7 +113,7 @@ func (x *University) GetPrestige() int32 {
 	return 0
 }
 
-func (x *University) GetRank() int32 {
+func (x *University) GetRank() float32 {
 	if x != nil {
 		return x.Rank
 	}
@@ -148,11 +148,11 @@ func (x *University) GetSport() bool {
 	return false
 }
 
-func (x *University) GetScholarship() bool {
+func (x *University) GetScholarship() int32 {
 	if x != nil {
 		return x.Scholarship
 	}
-	return false
+	return 0
 }
 
 type AnalyzeRequest struct {
@@ -336,13 +336,13 @@ const file_analytic_proto_rawDesc = "" +
 	"\x0eContractPoints\x18\x04 \x01(\x05R\x0eContractPoints\x12\x12\n" +
 	"\x04cost\x18\x05 \x01(\x03R\x04cost\x12\x1a\n" +
 	"\bprestige\x18\x06 \x01(\x05R\bprestige\x12\x12\n" +
-	"\x04rank\x18\a \x01(\x05R\x04rank\x12\x18\n" +
+	"\x04rank\x18\a \x01(\x02R\x04rank\x12\x18\n" +
 	"\aquality\x18\b \x01(\x05R\aquality\x12\x1c\n" +
 	"\tdormitory\x18\t \x01(\bR\tdormitory\x12\x12\n" +
 	"\x04labs\x18\n" +
 	" \x01(\bR\x04labs\x12\x14\n" +
 	"\x05sport\x18\v \x01(\bR\x05sport\x12 \n" +
-	"\vscholarship\x18\f \x01(\bR\vscholarship\"\xb6\x04\n" +
+	"\vscholarship\x18\f \x01(\x05R\vscholarship\"\xb6\x04\n" +
 	"\x0eAnalyzeRequest\x12*\n" +
 	"\x10ratingToPrestige\x18\x01 \x01(\x05R\x10ratingToPrestige\x12:\n" +
 	"\x18ratingToEducationQuality\x18\x02 \x01(\x05R\x18ratingToEducationQuality\x12@\n" +

@@ -30,12 +30,12 @@ message University {
   int32 ContractPoints = 4;
   int64 cost = 5;
   int32 prestige = 6;
-  int32 rank = 7;
+  float rank = 7;
   int32 quality = 8;
   bool dormitory = 9;
   bool labs = 10;
   bool sport = 11;
-  bool scholarship = 12;
+  int32 scholarship = 12;
 }
 
 message AnalyzeRequest {
