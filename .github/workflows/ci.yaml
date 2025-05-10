@@ -78,7 +78,12 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - name: Build Docker Images
-        working-directory: backend
+      - name: Build Docker images
         run: |
-          docker-compose -f ./docker-compose.yml build user_service analytic_service
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+          cd $GITHUB_WORKSPACE
+          docker-compose -f docker-compose.yml build user_service analytic_service
+        env:
+          # Убедитесь, что Docker работает
+          DOCKER_HOST: unix:///var/run/docker.sock
