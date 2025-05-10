@@ -7,8 +7,8 @@ type University struct {
 	Site           string
 	Rank           float64
 	Quality        int
-	ContractPoints float64
-	BudgetPoints   float64
+	ContractPoints int
+	BudgetPoints   int
 	Cost           int
 	Dormitory      bool
 	Labs           bool

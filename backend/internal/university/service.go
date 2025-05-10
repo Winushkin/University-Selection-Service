@@ -27,8 +27,8 @@ func CreateSpecialitiesByUniversity(specialitiesSet []string,
 
 		cost := university.Cost - 30000 + rand.IntN(60000)
 
-		points := float64(int(rand.Float64()*20)) - 10
-		budgetPoints, contractPoints := 0.0, 0.0
+		points := rand.IntN(20) - 10
+		budgetPoints, contractPoints := 0, 0
 		if university.BudgetPoints != 0 {
 			budgetPoints = points
 		}

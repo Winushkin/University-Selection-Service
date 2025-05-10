@@ -60,8 +60,11 @@ func ParseUniversities(_ context.Context, path string) ([]entities.University, [
 	var university entities.University
 
 	for _, row := range rows {
-		budgetPoints, _ := strconv.ParseFloat(strings.TrimSpace(row[3]), 64)
-		contractPoints, _ := strconv.ParseFloat(strings.TrimSpace(row[4]), 64)
+		budgetPointsF, _ := strconv.ParseFloat(strings.TrimSpace(row[3]), 32)
+		budgetPoints := int(budgetPointsF)
+		contractPointsF, _ := strconv.ParseFloat(strings.TrimSpace(row[4]), 64)
+		contractPoints := int(contractPointsF)
+
 		if budgetPoints == 0 && contractPoints == 0 {
 			continue
 		}
