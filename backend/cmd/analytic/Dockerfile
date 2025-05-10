@@ -13,4 +13,6 @@ WORKDIR /app
 
 COPY --from=builder /app/analytic ./
 
+COPY ./db /app/db
+
 ENTRYPOINT ["./analytic"]
