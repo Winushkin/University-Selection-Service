@@ -45,3 +45,40 @@ jobs:
         run: |
           go test -coverprofile=coverage.out -short ./...
           go tool cover -func=coverage.out
+  build:
+    name: Build Project
+    runs-on: ubuntu-latest
+
+    services:
+      postgres_users:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: testuser_users
+          POSTGRES_PASSWORD: testpass_users
+          POSTGRES_DB: testdb_users
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      postgres_universities:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: testuser_universities
+          POSTGRES_PASSWORD: testpass_universities
+          POSTGRES_DB: testdb_universities
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -p 5432"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Build Docker Images
+        working-directory: backend
+        run: |
+          docker-compose -f ../docker-compose.yml build user_service analytic_service
