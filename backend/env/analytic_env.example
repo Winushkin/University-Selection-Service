@@ -1,0 +1,12 @@
+DATASET_PATH=path_to_university_dataset
+POSTGRES_USER=your_user
+POSTGRES_DB=your_db
+POSTGRES_HOST=postgresql_universities
+POSTGRES_PASSWORD=your_password
+POSTGRES_MIN_CONN=1
+POSTGRES_MAX_CONN=10
+POSTGRES_PORT=5433
+PGDATA=/var/lib/postgresql/data/pgdata
+INT_PORT=8081
+REST_PORT=8081
+JWT_SECRET=2G7Rnnvt6KCN2gmX2GCU106YOiOJA2fgp3hg2jL5UDA=
