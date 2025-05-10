@@ -3,29 +3,22 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import ToggleSwitch from '../components/ToggleSwitch.jsx';
 import './ProfileForm.css';
+import {useAuth} from "../AuthProvider.jsx";
 
 function ProfileForm() {
 
     const Navigate=useNavigate();
+    const [error, setError] = useState('');
+    const { setAccessToken, setRefreshToken, setExpiresAt } = useAuth();
 
     const [profile, setProfile] = useState({
         egeScores: '',
-        gpa: '',
-
         desiredSpecialty: '',
         educationType: 'очное',
         country: '',
         universityLocation: '',
         financing: 'Бюджет',
-        importanceFactors: {
-            localUniversityRating: 5,
-            prestige: 5,
-            scholarshipPrograms: 5,
-            educationQuality: 5,
-            dormitory: false,
-            scientificLabs: false,
-            sportsInfrastructure: false
-        },
+
     });
 
     const [submitStatus, setSubmitStatus] = useState({
@@ -59,26 +52,31 @@ function ProfileForm() {
     const handleSubmit = async () => {
         setSubmitStatus({ loading: true, success: false, error: null });
 
+
         try {
-            const response = await fetch('http://localhost:8080/profile', {
+            const accessToken = localStorage.getItem('accessToken');
+            const response = await fetch('http://localhost:80/api/user/fill', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${accessToken}`,
                 },
-                body: JSON.stringify(profile),
+                body: JSON.stringify( profile),
             });
 
             if (!response.ok) {
-                throw new Error(`Ошибка сервера: ${response.status}`);
+                const errorData = await response.json();
+                setError(errorData.message || 'Ошибка при регистрации');
+                return;
             }
 
             const data = await response.json();
-            setSubmitStatus({ loading: false, success: true, error: null });
-            console.log('Профиль успешно создан:', data);
+            console.log('Регистрация успешна:', data);
+
             Navigate('/MainPage');
-        } catch (error) {
-            setSubmitStatus({ loading: false, success: false, error: error.message });
-            console.error('Ошибка при отправке данных:', error);
+        } catch (err) {
+            setError('Ошибка соединения с сервером');
+            console.error('Signup error:', err);
         }
     };
 
@@ -98,16 +96,7 @@ function ProfileForm() {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div className="form-group">
-                            <label>Средний балл аттестата:</label>
-                            <input
-                                type="text"
-                                name="gpa"
-                                className="form-input"
-                                value={profile.gpa}
-                                onChange={handleChange}
-                            />
-                        </div>
+
 
                         <div className="form-group">
                             <label>Cпециальность:</label>
@@ -132,16 +121,7 @@ function ProfileForm() {
                                 <option value="дистанционное">Дистанционное</option>
                             </select>
                         </div>
-                        <div className="form-group">
-                            <label>Страна:</label>
-                            <input
-                                type="text"
-                                name="country"
-                                className="form-input"
-                                value={profile.country}
-                                onChange={handleChange}
-                            />
-                        </div>
+                        
                         <div className="form-group">
                             <label>Город:</label>
                             <input

@@ -1,11 +1,13 @@
 import React from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
-import ProfileForm from './components/ProfileForm';
+import ProfileForm from './pages/ProfileForm.jsx';
 import Home from './pages/Home';
 import './App.css';
 import EditProfileForm from "./pages/EditProfileForm.jsx";
 import RegistrationForm from "./pages/RegistrationForm.jsx";
-import LoginForm from "./pages/LoginForm.jsx";
+import LogInForm from "./pages/LogInForm.jsx";
+import MainPage from "./pages/MainPage.jsx";
+import UniversityPage from "./pages/UniversityPage.jsx";
 
 function App() {
     return (
@@ -16,8 +18,11 @@ function App() {
                 <Route path="ProfileForm" element={<ProfileForm />} />
                 <Route path="EditProfileForm" element={<EditProfileForm />} />
                 <Route path="RegistrationForm" element={<RegistrationForm />} />
-                <Route path="LoginForm" element={<LoginForm />} />
+                <Route path="LogInForm" element={<LogInForm />} />
+                <Route path="UniversityPage" element={<UniversityPage />} />
+                <Route path="MainPage" element={<MainPage />} />
             </Routes>
+
         </div>
     );
 }

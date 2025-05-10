@@ -45,3 +45,13 @@ jobs:
         run: |
           go test -coverprofile=coverage.out -short ./...
           go tool cover -func=coverage.out
+  build:
+    name: Build Project
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Build Docker images
+        run: |
+          docker compose -f backend/docker/docker-compose.yml build user_service analytic_service

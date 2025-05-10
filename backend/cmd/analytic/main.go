@@ -4,6 +4,7 @@ import (
 	analytic "University-Selection-Service/internal/analytic/server"
 	"University-Selection-Service/internal/config"
 	"University-Selection-Service/internal/interceptors"
+	"University-Selection-Service/internal/repositories"
 	"University-Selection-Service/pkg/api"
 	"University-Selection-Service/pkg/logger"
 	"University-Selection-Service/pkg/postgres"
@@ -57,7 +58,9 @@ func main() {
 	}(conn)
 	client := api.NewUserServiceClient(conn)
 
-	srv, err := analytic.New(ctx, cfg, client)
+	r, err := repositories.NewAnalyticRepository(ctx, cfg.Postgres)
+
+	srv, err := analytic.New(client, r)
 	if err != nil {
 		log.Error(ctx, "failed to create analytic service", zap.Error(err))
 		return

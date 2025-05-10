@@ -3,32 +3,55 @@ import { useNavigate } from 'react-router-dom';
 import  "./RegistrationForm.css"
 import styles from "./Home.module.css";
 import logo from "./logo.png";
+import {useAuth} from "../AuthProvider.jsx";
 
 
-function LoginForm() {
+function LogInForm() {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const { setAccessToken, setRefreshToken, setExpiresAt } = useAuth();
     const navigate = useNavigate();
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
 
-        /*
-                const foundUser = users.find (
-            (users) => users.login === login && users.password === password
-        );
+        try {
+            const response = await fetch('/api/user/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ login, password })
+            })
 
-        if (!foundUser) {
-            setError('Неверный логин или пароль');
-            return;
+
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                setError(errorData.message || 'Ошибка входа');
+                return;
+            }
+
+            const data = await response.json();
+
+
+            const expiresAt = Date.now() + 1000 * data.expires_in;
+            localStorage.setItem('accessToken', data.access);
+            localStorage.setItem('refreshToken', data.refresh);
+            localStorage.setItem('expiresAt', expiresAt.toString());
+
+
+            setAccessToken(data.access);
+            setRefreshToken(data.refresh);
+            setExpiresAt(expiresAt);
+
+
+            navigate('/MainPage');
+        } catch (err) {
+            console.error('Login error:', err);
+            setError('Ошибка соединения с сервером');
         }
-
-        console.log('Вход выполнен:', login);
-        navigate('/'); //тут должна быть главная страница
-
-            */
     };
+
 
     return (
         <div>
@@ -71,7 +94,7 @@ function LoginForm() {
     );
 }
 
-export default LoginForm;
+export default LogInForm;
 
 
 

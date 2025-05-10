@@ -58,6 +58,27 @@ services:
       postgresql_users:
         condition: service_healthy
 
+  analytic_service:
+    container_name: analytic_service
+    build:
+      context: ..
+      dockerfile: ../backend/cmd/analytic/Dockerfile
+    ports:
+      - "8081:8081"
+    networks:
+      - app_network
+    restart: unless-stopped
+    env_file:
+      - ../env/analytic.env
+    healthcheck:
+      test: [ "CMD", "nc -z localhost 8081 || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      postgresql_universities:
+        condition: service_healthy
+
   nginx_service:
     image: nginx:latest
     container_name: nginx_service
@@ -73,6 +94,8 @@ services:
       - postgresql_users
       - postgresql_universities
       - user_service
+      - analytic_service
+      - gateway_service
     healthcheck:
       test: [ "CMD", "nginx", "-t" ]
       interval: 10s
