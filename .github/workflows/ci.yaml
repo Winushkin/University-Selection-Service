@@ -79,10 +79,6 @@ jobs:
           --health-retries 5
     steps:
       - name: Build Docker images
+        working-directory: backend
         run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
-          cd $GITHUB_WORKSPACE
-          docker-compose -f backend/docker/docker-compose.yml build user_service analytic_service
-        env:
-          DOCKER_HOST: unix:///var/run/docker.sock
+          docker-compose -f docker/docker-compose.yml build user_service analytic_service
