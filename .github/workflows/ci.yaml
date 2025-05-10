@@ -82,4 +82,4 @@ jobs:
         uses: actions/checkout@v4
       - name: Build Docker images
         run: |
-          docker compose -f backend/docker/docker-compose.yml up --build user_service analytic_service
+          docker compose -f backend/docker/docker-compose.yml build user_service analytic_service
