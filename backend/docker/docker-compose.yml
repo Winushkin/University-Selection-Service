@@ -73,6 +73,7 @@ services:
       - postgresql_users
       - postgresql_universities
       - user_service
+      - gateway_service
     healthcheck:
       test: [ "CMD", "nginx", "-t" ]
       interval: 10s
