@@ -102,5 +102,4 @@ jobs:
             exit 1
           fi
       - name: Build Docker images
-        working-directory: backend
         run: ls -R backend
