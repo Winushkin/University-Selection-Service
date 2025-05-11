@@ -9,10 +9,10 @@ import logo from './logo.png';
 
 export default function MainPage() {
     const navigate = useNavigate();
-    const { accessToken } = useAuth();             // берём токен из контекста
+    const { accessToken } = useAuth();
     const [error, setError] = useState('');
-    const [universities, setUniversities] = useState([]);    // сюда запишем ответ
-    const [speciality, setSpeciality] = useState('');        // и выбранную специальность
+    const [universities, setUniversities] = useState([]);
+    const [speciality, setSpeciality] = useState('');
 
     const [importanceFactors, setImportanceFactors] = useState({
         ratingToPrestige: 1,
@@ -27,7 +27,6 @@ export default function MainPage() {
         educationCost: '10000000'
     });
 
-    // общие хендлеры
     const handleSliderChange = e => {
         const { name, value } = e.target;
         setImportanceFactors(prev => ({
@@ -62,7 +61,6 @@ export default function MainPage() {
         navigate('/');
     };
 
-    // основной запрос
     const handleMAIRequest = async () => {
         setError('');
         try {
@@ -86,10 +84,8 @@ export default function MainPage() {
                 return;
             }
 
-            // после получения ответа:
             const data = await res.json();
             console.log('Response data →', data)
-            // сохраняем speciality и массив университетов
             setSpeciality(data.speciality);
             setUniversities(data.universities);
         } catch (e) {
