@@ -16,6 +16,7 @@ type AnalyticConfig struct {
 	JWTSecret string          `env:"JWT_SECRET"`
 }
 
+// NewAnalyticCfg creates new analytic service configuration
 func NewAnalyticCfg() (*AnalyticConfig, error) {
 
 	err := godotenv.Load()

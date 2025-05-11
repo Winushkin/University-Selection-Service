@@ -23,6 +23,7 @@ type Server struct {
 	jwtSecret string
 }
 
+// New creates new user server
 func New(ctx context.Context, cfg *config.UserConfig, jwt string) (*Server, error) {
 	r, err := repositories.NewUserRepository(ctx, cfg.Postgres)
 	if err != nil {
@@ -34,6 +35,7 @@ func New(ctx context.Context, cfg *config.UserConfig, jwt string) (*Server, erro
 	}, nil
 }
 
+// generateAccessToken generates access token with user ID and expired field
 func (s *Server) generateAccessToken(userID int) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user_id": userID,
@@ -42,6 +44,7 @@ func (s *Server) generateAccessToken(userID int) (string, error) {
 	return token.SignedString([]byte(s.jwtSecret))
 }
 
+// generateRefreshToken generates unique refresh token by secret jwt token
 func (s *Server) generateRefreshToken() (string, error) {
 	bytes := make([]byte, 32)
 	if _, err := rand.Read(bytes); err != nil {
@@ -50,6 +53,7 @@ func (s *Server) generateRefreshToken() (string, error) {
 	return base64.URLEncoding.EncodeToString(bytes), nil
 }
 
+// SignUp handles /api/user/signup request from client
 func (s *Server) SignUp(ctx context.Context, request *api.SignUpRequest) (*api.SignUpResponse, error) {
 	user, err := s.rep.GetByLogin(ctx, request.Login)
 	if err != nil && status.Code(err) != codes.NotFound {
@@ -98,6 +102,7 @@ func (s *Server) SignUp(ctx context.Context, request *api.SignUpRequest) (*api.S
 	}, nil
 }
 
+// Login handles /api/user/login request from client
 func (s *Server) Login(ctx context.Context, request *api.LoginRequest) (*api.LoginResponse, error) {
 	user, err := s.rep.GetByLogin(ctx, request.Login)
 	if err != nil {
@@ -136,6 +141,7 @@ func (s *Server) Login(ctx context.Context, request *api.LoginRequest) (*api.Log
 	}, nil
 }
 
+// Refresh handles /api/user/refresh request from client
 func (s *Server) Refresh(ctx context.Context, request *api.RefreshRequest) (*api.RefreshResponse, error) {
 	id, err := s.rep.GetUserIDByRefreshToken(ctx, request.Refresh)
 	if err != nil {
@@ -154,6 +160,7 @@ func (s *Server) Refresh(ctx context.Context, request *api.RefreshRequest) (*api
 	}, nil
 }
 
+// Fill handles /api/user/fill request from client
 func (s *Server) Fill(ctx context.Context, request *api.FillRequest) (*api.FillResponse, error) {
 	id := ctx.Value("user_id").(int)
 	usr := &entities.User{
@@ -170,6 +177,7 @@ func (s *Server) Fill(ctx context.Context, request *api.FillRequest) (*api.FillR
 	return &api.FillResponse{}, nil
 }
 
+// Logout handles /api/user/logout request from client
 func (s *Server) Logout(ctx context.Context, request *api.LogoutRequest) (*api.LogoutResponse, error) {
 	id, err := s.rep.GetUserIDByRefreshToken(ctx, request.Refresh)
 	if err != nil {
@@ -182,6 +190,7 @@ func (s *Server) Logout(ctx context.Context, request *api.LogoutRequest) (*api.L
 	return &api.LogoutResponse{}, nil
 }
 
+// Profile handles /api/user/profile request from client
 func (s *Server) Profile(ctx context.Context, _ *emptypb.Empty) (*api.ProfileResponse, error) {
 	id := ctx.Value("user_id").(int)
 	usr, err := s.rep.GetByID(ctx, id)
@@ -196,6 +205,7 @@ func (s *Server) Profile(ctx context.Context, _ *emptypb.Empty) (*api.ProfileRes
 	}, nil
 }
 
+// ProfileDataForAnalytic handles /api.UserService/ProfileDataForAnalytic request from analytic service
 func (s *Server) ProfileDataForAnalytic(ctx context.Context, request *api.ProfileDataForAnalyticRequest) (*api.ProfileDataForAnalyticResponse, error) {
 	usr, err := s.rep.GetByID(ctx, int(request.Id))
 	if err != nil {

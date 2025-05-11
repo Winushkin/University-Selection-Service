@@ -15,6 +15,7 @@ type Server struct {
 	RepInterface repositories.AnalyticRepositoryInterface
 }
 
+// New creates new Analytic Server
 func New(client api.UserServiceClient, r interface {
 	GetUniversitiesBySpeciality(ctx context.Context, specialityName string) ([]*entities.University, error)
 }) (*Server, error) {
@@ -24,6 +25,7 @@ func New(client api.UserServiceClient, r interface {
 	}, nil
 }
 
+// Analyze handles /api/analytic/analyze request
 func (s *Server) Analyze(ctx context.Context, request *api.AnalyzeRequest) (*api.AnalyzeResponse, error) {
 	id, ok := ctx.Value("user_id").(int)
 	if !ok {
@@ -79,6 +81,7 @@ func (s *Server) Analyze(ctx context.Context, request *api.AnalyzeRequest) (*api
 	return univResult, nil
 }
 
+// FilterUniversities filters universities with params
 func (s *Server) FilterUniversities(ctx context.Context, user *api.ProfileDataForAnalyticResponse, cost int, dormitory bool, sport bool, labs bool) ([]*entities.University, float64, int, int, int, error) {
 	universities, err := s.RepInterface.GetUniversitiesBySpeciality(ctx, user.Speciality)
 	rankSum, prestigeSum, educationQualitySum, scholarshipProgramsSum := 0.0, 0, 0, 0

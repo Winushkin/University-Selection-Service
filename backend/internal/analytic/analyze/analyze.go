@@ -7,6 +7,7 @@ import (
 
 type Analyser struct{}
 
+// GetCriteriaWeights creates a comparison matrix and calculates the weights of the criteria
 func (a *Analyser) GetCriteriaWeights(crt *entities.Criteria, cmp *entities.Comparisons) *entities.Criteria {
 	var matrix [4][4]float64
 
@@ -58,6 +59,7 @@ func (a *Analyser) GetCriteriaWeights(crt *entities.Criteria, cmp *entities.Comp
 			}
 		}
 	}
+
 	// get average in row
 	for i := 0; i < 4; i++ {
 		for j := 0; j < 4; j++ {
@@ -81,6 +83,7 @@ func (a *Analyser) GetCriteriaWeights(crt *entities.Criteria, cmp *entities.Comp
 	return crt
 }
 
+// Analyze analyzes universities for compliance based on paired comparison criteria
 func (a *Analyser) Analyze(universities []*entities.University, cmp *entities.Comparisons, rankSum float64, prestigeSum, educationQualitySum, scholarshipProgramsSum int) ([]*entities.University, error) {
 	criteria := &entities.Criteria{}
 	criteria = a.GetCriteriaWeights(criteria, cmp)

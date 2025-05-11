@@ -16,6 +16,7 @@ type UserConfig struct {
 	JWTSecret string          `env:"JWT_SECRET"`
 }
 
+// NewUserConfig creates new user service configuration
 func NewUserConfig() (*UserConfig, error) {
 
 	err := godotenv.Load()

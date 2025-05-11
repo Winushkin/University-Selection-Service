@@ -6,6 +6,7 @@ import (
 	"testing"
 )
 
+// TestNewAnalyticCfg_Success tests success case
 func TestNewAnalyticCfg_Success(t *testing.T) {
 	unset := setEnvVars(t, map[string]string{
 		"POSTGRES_HOST":     "localhost",
@@ -31,6 +32,7 @@ func TestNewAnalyticCfg_Success(t *testing.T) {
 	assert.Equal(t, "secret", cfg.JWTSecret)
 }
 
+// TestNewAnalyticCfg_WithEnvFile tests env file case
 func TestNewAnalyticCfg_WithEnvFile(t *testing.T) {
 	envContent := `
 POSTGRES_HOST=localhost
@@ -60,6 +62,7 @@ JWT_SECRET=secret
 	assert.Equal(t, "secret", cfg.JWTSecret)
 }
 
+// TestNewAnalyticCfg_EnvFileError tests nonexistent env file case
 func TestNewAnalyticCfg_EnvFileError(t *testing.T) {
 	err := godotenv.Load("nonexistent.env")
 	assert.Error(t, err)

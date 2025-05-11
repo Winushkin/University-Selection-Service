@@ -14,10 +14,12 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// mockHandler returns mock response for testing
 func mockHandler(_ context.Context, _ interface{}) (interface{}, error) {
 	return "response", nil
 }
 
+// TestAuthInterceptor_PublicMethods tests requests with public methods
 func TestAuthInterceptor_PublicMethods(t *testing.T) {
 	cfg := &config.UserConfig{JWTSecret: "testsecret"}
 	interceptor := AuthInterceptor(cfg.JWTSecret)
@@ -42,6 +44,7 @@ func TestAuthInterceptor_PublicMethods(t *testing.T) {
 	}
 }
 
+// TestAuthInterceptor_ProtectedMethods tests requests with protected methods
 func TestAuthInterceptor_ProtectedMethods(t *testing.T) {
 	cfg := &config.UserConfig{JWTSecret: "testsecret"}
 	interceptor := AuthInterceptor(cfg.JWTSecret)
@@ -97,6 +100,7 @@ func TestAuthInterceptor_ProtectedMethods(t *testing.T) {
 	})
 }
 
+// TestValidateToken tests valid token case
 func TestValidateToken(t *testing.T) {
 	cfg := &config.UserConfig{JWTSecret: "testsecret"}
 
@@ -137,11 +141,12 @@ func TestValidateToken(t *testing.T) {
 	})
 }
 
-// Helper functions for generating test tokens
+// generateTestToken helps generating test tokens
 func generateTestToken(cfg *config.UserConfig, userID int) (string, error) {
 	return generateTestTokenWithExp(cfg, userID, time.Now().Add(15*time.Minute))
 }
 
+// generateTestTokenWithExp helps generating test tokens with exp
 func generateTestTokenWithExp(cfg *config.UserConfig, userID int, exp time.Time) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user_id": userID,

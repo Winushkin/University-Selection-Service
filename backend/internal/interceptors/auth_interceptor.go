@@ -12,6 +12,7 @@ import (
 	"time"
 )
 
+// AuthInterceptor check authorized and unauthorized requests
 func AuthInterceptor(secret string) grpc.UnaryServerInterceptor {
 	return func(
 		ctx context.Context,
@@ -55,6 +56,7 @@ func AuthInterceptor(secret string) grpc.UnaryServerInterceptor {
 	}
 }
 
+// validateToken validates token in request
 func validateToken(accessToken string, secret string) (int, error) {
 	token, err := jwt.Parse(accessToken, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {

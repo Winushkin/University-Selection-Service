@@ -12,6 +12,7 @@ type UniversityConfig struct {
 	DatasetPath string          `env:"DATASET_PATH"`
 }
 
+// NewUniversityConfig creates new university service configuration
 func NewUniversityConfig() (*UniversityConfig, error) {
 	err := godotenv.Load("./env/universities.env")
 	if err != nil {
