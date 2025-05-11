@@ -96,7 +96,7 @@ func (s *Server) FilterUniversities(ctx context.Context, user *api.ProfileDataFo
 			if int(user.Ege) < univ.ContractPoints {
 				continue
 			}
-			if univ.Cost < cost {
+			if univ.Cost > cost {
 				continue
 			}
 		}
