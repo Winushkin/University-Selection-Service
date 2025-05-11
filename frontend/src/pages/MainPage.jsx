@@ -53,19 +53,30 @@ function MainPage() {
 
     const handleLogout = () => {
         localStorage.clear();
-        navigate('/Home');
+        navigate('/');
     };
 
     const handleMAIRequest = async () => {
         try {
             const accessToken = localStorage.getItem('accessToken');
-            const response = await fetch('http://localhost:80/api/analytic/factors', {
+            const response = await fetch('http://localhost:80/api/analytic/analyze', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${accessToken}`,
                 },
-                body: JSON.stringify(importanceFactors),
+                body: JSON.stringify({
+                    "ratingToPrestige": 0,
+                    "ratingToEducationQuality": importanceFactors.ratingToEducationQuality,
+                    "ratingToScholarshipPrograms": importanceFactors.ratingToScholarshipPrograms,
+                    "prestigeToEducationQuality": importanceFactors.prestigeToEducationQuality,
+                    "prestigeToScholarshipPrograms": importanceFactors.prestigeToScholarshipPrograms,
+                    "educationQualityToScholarshipPrograms": importanceFactors.educationQualityToScholarshipPrograms,
+                    "dormitory": importanceFactors.dormitory,
+                    "scientificLabs": importanceFactors.scientificLabs,
+                    "sportsInfrastructure": importanceFactors.sportsInfrastructure,
+                    "educationCost": importanceFactors.educationCost
+                }),
             });
 
             if (!response.ok) {
