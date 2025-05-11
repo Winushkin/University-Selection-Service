@@ -18,6 +18,7 @@ import (
 	"net"
 )
 
+// main starts analytic service
 func main() {
 	ctx := context.Background()
 	ctx, _ = logger.NewLogger(ctx)

@@ -28,6 +28,7 @@ type UniversityRepository struct {
 	pg *pgxpool.Pool
 }
 
+// NewUniversityRepository returns new university repository with connection to DB
 func NewUniversityRepository(ctx context.Context, cfg postgres.Config) (*UniversityRepository, error) {
 	pool, err := postgres.New(ctx, cfg, "universities")
 	if err != nil {
@@ -36,6 +37,7 @@ func NewUniversityRepository(ctx context.Context, cfg postgres.Config) (*Univers
 	return &UniversityRepository{pg: pool}, nil
 }
 
+// GetRegionIdByName returns region ID by his name
 func (ur *UniversityRepository) GetRegionIdByName(ctx context.Context, name string) (int, error) {
 	var id int
 	queryRow := ur.pg.QueryRow(ctx, getRegionIdByNameRequest, name)
@@ -46,6 +48,7 @@ func (ur *UniversityRepository) GetRegionIdByName(ctx context.Context, name stri
 	return id, nil
 }
 
+// GetUniversityIdByName returns university ID by his name
 func (ur *UniversityRepository) GetUniversityIdByName(ctx context.Context, name string) (int, error) {
 	var id int
 	queryRow := ur.pg.QueryRow(ctx, getUniversityIdByNameRequest, name)
@@ -56,6 +59,7 @@ func (ur *UniversityRepository) GetUniversityIdByName(ctx context.Context, name 
 	return id, nil
 }
 
+// FillRegions fills regions into DB
 func (ur *UniversityRepository) FillRegions(ctx context.Context, regions []string) error {
 	var valuesString []string
 	var valuesArgs []interface{}
@@ -75,6 +79,7 @@ func (ur *UniversityRepository) FillRegions(ctx context.Context, regions []strin
 	return nil
 }
 
+// InsertUniversity insert universities into DB
 func (ur *UniversityRepository) InsertUniversity(ctx context.Context, u *entities.University) error {
 	regionId, err := ur.GetRegionIdByName(ctx, u.Region)
 	if err != nil {
@@ -91,6 +96,7 @@ func (ur *UniversityRepository) InsertUniversity(ctx context.Context, u *entitie
 	return nil
 }
 
+// InsertSpeciality inserts speciality into DB
 func (ur *UniversityRepository) InsertSpeciality(ctx context.Context, s *entities.Speciality) error {
 	universityId, err := ur.GetUniversityIdByName(ctx, s.UniversityName)
 	if err != nil {

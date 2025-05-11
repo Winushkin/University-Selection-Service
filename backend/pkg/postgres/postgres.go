@@ -22,6 +22,7 @@ type Config struct {
 	MaxConns int32 `env:"POSTGRES_MAX_CONNS"`
 }
 
+// New returns pool of connections to postgres DB
 func New(ctx context.Context, c Config, service string) (*pgxpool.Pool, error) {
 	log := logger.GetLoggerFromCtx(ctx)
 	connstring := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable&pool_min_conns=%d&pool_max_conns=%d",

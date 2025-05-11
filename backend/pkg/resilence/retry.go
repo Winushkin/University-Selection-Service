@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+// Retry retries input operation
 func Retry(operation func() error, maxRetries int, baseDelay int) error {
 	var err error
 	for i := 0; i < maxRetries; i++ {

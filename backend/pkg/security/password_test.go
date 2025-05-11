@@ -5,6 +5,7 @@ import (
 	"testing"
 )
 
+// TestHashPassword tests password hashing
 func TestHashPassword(t *testing.T) {
 	t.Run("hash is consistent", func(t *testing.T) {
 		password := "mypassword"
@@ -25,6 +26,7 @@ func TestHashPassword(t *testing.T) {
 	})
 }
 
+// TestCheckPasswordHash tests hash checking
 func TestCheckPasswordHash(t *testing.T) {
 	t.Run("valid password", func(t *testing.T) {
 		password := "mypassword"

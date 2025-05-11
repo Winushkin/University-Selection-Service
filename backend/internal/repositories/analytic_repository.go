@@ -20,6 +20,7 @@ type AnalyticRepository struct {
 	pg *pgxpool.Pool
 }
 
+// NewAnalyticRepository returns new analytic repository with connection to DB
 func NewAnalyticRepository(ctx context.Context, cfg postgres.Config) (*AnalyticRepository, error) {
 	pool, err := postgres.New(ctx, cfg, "universities")
 	if err != nil {
@@ -28,6 +29,7 @@ func NewAnalyticRepository(ctx context.Context, cfg postgres.Config) (*AnalyticR
 	return &AnalyticRepository{pg: pool}, nil
 }
 
+// GetUniversitiesBySpeciality returns slice of universities with specific speciality
 func (ur *AnalyticRepository) GetUniversitiesBySpeciality(ctx context.Context,
 	specialityName string) ([]*entities.University, error) {
 	queryRows, err := ur.pg.Query(ctx, getUniversitiesBySpecialityRequest, specialityName)

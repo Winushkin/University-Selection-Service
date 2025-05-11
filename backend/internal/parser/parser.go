@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+// Set makes specialities slice for university
 func Set(collection []string) ([]string, error) {
 	CollectionMap := make(map[string]bool)
 	CollectionSet := make([]string, 0)
@@ -23,6 +24,7 @@ func Set(collection []string) ([]string, error) {
 	return CollectionSet, nil
 }
 
+// ParseUniversities parses universities from xlsx table
 func ParseUniversities(_ context.Context, path string) ([]entities.University, []string, []string, error) {
 	f, err := excelize.OpenFile(path)
 	if err != nil {

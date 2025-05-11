@@ -16,6 +16,7 @@ import (
 	"net"
 )
 
+// main starts user service
 func main() {
 	ctx := context.Background()
 	ctx, _ = logger.NewLogger(ctx)

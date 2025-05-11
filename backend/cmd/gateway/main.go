@@ -36,6 +36,7 @@ func corsMiddleware(next http.Handler) http.Handler {
 	})
 }
 
+// main starts grpc-gateway service
 func main() {
 	ctx := context.Background()
 	ctx, _ = logger.NewLogger(ctx)

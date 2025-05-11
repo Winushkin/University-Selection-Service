@@ -12,6 +12,7 @@ import (
 	"go.uber.org/zap"
 )
 
+// main starts university service
 func main() {
 	ctx := context.Background()
 	ctx, _ = logger.NewLogger(ctx)

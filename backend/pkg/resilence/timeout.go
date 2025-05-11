@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// Timeout makes operation timed out
 func Timeout(operation func() error, timeout int) error {
 	done := make(chan error, 1)
 	go func() {
