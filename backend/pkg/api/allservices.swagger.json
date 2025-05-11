@@ -523,6 +523,10 @@
         "scholarship": {
           "type": "integer",
           "format": "int32"
+        },
+        "relevancy": {
+          "type": "number",
+          "format": "double"
         }
       }
     },
