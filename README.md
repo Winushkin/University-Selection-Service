@@ -99,9 +99,11 @@ University-Selection-Service/
 │   ├── internal/
 │   │   ├── analytic/
 │   │   │   ├── analyze/
+│   │   │   │   ├── server.go
+│   │   │   │   └── server_test.g
 │   │   │   └── server/
-│   │   │       ├── server.go
-│   │   │       └── server_test.g
+│   │   │       ├── analyze.go
+│   │   │       └── analyze.go
 │   │   ├── config/
 │   │   │   ├── analytic_config.go
 │   │   │   ├── analytic_config_test.go
