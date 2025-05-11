@@ -396,5 +396,103 @@ sequenceDiagram
 ```
 ## Диаграмма class
 ```mermaid
+classDiagram
+    class UserService {
+        
+        +SignUp()
+        +Login()
+        +Refresh()
+        +Fill()
+        +Logout()
+        +ProfileDataForAnalytic()
+        -UserRepository
+        -UserConfig
+        -logger
+    }
 
+    class AnalyticService {
+        +Analyze()
+        -AnalyticRepository
+        -userServiceClient
+        -AnalyticCfg
+        -logger
+    }
+
+    class UniversityService {
+        
+    }
+
+    class Gateway {
+        +RegisterAnalyticHandlerFromEndpoint()
+        +RegisterUserServiceHandlerFromEndpoint()
+        -logger
+    }
+
+    class Database {
+        +CRUD operations
+    }
+
+    class UserDatabase {
+        +CRUD operations for users
+    }
+
+    class UniversityDatabase {
+        +CRUD operations for universities
+    }
+
+    class Logger {
+        +Info()
+        +Fatal()
+        +Error()
+    }
+
+    class UserConfig {
+        +Postgres
+        +INTPort
+        +RESTPort
+        +JWTSecret
+        +New()
+        -logger
+    }
+
+    class UniversityConfig {
+        +Postgres
+        +DatasetPath
+        +New()
+        -logger
+    }
+
+    class AnalyticCfg {
+        Postgres  postgres.Config `env:"POSTGRES"`
+        +INTPort
+        +RESTPort
+        +JWTSecret
+        +New()
+        -logger
+    }
+    
+    class Analyzer {
+        +GetCriteriaWeights()
+        +Analyze()
+    }
+
+    UserService --> UserDatabase : uses
+    AnalyticService --> UniversityDatabase : uses
+    AnalyticService --> UserService : uses
+    UniversityService --> UniversityDatabase : uses
+    Gateway --> UserService : uses
+    Gateway --> AnalyticService : uses
+    UserService --> Logger : uses
+    AnalyticService --> Logger : uses
+    UniversityService --> Logger : uses
+    Gateway --> Logger : uses
+    UserService --> UserConfig : uses
+    AnalyticService --> AnalyticCfg : uses
+    AnalyticService --> Analyzer : uses
+    UniversityService --> UniversityConfig : uses
+    Database <|-- UserDatabase
+    Database <|-- UniversityDatabase
+    AnalyticCfg --> Logger : uses
+    UniversityConfig --> Logger : uses
+    UserConfig --> Logger : uses
 ```
