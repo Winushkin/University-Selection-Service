@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
-import styles from './MainPage.module.css';
-import ToggleSwitch from '../components/ToggleSwitch';
-import logo from "./logo.png";
-import { useNavigate } from "react-router-dom";
+// src/pages/MainPage.jsx
 
-function MainPage() {
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthProvider.jsx';
+import ToggleSwitch from '../components/ToggleSwitch';
+import styles from './MainPage.module.css';
+import logo from './logo.png';
+
+export default function MainPage() {
     const navigate = useNavigate();
+    const { accessToken } = useAuth();             // берём токен из контекста
     const [error, setError] = useState('');
+    const [universities, setUniversities] = useState([]);    // сюда запишем ответ
+    const [speciality, setSpeciality] = useState('');        // и выбранную специальность
 
     const [importanceFactors, setImportanceFactors] = useState({
         ratingToPrestige: 1,
@@ -21,7 +27,8 @@ function MainPage() {
         educationCost: '10000000'
     });
 
-    const handleSliderChange = (e) => {
+    // общие хендлеры
+    const handleSliderChange = e => {
         const { name, value } = e.target;
         setImportanceFactors(prev => ({
             ...prev,
@@ -36,9 +43,8 @@ function MainPage() {
         }));
     };
 
-    const handleChange = (e) => {
+    const handleChange = e => {
         const { name, value } = e.target;
-
         if (/^\d*$/.test(value)) {
             setImportanceFactors(prev => ({
                 ...prev,
@@ -56,73 +62,64 @@ function MainPage() {
         navigate('/');
     };
 
+    // основной запрос
     const handleMAIRequest = async () => {
+        setError('');
         try {
-            const accessToken = localStorage.getItem('accessToken');
-            const response = await fetch('http://localhost:80/api/analytic/analyze', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${accessToken}`,
-                },
-                body: JSON.stringify({
-                    "ratingToPrestige": 0,
-                    "ratingToEducationQuality": importanceFactors.ratingToEducationQuality,
-                    "ratingToScholarshipPrograms": importanceFactors.ratingToScholarshipPrograms,
-                    "prestigeToEducationQuality": importanceFactors.prestigeToEducationQuality,
-                    "prestigeToScholarshipPrograms": importanceFactors.prestigeToScholarshipPrograms,
-                    "educationQualityToScholarshipPrograms": importanceFactors.educationQualityToScholarshipPrograms,
-                    "dormitory": importanceFactors.dormitory,
-                    "scientificLabs": importanceFactors.scientificLabs,
-                    "sportsInfrastructure": importanceFactors.sportsInfrastructure,
-                    "educationCost": importanceFactors.educationCost
-                }),
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                setError(errorData.message || 'Ошибка при запросе');
+            if (!accessToken) {
+                setError('Сначала нужно войти в систему');
                 return;
             }
 
-            const data = await response.json();
-            console.log('Успех:', data);
+            const res = await fetch('/api/analytic/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${accessToken}`
+                },
+                body: JSON.stringify(importanceFactors)
+            });
 
-            const expiresAt = Date.now() + 1000 * 60 * 15;
-            localStorage.setItem('accessToken', data.access);
-            localStorage.setItem('refreshToken', data.refresh);
-            localStorage.setItem('expiresAt', expiresAt);
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                setError(err.message || `Ошибка ${res.status}`);
+                return;
+            }
 
-            navigate('/MainPage');
-        } catch (err) {
+            // после получения ответа:
+            const data = await res.json();
+            console.log('Response data →', data)
+            // сохраняем speciality и массив университетов
+            setSpeciality(data.speciality);
+            setUniversities(data.universities);
+        } catch (e) {
+            console.error(e);
             setError('Ошибка соединения с сервером');
-            console.error('Request error:', err);
         }
     };
 
     return (
         <div>
-            <div className={styles.header}>
+            <header className={styles.header}>
                 <div className={styles.logo}>
                     <img src={logo} alt="Logo" className={styles.logoImage} />
                 </div>
                 <div className={styles.titleWrapper}>
-                    <div className={styles.title}>UniQuest</div>
-                    <div className={styles.subtitle}>Найдите идеальный университет для себя</div>
+                    <h1 className={styles.title}>UniQuest</h1>
+                    <p className={styles.subtitle}>Найдите идеальный университет для себя</p>
                 </div>
-                <button type="button" className="button" onClick={handleEditProfile}>
+                <button className="button" onClick={handleEditProfile}>
                     Редактировать профиль
                 </button>
-                <button type="button" className="button" onClick={handleLogout}>
+                <button className="button" onClick={handleLogout}>
                     Выйти
                 </button>
-            </div>
+            </header>
 
             <div className={styles.wrapper}>
                 <aside className={styles.sidebar}>
                     <h2>Настройка фильтров</h2>
 
-                    {/* Слайдеры */}
                     {[
                         { label: 'Рейтинг vs Престиж', name: 'ratingToPrestige' },
                         { label: 'Рейтинг vs Качество образования', name: 'ratingToEducationQuality' },
@@ -147,7 +144,6 @@ function MainPage() {
                         </div>
                     ))}
 
-                    {/* Переключатели */}
                     <div className={styles.toggleGroup}>
                         <label>Общежитие</label>
                         <ToggleSwitch
@@ -171,7 +167,7 @@ function MainPage() {
                     </div>
 
                     <div className="form-group">
-                        <label>Стоимость обучения должна быть не больше чем:</label>
+                        <label>Стоимость обучения не больше чем:</label>
                         <input
                             type="text"
                             name="educationCost"
@@ -183,18 +179,49 @@ function MainPage() {
 
                     {error && <div className="error-message">{error}</div>}
 
-                    <button type="button" className="button" onClick={handleMAIRequest}>
+                    <button className="button" onClick={handleMAIRequest}>
                         Подобрать университет
                     </button>
                 </aside>
 
                 <main className={styles.mainContent}>
-                    <h1>Список университетов</h1>
-                    {/* Здесь будет отображаться результат фильтрации */}
+                    <h2>Результаты для специальности: {speciality || '—'}</h2>
+                    {universities.length > 0 ? (
+                        <ul className={styles.universityList}>
+                            {universities.map((u, idx) => (
+                                <li key={idx} className={styles.universityCard}>
+                                    <h3>{u.name}</h3>
+                                    <p>Регион: {u.region}</p>
+                                    <p>Рейтинг: {u.rank}</p>
+                                    <p>Стоимость: {u.cost}</p>
+                                    <p>Престиж: {u.prestige}</p>
+                                    <p>Качество образования: {u.quality}</p>
+                                    <p>Общежитие: {u.dormitory ? 'да' : 'нет'}</p>
+                                    <p>Лаборатории: {u.labs ? 'да' : 'нет'}</p>
+                                    <p>Спорт. инфра-ры: {u.sport ? 'да' : 'нет'}</p>
+                                    <p>Стипендия: {u.scholarship}</p>
+                                    <p>Баллы ЕГЭ для бюджета: {u.BudgetPoints * 3}</p>
+                                    <p>Баллы ЕГЭ для контракта: {u.ContractPoints * 3}</p>
+                                    <p>Балл актуальности: {u.relevancy}</p>
+                                    <p>
+                                        Сайт:{' '}
+                                        <a
+                                            href={u.site}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={styles.universityLink}
+                                        >
+                                            {u.site}
+                                        </a>
+                                    </p>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>Список университетов будет здесь после запроса.</p>
+                    )}
                 </main>
             </div>
         </div>
     );
 }
-
-export default MainPage;
