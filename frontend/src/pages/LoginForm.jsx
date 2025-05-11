@@ -34,10 +34,11 @@ function LogInForm() {
             const data = await response.json();
 
 
-            const expiresAt = Date.now() + 1000 * data.expires_in;
+            const expiresAt = Date.now() + data.expiresAt;
             localStorage.setItem('accessToken', data.access);
             localStorage.setItem('refreshToken', data.refresh);
             localStorage.setItem('expiresAt', expiresAt.toString());
+            console.log(data.access, data.refresh, data.expiresAt.toString());
 
 
             setAccessToken(data.access);
