@@ -43,71 +43,126 @@ $ make build
 
 ## 🧱 Структура проекта
 ````
+
 University-Selection-Service/
-├── .github
-│   └── workflows
+├── .github/
+│   └── workflows/
 │       └── ci.yaml
-├── backend
-│   ├── api
-│   │   ├── analytic.proto
-│   │   └── user.proto
-│   ├── cmd
-│   │   ├── analytic
-│   │   │   ├── Dockerfile
-│   │   │   └── main.go
-│   │   ├── gateway
-│   │   │   ├── Dockerfile
-│   │   │   └── main.go
-│   │   ├── nginx
-│   │   │   ├── Dockerfile
-│   │   │   └── nginx.conf
-│   │   ├── university
-│   │   │   └── main.go
-│   │   └── user
-│   │       ├── Dockerfile
-│   │       └── main.go
-│   └── db
-│       └── migrations
-│           ├── universities
-│           │   ├── 000001_create_universities_schema_down.sql
-│           │   ├── 000001_create_universities_schema_up.sql
-│           │   ├── 000002_create_universities_schema_up.sql
-│           │   ├── 000002_create_regions_table_down.sql
-│           │   ├── 000002_create_regions_table_up.sql
-│           │   ├── 000003_create_universities_table_down.sql
-│           │   ├── 000003_create_universities_table_up.sql
-│           │   ├── 000004_create_specialties_table_down.sql
-│           │   └── 000004_create_specialties_table_up.sql
-│           └── users
-│               ├── 000001_initialize_users_schema_down.sql
-│               ├── 000001_initialize_users_schema_up.sql
-│               ├── 000002_add_table_users_down.sql
-│               ├── 000002_add_table_users_up.sql
-│               ├── 000003_add_table_refresh_tokens_down.sql
-│               └── 000003_add_table_refresh_tokens_up.sql
-├── frontend
-│   ├── public
-│   │   └── index.html
-│   ├── src
-│   │   ├── components
-│   │   │   └── ToggleSwitch.jsx
-│   │   ├── pages
-│   │   │   ├── Home.jsx
-│   │   │   ├── RegistrationForm.jsx
-│   │   │   ├── LogInForm.jsx
-│   │   │   ├── ProfileForm.jsx
-│   │   │   ├── EditProfileForm.jsx
-│   │   │   ├── MainPage.jsx
-│   │   │   └── UniversityPage.jsx
-│   │   ├── App.jsx
-│   │   ├── AuthProvider.jsx
-│   │   └── index.jsx
-│   ├── package.json
-│   ├── vite.config.js
-│   └── .gitignore
 ├── Makefile
 ├── README.md
-└── example.xlsx
+├── example.xlsx
+├── result2022.xlsx
+├── backend/
+│   ├── api/
+│   │   ├── analytic.proto
+│   │   └── user.proto
+│   ├── cmd/
+│   │   ├── analytic/
+│   │   │   ├── Dockerfile
+│   │   │   └── main.go
+│   │   ├── gateway/
+│   │   │   ├── Dockerfile
+│   │   │   └── main.go
+│   │   ├── nginx/
+│   │   │   ├── Dockerfile
+│   │   │   └── nginx.conf
+│   │   ├── university/
+│   │   │   └── main.go
+│   │   └── user/
+│   │       ├── Dockerfile
+│   │       └── main.go
+│   ├── database_data/
+│   │   ├── universities_data/
+│   │   └── users_data/
+│   ├── db/
+│   │   └── migrations/
+│   │       ├── universities/
+│   │       │   ├── 000001_create_universities_schema.down.sql
+│   │       │   ├── 000001_create_universities_schema.up.sql
+│   │       │   ├── 000002_create_regions_table.down.sql
+│   │       │   ├── 000002_create_regions_table.up.sql
+│   │       │   ├── 000003_create_universities_table.down.sql
+│   │       │   ├── 000003_create_universities_table.up.sql
+│   │       │   ├── 000004_create_specialities_table.down.sql
+│   │       │   └── 000004_create_specialities_table.up.sql
+│   │       └── users/
+│   │           ├── 000001_initialize_users_schema.down.sql
+│   │           ├── 000001_initialize_users_schema.up.sql
+│   │           ├── 000002_add_table_users.down.sql
+│   │           ├── 000002_add_table_users.up.sql
+│   │           ├── 000003_add_table_refresh_tokens.down.sql
+│   │           └── 000003_add_table_refresh_tokens.up.sql
+│   ├── docker/
+│   │   └── docker-compose.yml
+│   ├── env/
+│   │   ├── analytic.env
+│   │   ├── analytic_env.example
+│   │   ├── universities.env
+│   │   ├── universities_env.example
+│   │   ├── user.env
+│   │   ├── user_env.example
+│   │   ├── users_postgres.env
+│   │   └── users_postgres_env.example
+│   ├── internal/
+│   │   ├── analytic/
+│   │   │   ├── analyze.go
+│   │   │   └── analyze_test.go
+│   │   ├── server/
+│   │   │   ├── server.go
+│   │   │   └── server_test.go
+│   │   ├── config/
+│   │   ├── entities/
+│   │   ├── interceptors/
+│   │   ├── parser/
+│   │   ├── repositories/
+│   │   ├── university/
+│   │   ├── user/
+│   │   ├── api/
+│   │   ├── logger/
+│   │   ├── postgres/
+│   │   ├── resilience/
+│   │   └── security/
+│   └── third_party/
+│       └── googleapis/
+│           └── google/
+│               └── api/
+│                   ├── annotations.proto
+│                   ├── empty.proto
+│                   ├── http.proto
+│                   ├── openapi.proto
+│                   └── openapiv2.proto
+└── frontend/
+    ├── node_modules/
+    ├── public/
+    │   └── vite.svg
+    ├── eslint.config.js
+    ├── index.html
+    ├── package.json
+    ├── package-lock.json
+    ├── vite.config.js
+    └── src/
+        ├── assets/
+        │   └── react.svg
+        ├── components/
+        │   ├── ToggleSwitch.jsx
+        │   └── ToggleSwitch.css
+        ├── pages/
+        │   ├── Home.jsx
+        │   ├── Home.module.css
+        │   ├── RegistrationForm.jsx
+        │   ├── RegistrationForm.css
+        │   ├── LoginForm.jsx
+        │   ├── ProfileForm.jsx
+        │   ├── ProfileForm.css
+        │   ├── EditProfileForm.jsx
+        │   ├── MainPage.jsx
+        │   ├── MainPage.module.css
+        │   └── UniversityPage.jsx
+        ├── App.jsx
+        ├── AuthProvider.jsx
+        ├── index.css
+        └── main.jsx
+
 
 ````
 
