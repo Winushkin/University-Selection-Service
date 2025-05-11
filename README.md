@@ -71,9 +71,6 @@ University-Selection-Service/
 │   │   └── user/
 │   │       ├── Dockerfile
 │   │       └── main.go
-│   ├── database_data/
-│   │   ├── universities_data/
-│   │   └── users_data/
 │   ├── db/
 │   │   └── migrations/
 │   │       ├── universities/
@@ -95,42 +92,64 @@ University-Selection-Service/
 │   ├── docker/
 │   │   └── docker-compose.yml
 │   ├── env/
-│   │   ├── analytic.env
 │   │   ├── analytic_env.example
-│   │   ├── universities.env
 │   │   ├── universities_env.example
-│   │   ├── user.env
 │   │   ├── user_env.example
-│   │   ├── users_postgres.env
 │   │   └── users_postgres_env.example
 │   ├── internal/
 │   │   ├── analytic/
-│   │   │   ├── analyze.go
-│   │   │   └── analyze_test.go
-│   │   ├── server/
-│   │   │   ├── server.go
-│   │   │   └── server_test.go
+│   │   │   ├── analyze/
+│   │   │   └── server/
+│   │   │       ├── server.go
+│   │   │       └── server_test.g
 │   │   ├── config/
+│   │   │   ├── analytic_config.go
+│   │   │   ├── analytic_config_test.go
+│   │   │   ├── university_config.go
+│   │   │   ├── user_config.go
+│   │   │   └── user_config_test.go
 │   │   ├── entities/
+│   │   │   ├── comparisons.go
+│   │   │   ├── speciality.go
+│   │   │   ├── university.go
+│   │   │   ├── user.go
+│   │   │   └── сriteria.go
 │   │   ├── interceptors/
+│   │   │   ├── auth_interceptor.go
+│   │   │   └── auth_interceptor_test.go
 │   │   ├── parser/
-│   │   ├── repositories/
-│   │   ├── university/
-│   │   ├── user/
-│   │   ├── api/
-│   │   ├── logger/
-│   │   ├── postgres/
-│   │   ├── resilience/
-│   │   └── security/
-│   └── third_party/
-│       └── googleapis/
-│           └── google/
-│               └── api/
-│                   ├── annotations.proto
-│                   ├── empty.proto
-│                   ├── http.proto
-│                   ├── openapi.proto
-│                   └── openapiv2.proto
+│   │   │   └── parser.go
+│   │   └── pkg/
+│   │       ├──  user/
+│   │       ├── api/
+│   │       │   ├── allservices.swagger.json
+│   │       │   ├── analytic.pb.go
+│   │       │   ├── analytic.pb.gw.go
+│   │       │   ├── analytic_grpc.pb.go
+│   │       │   ├── user.pb.go
+│   │       │   ├── user.pb.gw.go
+│   │       │   ├── user.swagger.json
+│   │       │   └── user_grpc.pb.go
+│   │       ├── logger/
+│   │       │   └── logger.go
+│   │       ├── security/
+│   │       │   ├── password.go
+│   │       │   └── password_test.go
+│   │       └── resilience/
+│   │           ├── retry.go 
+│   │           └── timeout.go
+│   ├── third_party/
+│   │   └── googleapis/
+│   │       └── google/
+│   │           └── api/
+│   │               ├── annotations.proto
+│   │               ├── empty.proto
+│   │               ├── http.proto
+│   │               ├── openapi.proto
+│   │               └── openapiv2.proto
+│   │
+│   ├── go.mod
+│   └── go.sum
 └── frontend/
     ├── node_modules/
     ├── public/
@@ -159,6 +178,7 @@ University-Selection-Service/
         │   ├── MainPage.module.css
         │   └── UniversityPage.jsx
         ├── App.jsx
+        ├── App.css
         ├── AuthProvider.jsx
         ├── index.css
         └── main.jsx
