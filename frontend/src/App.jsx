@@ -7,7 +7,7 @@ import EditProfileForm from "./pages/EditProfileForm.jsx";
 import RegistrationForm from "./pages/RegistrationForm.jsx";
 import LogInForm from "./pages/LogInForm.jsx";
 import MainPage from "./pages/MainPage.jsx";
-import UniversityPage from "./pages/UniversityPage.jsx";
+
 
 function App() {
     return (
@@ -19,7 +19,6 @@ function App() {
                 <Route path="EditProfileForm" element={<EditProfileForm />} />
                 <Route path="RegistrationForm" element={<RegistrationForm />} />
                 <Route path="LogInForm" element={<LogInForm />} />
-                <Route path="UniversityPage" element={<UniversityPage />} />
                 <Route path="MainPage" element={<MainPage />} />
             </Routes>
 
