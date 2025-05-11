@@ -46,7 +46,7 @@ func main() {
 	}
 	log.Info(ctx, "Listening on", zap.String("port", cfg.RESTPort))
 
-	conn, err := grpc.NewClient(":", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient("user_service:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Error(ctx, "failed to connect to user server", zap.Error(err))
 	}
