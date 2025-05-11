@@ -27,13 +27,14 @@
 
 - Установленный Docker
 - Установленный Docker Compose
+- Установленный Make
 
 ### Шаги запуска
 
 1. Клонируй репозиторий
 
 ```bash
-$ git clone https://github.com/yourname/University-Selection-Service.git
+$ git clone https://github.com/Winushkin/University-Selection-Service.git
 $ cd University-Selection-Service
 ```
 
@@ -126,6 +127,7 @@ University-Selection-Service/
 1. User - производит аутентификацию и авторизацию пользователей в системе, а также отвечает за управление профилями пользователей
 2. Analytic - анализирует данные пользователя и на их основе подбирает наиболее подходящие университеты с помощью "Метода анализа иерархий" из собранных в базе данных.
 3. Universities - собирает данные о ВУЗах в открытых интернет-источниках и собирает их в базу данных.
+4. Gateway - производит маршрутизацию HTTP-запросов на gRPC-серверы.
 
 Баз данных:
 1. База данных университетов
@@ -160,4 +162,70 @@ University-Selection-Service/
 1. /api/analytic/analyze - выполняется `Метод анализа иерархий` с параметрами из запроса и данными профиля пользователя.
 
 ### Сервис University
+Сервис **University** содержит:
+
+- _Реализацию сервиса_, заполняющего данные об университетах - `backend/internal/university/service.go`
+- _Конфигурацию_ для настройки сервиса - `backend/internal/config/university_config.go`
+- _Репозиторий_ для заполнения базы данных университетов - `backend/internal/repositories/university_repository.go`
+- _Парсер_ для выделения данных об университетах из источника - `backend/internal/parser/parser.go`
+
+### Сервис Gateway
+Сервис **Gateway** содержит:
+
+- _Точку входа_ с реализацией _обратного прокси_ для маршрутизации HTTP-запросов клиента на gRPC-сервисы **User** и **Analytic** - `backend/cmd/gateway/main.go`
+
+### База данных пользователей
+Взаимодействие с базой реализует сервис **User**. Сама база данных поднимается в контейнере `users_postgres_service` описанном в `backend/docker/docker-compose.yml`. Настройка схемы базы данных производится с помощью миграций, описанных в `backend/db/migrations/users`
+База данных пользователей хранит:
+
+- Профили пользователей
+```sql
+     id SERIAL PRIMARY KEY,
+     login TEXT UNIQUE NOT NULL,
+     password TEXT,
+     ege INT,
+     speciality TEXT,
+     region TEXT,
+     financing TEXT
+```
+- Refresh-токены пользователей
+```sql
+    id SERIAL PRIMARY KEY,
+    user_id INT,
+    token TEXT UNIQUE NOT NULL,
+    expires_at TIMESTAMP NOT NULL
+```
+
+### База данных университетов
+Взаимодействие с базой данных реализуют сервисы **University** и **Analytic**. Сама база данных поднимается в контейнере `universities_postgres_service` описанном в `backend/docker/docker-compose.yml`. Настройка схемы базы данных производится с помощью миграций, описанных в `backend/db/migrations/universities`
+База данных хранит:
+
+- Имена регионов
+```sql
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL UNIQUE
+```
+- Данные об университетах
+```sql
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL UNIQUE,
+    site TEXT,
+    prestige INT NOT NULL UNIQUE,
+    rank FLOAT NOT NULL,
+    quality SMALLINT NOT NULL,
+    scholarship INT,
+    dormitory BOOLEAN,
+    labs BOOLEAN,
+    sport BOOLEAN,
+    region_id INT REFERENCES universities.regions(id)
+```
+- Данные о специальностях
+```sql
+    id SERIAL PRIMARY KEY,
+    university_id INT REFERENCES universities.universities(id),
+    name TEXT NOT NULL,
+    budget_points INT,
+    contract_points INT,
+    cost INT NOT NULL
+```
 
