@@ -25,7 +25,7 @@ func New(client api.UserServiceClient, r interface {
 }
 
 func (s *Server) Analyze(ctx context.Context, request *api.AnalyzeRequest) (*api.AnalyzeResponse, error) {
-	id, ok := ctx.Value("id").(int)
+	id, ok := ctx.Value("user_id").(int)
 	if !ok {
 		return nil, fmt.Errorf("id is not int")
 	}
@@ -71,6 +71,7 @@ func (s *Server) Analyze(ctx context.Context, request *api.AnalyzeRequest) (*api
 			Labs:           univ.Labs,
 			Sport:          univ.Sport,
 			Scholarship:    int32(univ.Scholarship),
+			Relevancy:      univ.Relevancy * 1000,
 		}
 		univResult.Universities = append(univResult.Universities, u)
 	}
