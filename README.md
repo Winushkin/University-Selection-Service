@@ -328,13 +328,47 @@ University-Selection-Service/
 ```mermaid
 sequenceDiagram
     participant C as Client
-    participant Usr as User
-    participant A as Analytic
-    participant Univ as University
-    participant G as Gateway
     participant N as Nginx
+    participant G as Gateway
+    participant Usr as UserService
     participant USRDB as Users Data Base
+    participant A as Analytic
     participant UNIVDB as Universities Data Base
-    C ->> N: SignUp
-    N ->> C: {refresh_token, access_token, }
+
+%% Регистрация пользователя
+    note over C,N: Клиент регистрируется
+    C ->> N: POST /api/user/signup {login, password}
+    N ->> G: Пересылает запрос
+    G ->> Usr: Направляет в UserService.SignUp
+    Usr ->> USRDB: Создает нового пользователя
+    USRDB -->> Usr: Пользователь создан
+    Usr -->> G: 200 OK с токенами {access, refresh, expiresAt}
+    G -->> N: Пересылает ответ
+    N -->> C: 200 OK с токенами
+
+%% Заполнение профиля
+    note over C,N: Клиент заполняет профиль
+    C ->> N: POST /api/user/fill {ege, speciality, town, financing} с токеном
+    N ->> G: Пересылает запрос
+    G ->> Usr: Направляет в UserService.Fill
+    Usr ->> USRDB: Обновляет профиль пользователя
+    USRDB -->> Usr: Профиль обновлен
+    Usr -->> G: 200 OK
+    G -->> N: Пересылает ответ
+    N -->> C: 200 OK
+
+%% Запрос анализа
+    note over C,N: Клиент запрашивает анализ
+    C ->> N: POST /api/analytic/analyze {parameters} с токеном
+    N ->> G: Пересылает запрос
+    G ->> A: Направляет в Analytic.analyze
+    A ->> Usr: POST /api.UserService/ProfileDataForAnalytic {id}
+    Usr ->> USRDB: Получает данные профиля
+    USRDB -->> Usr: Данные профиля
+    Usr -->> A: Данные профиля {ege, speciality, town, financing}
+    A ->> UNIVDB: Запрашивает университеты на основе профиля и параметров
+    UNIVDB -->> A: Данные университетов
+    A -->> G: 200 OK с результатом анализа {speciality, universities}
+    G -->> N: Пересылает ответ
+    N -->> C: 200 OK с результатом анализа
 ```
