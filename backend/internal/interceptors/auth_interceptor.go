@@ -20,10 +20,11 @@ func AuthInterceptor(secret string) grpc.UnaryServerInterceptor {
 		handler grpc.UnaryHandler,
 	) (interface{}, error) {
 		publicMethods := map[string]bool{
-			"/api.UserService/SignUp":  true,
-			"/api.UserService/Refresh": true,
-			"/api.UserService/Logout":  true,
-			"/api.UserService/Login":   true,
+			"/api.UserService/SignUp":                 true,
+			"/api.UserService/Refresh":                true,
+			"/api.UserService/Logout":                 true,
+			"/api.UserService/Login":                  true,
+			"/api.UserService/ProfileDataForAnalytic": true,
 		}
 		if publicMethods[info.FullMethod] {
 			return handler(ctx, req)
