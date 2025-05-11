@@ -1,6 +1,5 @@
 PROTO_DIR = ./backend/api/
 OUT_DIR = ./backend/pkg/api/
-POSTGRESQL_URL=$
 
 PROTO_FILES = $(shell find $(PROTO_DIR) -name "*.proto")
 
@@ -26,9 +25,9 @@ build:
 	docker compose -f ./backend/docker/docker-compose.yml up -d --build gateway_service
 	docker compose -f ./backend/docker/docker-compose.yml up -d --build nginx_service
 
-mDown:
+down:
 	migrate -database ${POSTGRESQL_URL} -path backend/db/migrations/universities down
 
 
-mUp:
+up:
 	migrate -database ${POSTGRESQL_URL} -path backend/db/migrations/universities up
