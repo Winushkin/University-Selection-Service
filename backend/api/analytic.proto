@@ -37,6 +37,7 @@ message University {
   bool sport = 11;
   int32 scholarship = 12;
   double relevancy = 13;
+  string site = 14;
 }
 
 message AnalyzeRequest {

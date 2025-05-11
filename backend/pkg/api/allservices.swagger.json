@@ -527,6 +527,9 @@
         "relevancy": {
           "type": "number",
           "format": "double"
+        },
+        "site": {
+          "type": "string"
         }
       }
     },

@@ -38,6 +38,7 @@ type University struct {
 	Sport          bool                   `protobuf:"varint,11,opt,name=sport,proto3" json:"sport,omitempty"`
 	Scholarship    int32                  `protobuf:"varint,12,opt,name=scholarship,proto3" json:"scholarship,omitempty"`
 	Relevancy      float64                `protobuf:"fixed64,13,opt,name=relevancy,proto3" json:"relevancy,omitempty"`
+	Site           string                 `protobuf:"bytes,14,opt,name=site,proto3" json:"site,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -161,6 +162,13 @@ func (x *University) GetRelevancy() float64 {
 		return x.Relevancy
 	}
 	return 0
+}
+
+func (x *University) GetSite() string {
+	if x != nil {
+		return x.Site
+	}
+	return ""
 }
 
 type AnalyzeRequest struct {
@@ -335,7 +343,7 @@ var File_analytic_proto protoreflect.FileDescriptor
 
 const file_analytic_proto_rawDesc = "" +
 	"\n" +
-	"\x0eanalytic.proto\x12\x03api\x1a\x1cgoogle/api/annotations.proto\x1a\x18google/api/openapi.proto\"\xea\x02\n" +
+	"\x0eanalytic.proto\x12\x03api\x1a\x1cgoogle/api/annotations.proto\x1a\x18google/api/openapi.proto\"\xfe\x02\n" +
 	"\n" +
 	"University\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x16\n" +
@@ -351,7 +359,8 @@ const file_analytic_proto_rawDesc = "" +
 	" \x01(\bR\x04labs\x12\x14\n" +
 	"\x05sport\x18\v \x01(\bR\x05sport\x12 \n" +
 	"\vscholarship\x18\f \x01(\x05R\vscholarship\x12\x1c\n" +
-	"\trelevancy\x18\r \x01(\x01R\trelevancy\"\xb6\x04\n" +
+	"\trelevancy\x18\r \x01(\x01R\trelevancy\x12\x12\n" +
+	"\x04site\x18\x0e \x01(\tR\x04site\"\xb6\x04\n" +
 	"\x0eAnalyzeRequest\x12*\n" +
 	"\x10ratingToPrestige\x18\x01 \x01(\x05R\x10ratingToPrestige\x12:\n" +
 	"\x18ratingToEducationQuality\x18\x02 \x01(\x05R\x18ratingToEducationQuality\x12@\n" +
