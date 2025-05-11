@@ -3,6 +3,7 @@ package main
 import (
 	pb "University-Selection-Service/pkg/api"
 	"University-Selection-Service/pkg/logger"
+	"University-Selection-Service/pkg/resilence"
 	"context"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"go.uber.org/zap"
@@ -47,7 +48,7 @@ func main() {
 
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 
-	if err := pb.RegisterUserServiceHandlerFromEndpoint(ctx, mux, "user_service:8080", opts); err != nil {
+	if err := resilence.Retry(func() error { return pb.RegisterUserServiceHandlerFromEndpoint(ctx, mux, "user_service:8080", opts) }, 5, 100); err != nil {
 		log.Error(ctx, "Failed register users grpc service", zap.Error(err))
 		return
 	}

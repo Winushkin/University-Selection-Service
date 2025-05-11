@@ -7,6 +7,7 @@ import (
 	"University-Selection-Service/pkg/api"
 	"University-Selection-Service/pkg/logger"
 	"University-Selection-Service/pkg/postgres"
+	"University-Selection-Service/pkg/resilence"
 	"context"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
@@ -53,8 +54,9 @@ func main() {
 	)
 	api.RegisterUserServiceServer(server, srv)
 	reflection.Register(server)
-	if err = server.Serve(lis); err != nil {
+	if err = resilence.Retry(func() error { return server.Serve(lis) }, 5, 100); err != nil {
 		log.Error(ctx, "failed to serve gRPC server", zap.Error(err))
+		return
 	}
 	healthServer := health.NewServer()
 
