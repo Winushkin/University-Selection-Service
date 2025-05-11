@@ -92,7 +92,7 @@ func (a *Analyser) Analyze(universities []*entities.University, cmp *entities.Co
 			float64(univ.Scholarship)/float64(scholarshipProgramsSum)*criteria.ScholarshipPrograms
 	}
 	slices.SortFunc(universities, func(u1 *entities.University, u2 *entities.University) int {
-		switch u1.Relevancy < u2.Relevancy {
+		switch u1.Relevancy > u2.Relevancy {
 		case true:
 			return -1
 		case false:
