@@ -61,7 +61,13 @@ function ProfileForm() {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${accessToken}`,
                 },
-                body: JSON.stringify( profile),
+                body: JSON.stringify({
+                    ege: Number(profile.egeScores),
+                    speciality: profile.desiredSpecialty,
+                    eduType: profile.educationType,
+                    town: profile.universityLocation,
+                    financing: profile.financing,
+                }),
             });
 
             if (!response.ok) {
