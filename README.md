@@ -47,58 +47,68 @@ University-Selection-Service/
 ├── .github
 │   └── workflows
 │       └── ci.yaml
-│
-├──backend
-│  ├── api
-│  │   ├── analytic.proto
-│  │   └── user.proto
-│  ├── cmd
-│  │    ├── analytic
-│  │    │   ├── Dockerfile
-│  │    │   └── main.go
-│  │    ├── gateway
-│  │    │   ├── Dockerfile
-│  │    │   └── main.go
-│  │    ├── nginx
-│  │    │   ├── Dockerfile
-│  │    │   └── nginx.conf
-│  │    ├── university
-│  │    │   └── main.go
-│  │    └── user
-│  │        ├── Dockerfile
-│  │        └── main.go
-│  ├── db
-│  │   └── migrations
-│  │       ├── universities
-│  │       │   ├── 000001_create_universities_schema_down.sql
-│  │       │   ├── 000001_create_universities_schema_up.sql
-│  │       │   ├── 000002_create_universities_schema_up.sql
-│  │       │   ├── 000002_create_regions_table_down.sql
-│  │       │   ├── 000002_create_regions_table_up.sql
-│  │       │   ├── 000003_create_universities_table_down.sql
-│  │       │   ├── 000003_create_universities_table_up.sql
-│  │       │   ├── 000004_create_specialties_table_down.sql
-│  │       │   └── 000004_create_specialties_table_up.sql
-│  │       └── users
-│  │           ├── 000001_initialize_users_schema_down.sql
-│  │           ├── 000001_initialize_users_schema_up.sql
-│  │           ├── 000002_add_table_users_down.sql
-│  │           ├── 000002_add_table_users_up.sql
-│  │           ├── 000003_add_table_refresh_tokens_down.sql
-│  │           └── 000003_add_table_refresh_tokens_up.sql
-│  │
-│  │
-│  │
-│  │
-│  │
-│  │
-│  │
-│  │
-│  │
-│  │
-│
-│
-│
+├── backend
+│   ├── api
+│   │   ├── analytic.proto
+│   │   └── user.proto
+│   ├── cmd
+│   │   ├── analytic
+│   │   │   ├── Dockerfile
+│   │   │   └── main.go
+│   │   ├── gateway
+│   │   │   ├── Dockerfile
+│   │   │   └── main.go
+│   │   ├── nginx
+│   │   │   ├── Dockerfile
+│   │   │   └── nginx.conf
+│   │   ├── university
+│   │   │   └── main.go
+│   │   └── user
+│   │       ├── Dockerfile
+│   │       └── main.go
+│   └── db
+│       └── migrations
+│           ├── universities
+│           │   ├── 000001_create_universities_schema_down.sql
+│           │   ├── 000001_create_universities_schema_up.sql
+│           │   ├── 000002_create_universities_schema_up.sql
+│           │   ├── 000002_create_regions_table_down.sql
+│           │   ├── 000002_create_regions_table_up.sql
+│           │   ├── 000003_create_universities_table_down.sql
+│           │   ├── 000003_create_universities_table_up.sql
+│           │   ├── 000004_create_specialties_table_down.sql
+│           │   └── 000004_create_specialties_table_up.sql
+│           └── users
+│               ├── 000001_initialize_users_schema_down.sql
+│               ├── 000001_initialize_users_schema_up.sql
+│               ├── 000002_add_table_users_down.sql
+│               ├── 000002_add_table_users_up.sql
+│               ├── 000003_add_table_refresh_tokens_down.sql
+│               └── 000003_add_table_refresh_tokens_up.sql
+├── frontend
+│   ├── public
+│   │   └── index.html
+│   ├── src
+│   │   ├── components
+│   │   │   └── ToggleSwitch.jsx
+│   │   ├── pages
+│   │   │   ├── Home.jsx
+│   │   │   ├── RegistrationForm.jsx
+│   │   │   ├── LogInForm.jsx
+│   │   │   ├── ProfileForm.jsx
+│   │   │   ├── EditProfileForm.jsx
+│   │   │   ├── MainPage.jsx
+│   │   │   └── UniversityPage.jsx
+│   │   ├── App.jsx
+│   │   ├── AuthProvider.jsx
+│   │   └── index.jsx
+│   ├── package.json
+│   ├── vite.config.js
+│   └── .gitignore
+├── Makefile
+├── README.md
+└── example.xlsx
+
 ````
 
 ## 📨 Описание работы приложения
