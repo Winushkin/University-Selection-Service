@@ -100,7 +100,7 @@ University-Selection-Service/
 │   │   ├── analytic/
 │   │   │   ├── analyze/
 │   │   │   │   ├── server.go
-│   │   │   │   └── server_test.g
+│   │   │   │   └── server_test.go
 │   │   │   └── server/
 │   │   │       ├── analyze.go
 │   │   │       └── analyze.go
