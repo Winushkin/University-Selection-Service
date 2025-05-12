@@ -117,13 +117,67 @@ export default function MainPage() {
                     <h2>Настройка фильтров</h2>
 
                     {[
-                        { label: 'Рейтинг vs Престиж', name: 'ratingToPrestige' },
-                        { label: 'Рейтинг vs Качество образования', name: 'ratingToEducationQuality' },
-                        { label: 'Рейтинг vs Размер стипендии', name: 'ratingToScholarshipPrograms' },
-                        { label: 'Престиж vs Качество образования', name: 'prestigeToEducationQuality' },
-                        { label: 'Престиж vs Размер стипендии', name: 'prestigeToScholarshipPrograms' },
-                        { label: 'Качество образования vs Размер стипендии', name: 'educationQualityToScholarshipPrograms' },
-                    ].map(slider => (
+                        {
+                            label: (
+                                <>
+                                    Насколько для вас рейтинг университета важнее престижа?
+                                    <br/>
+                                    (1 — одинаково важны, 9 — гораздо важнее)
+                                </>
+                            ),
+                            name: 'ratingToPrestige',
+                        },
+                        {
+                            label: (
+                                <>
+                                    Насколько для вас рейтинг важнее качества образования?
+                                    <br/>
+                                    (1 — одинаково важны, 9 — гораздо важнее)
+                                </>
+                            ),
+                            name: 'ratingToEducationQuality',
+                        },
+                        {
+                            label: (
+                                <>
+                                    Насколько для вас рейтинг важнее размера стипендии?
+                                    <br/>
+                                    (1 — одинаково важны, 9 — гораздо важнее)
+                                </>
+                            ),
+                            name: 'ratingToScholarshipPrograms',
+                        },
+                        {
+                            label: (
+                                <>
+                                    Насколько для вас престиж важнее качества образования?
+                                    <br/>
+                                    (1 — одинаково важны, 9 — гораздо важнее)
+                                </>
+                            ),
+                            name: 'prestigeToEducationQuality',
+                        },
+                        {
+                            label: (
+                                <>
+                                    Насколько для вас престиж важнее размера стипендии?
+                                    <br/>
+                                    (1 — одинаково важны, 9 — гораздо важнее)
+                                </>
+                            ),
+                            name: 'prestigeToScholarshipPrograms',
+                        },
+                        {
+                            label: (
+                                <>
+                                    Насколько для вас качество образования важнее размера стипендии?
+                                    <br/>
+                                    (1 — одинаково важны, 9 — гораздо важнее)
+                                </>
+                            ),
+                            name: 'educationQualityToScholarshipPrograms',
+                        },
+                    ].map((slider) => (
                         <div className={styles.sliderGroup} key={slider.name}>
                             <label>
                                 {slider.label}: <strong>{importanceFactors[slider.name]}</strong>
@@ -163,7 +217,7 @@ export default function MainPage() {
                     </div>
 
                     <div className="form-group">
-                        <label>Стоимость обучения не больше чем:</label>
+                        <label>Максимально допустимая стоимость обучения:</label>
                         <input
                             type="text"
                             name="educationCost"
@@ -181,7 +235,7 @@ export default function MainPage() {
                 </aside>
 
                 <main className={styles.mainContent}>
-                    <h2>Результаты для специальности: {speciality || '—'}</h2>
+                    <p>Результаты для специальности: {speciality || '—'}</p>
                     {universities.length > 0 ? (
                         <ul className={styles.universityList}>
                             {universities.map((u, idx) => (
