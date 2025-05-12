@@ -12,8 +12,8 @@ export function AuthProvider({ children }) {
     const [accessToken, setAccessToken]   = useState(() => localStorage.getItem('accessToken'));
     const [refreshToken, setRefreshToken] = useState(() => localStorage.getItem('refreshToken'));
     const [expiresAt, setExpiresAt]       = useState(() => {
-        const v = localStorage.getItem('expiresAt');
-        return v ? Number(v) : null;
+        const v = 10*1000*60;
+        return v ;
     });
 
     const refreshAccessToken = useCallback(async () => {
@@ -27,8 +27,8 @@ export function AuthProvider({ children }) {
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const data = await res.json();
             const newAccess = data.access;
-            const newRefresh = data.refresh  || refreshToken;
-            const newExpires = Date.now() + 15 * 60 * 1000;
+            const newRefresh = data.refresh  ;
+            const newExpires = Date.now() + 10 *60 *1000;
 
             setAccessToken(newAccess);
             setRefreshToken(newRefresh);

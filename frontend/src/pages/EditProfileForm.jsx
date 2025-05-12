@@ -71,7 +71,6 @@ export default function EditProfileForm() {
     const [profile, setProfile] = useState({
         egeScores: '',
         desiredSpecialty: '',
-        educationType: 'очное',
         universityLocation: '',
         financing: 'Бюджет'
     });
@@ -91,11 +90,7 @@ export default function EditProfileForm() {
             try {
                 // Обновляем токен, если просрочен
                 let token = accessToken;
-                const expiresAt = Number(localStorage.getItem('expiresAt'));
-                if (!token || Date.now() >= expiresAt) {
-                    await refreshAccessToken();
-                    token = localStorage.getItem('accessToken');
-                }
+
 
                 // Запросим профиль
                 const resp = await fetch('/api/user/profile', {
@@ -114,7 +109,6 @@ export default function EditProfileForm() {
                 setProfile({
                     egeScores: data.ege?.toString()            ?? '',
                     desiredSpecialty: data.speciality          ?? '',
-                    educationType: data.eduType                ?? 'очное',
                     universityLocation: data.town              ?? '',
                     financing: data.financing                  ?? 'Бюджет'
                 });
@@ -150,7 +144,6 @@ export default function EditProfileForm() {
                 body: JSON.stringify({
                     ege: Number(profile.egeScores),
                     speciality: profile.desiredSpecialty,
-                    eduType: profile.educationType,
                     town: profile.universityLocation,
                     financing: profile.financing
                 })
@@ -211,19 +204,7 @@ export default function EditProfileForm() {
                         </select>
                     </div>
 
-                    <div className="form-group">
-                        <label>Тип обучения:</label>
-                        <select
-                            name="educationType"
-                            className="form-select"
-                            value={profile.educationType}
-                            onChange={handleChange}
-                        >
-                            <option value="очное">Очное</option>
-                            <option value="заочное">Заочное</option>
-                            <option value="дистанционное">Дистанционное</option>
-                        </select>
-                    </div>
+
 
                     <div className="form-group">
                         <label>Регион:</label>

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ToggleSwitch from '../components/ToggleSwitch.jsx';
 import './ProfileForm.css';
-import { useAuth } from '../AuthProvider.jsx';
+
 
 // Списки регионов и специальностей
 const REGIONS = [
@@ -66,7 +66,7 @@ const SPECIALTIES = [
 
 function ProfileForm() {
     const navigate = useNavigate();
-    const { setAccessToken, setRefreshToken, setExpiresAt } = useAuth();
+
     const [error, setError] = useState('');
     const [submitStatus, setSubmitStatus] = useState({
         loading: false,
@@ -77,7 +77,6 @@ function ProfileForm() {
     const [profile, setProfile] = useState({
         egeScores: '',
         desiredSpecialty: '',
-        educationType: 'очное',
         universityLocation: '',
         financing: 'Бюджет'
     });
@@ -103,7 +102,6 @@ function ProfileForm() {
                 body: JSON.stringify({
                     ege: Number(profile.egeScores),
                     speciality: profile.desiredSpecialty,
-                    eduType: profile.educationType,
                     town: profile.universityLocation,
                     financing: profile.financing
                 })
@@ -125,75 +123,63 @@ function ProfileForm() {
             <div className="form-card">
                 <h2 className="form-title">Профиль абитуриента</h2>
                 <form onSubmit={e => e.preventDefault()}>
-                    <div className="form-section">
-                        <div className="form-group">
-                            <label>Баллы ЕГЭ:</label>
-                            <input
-                                type="text"
-                                name="egeScores"
-                                className="form-input"
-                                value={profile.egeScores}
-                                onChange={handleChange}
-                            />
-                        </div>
 
-                        <div className="form-group">
-                            <label>Специальность:</label>
-                            <select
-                                name="desiredSpecialty"
-                                className="form-select"
-                                value={profile.desiredSpecialty}
-                                onChange={handleChange}
-                            >
-                                <option value="">— выберите специальность —</option>
-                                {SPECIALTIES.map(spec => (
-                                    <option key={spec} value={spec}>{spec}</option>
-                                ))}
-                            </select>
-                        </div>
 
-                        <div className="form-group">
-                            <label>Тип обучения:</label>
-                            <select
-                                name="educationType"
-                                className="form-select"
-                                value={profile.educationType}
-                                onChange={handleChange}
-                            >
-                                <option value="очное">Очное</option>
-                                <option value="заочное">Заочное</option>
-                                <option value="дистанционное">Дистанционное</option>
-                            </select>
-                        </div>
-
-                        <div className="form-group">
-                            <label>Регион:</label>
-                            <select
-                                name="universityLocation"
-                                className="form-select"
-                                value={profile.universityLocation}
-                                onChange={handleChange}
-                            >
-                                <option value="">— выберите регион —</option>
-                                {REGIONS.map(region => (
-                                    <option key={region} value={region}>{region}</option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div className="form-group">
-                            <label>Источник финансирования:</label>
-                            <select
-                                name="financing"
-                                className="form-select"
-                                value={profile.financing}
-                                onChange={handleChange}
-                            >
-                                <option value="Бюджет">Бюджет</option>
-                                <option value="Контракт">Контракт</option>
-                            </select>
-                        </div>
+                    <div className="form-group">
+                        <label>Баллы ЕГЭ:</label>
+                        <input
+                            type="text"
+                            name="egeScores"
+                            className="form-input"
+                            value={profile.egeScores}
+                            onChange={handleChange}
+                        />
                     </div>
+
+                    <div className="form-group">
+                        <label>Специальность:</label>
+                        <select
+                            name="desiredSpecialty"
+                            className="form-select"
+                            value={profile.desiredSpecialty}
+                            onChange={handleChange}
+                        >
+                            <option value="">— выберите специальность —</option>
+                            {SPECIALTIES.map(spec => (
+                                <option key={spec} value={spec}>{spec}</option>
+                            ))}
+                        </select>
+                    </div>
+
+
+                    <div className="form-group">
+                        <label>Регион:</label>
+                        <select
+                            name="universityLocation"
+                            className="form-select"
+                            value={profile.universityLocation}
+                            onChange={handleChange}
+                        >
+                            <option value="">— выберите регион —</option>
+                            {REGIONS.map(region => (
+                                <option key={region} value={region}>{region}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label>Источник финансирования:</label>
+                        <select
+                            name="financing"
+                            className="form-select"
+                            value={profile.financing}
+                            onChange={handleChange}
+                        >
+                            <option value="Бюджет">Бюджет</option>
+                            <option value="Контракт">Контракт</option>
+                        </select>
+                    </div>
+
 
                     {submitStatus.error && (
                         <div className="error-message">{submitStatus.error}</div>

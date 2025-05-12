@@ -24,7 +24,7 @@ export default function MainPage() {
         dormitory: false,
         scientificLabs: false,
         sportsInfrastructure: false,
-        educationCost: '10000000'
+        educationCost: '500000'
     });
 
     const handleSliderChange = e => {
