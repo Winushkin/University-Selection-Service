@@ -92,6 +92,10 @@ func (s *Server) FilterUniversities(ctx context.Context, user *api.ProfileDataFo
 
 	filteredUniversities := make([]*entities.University, 0)
 	for _, univ := range universities {
+		if univ.Region != user.Town {
+			continue
+		}
+
 		if user.Financing == "Бюджет" {
 			if int(user.Ege) < univ.BudgetPoints {
 				continue
