@@ -44,7 +44,6 @@ export function AuthProvider({ children }) {
         }
     }, [refreshToken]);
 
-    // --- 4) Один единственный эффект с setTimeout
     useEffect(() => {
         if (!expiresAt) return;
 
