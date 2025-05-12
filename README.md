@@ -99,11 +99,11 @@ University-Selection-Service/
 │   ├── internal/
 │   │   ├── analytic/
 │   │   │   ├── analyze/
-│   │   │   │   ├── server.go
-│   │   │   │   └── server_test.go
+│   │   │   │   ├── analyze.go
+│   │   │   │   └── analyze_test.go
 │   │   │   └── server/
-│   │   │       ├── analyze.go
-│   │   │       └── analyze.go
+│   │   │       ├── server.go
+│   │   │       └── server_test.go
 │   │   ├── config/
 │   │   │   ├── analytic_config.go
 │   │   │   ├── analytic_config_test.go
@@ -122,7 +122,7 @@ University-Selection-Service/
 │   │   ├── parser/
 │   │   │   └── parser.go
 │   │   └── pkg/
-│   │       ├──  user/
+│   │       │
 │   │       ├── api/
 │   │       │   ├── allservices.swagger.json
 │   │       │   ├── analytic.pb.go
@@ -421,102 +421,181 @@ sequenceDiagram
 ## Диаграмма class
 ```mermaid
 classDiagram
+    class Comparison {
+        +RatingToPrestige                      int
+        +RatingToEducationQuality              int
+        +RatingToScholarshipPrograms           int
+        +PrestigeToEducationQuality            int
+        +PrestigeToScholarshipPrograms         int
+        +EducationQualityToScholarshipPrograms int
+    }
+    
+    class Speciality {
+        +Id             int
+        +UniversityName string
+        +Name           string
+        +BudgetPoints   int
+        +ContractPoints int
+        +Cost           int
+    }
+    
+    class University {
+        +Id             int
+        +Prestige       int
+        +Name           string
+        +Site           string
+        +Rank           float
+        +Quality        int
+        +ContractPoints int
+        +BudgetPoints   int
+        +Cost           int
+        +Dormitory      bool
+        +Labs           bool
+        +Sport          bool
+        +Scholarship    int
+        +Region         string
+        +Relevancy      float
+    }
+    
+    class User {
+        +Id         int
+        +Login      string
+        +Password   string
+        +Ege        int
+        +Speciality string
+        +Town       string
+        +Financing  string
+    }
+    
+    class Criteria {
+        +LocalUniversityRating float
+        +Prestige              float
+        +EducationQuality      float
+        +ScholarshipPrograms   float
+    }
+    
     class UserService {
-        
+        -api.UserServiceServer
+        -rep       *repositories.UserRepository
+        -jwtSecret string
         +SignUp()
         +Login()
         +Refresh()
         +Fill()
         +Logout()
         +ProfileDataForAnalytic()
-        -UserRepository
-        -UserConfig
-        -logger
     }
 
     class AnalyticService {
+        -api.AnalyticServer
+        -userCli      api.UserServiceClient
+        +RepInterface AnalyticRepositoryInterface
         +Analyze()
-        -AnalyticRepository
-        -userServiceClient
-        -AnalyticCfg
-        -logger
-    }
-
-    class UniversityService {
-        
-    }
-
-    class Gateway {
-        +RegisterAnalyticHandlerFromEndpoint()
-        +RegisterUserServiceHandlerFromEndpoint()
-        -logger
-    }
-
-    class Database {
-        +CRUD operations
-    }
-
-    class UserDatabase {
-        +CRUD operations for users
-    }
-
-    class UniversityDatabase {
-        +CRUD operations for universities
+        +FilterUniversities()
     }
 
     class Logger {
+        -l *zap.Logger
         +Info()
         +Fatal()
         +Error()
     }
 
     class UserConfig {
-        +Postgres
-        +INTPort
-        +RESTPort
-        +JWTSecret
-        +New()
-        -logger
+        +Postgres postgres.Config
+        +INTPort string
+        +RESTPort string
+        +JWTSecret string
+        +NewUserConfig()
     }
 
     class UniversityConfig {
-        +Postgres
-        +DatasetPath
-        +New()
-        -logger
+        +Postgres postgres.Config
+        +DatasetPath string
+        +NewUniversityConfig()
     }
 
     class AnalyticCfg {
-        Postgres  postgres.Config `env:"POSTGRES"`
-        +INTPort
-        +RESTPort
-        +JWTSecret
-        +New()
-        -logger
+        Postgres  postgres.Config
+        +INTPort string
+        +RESTPort string
+        +JWTSecret string
+        +NewAnalyticCfg()
     }
     
     class Analyzer {
         +GetCriteriaWeights()
         +Analyze()
     }
+    
+    class AnalyticRepository {
+        -pg *pgxpool.Pool
+        +GetUniversitiesBySpeciality()
+    }
+    
+    class UserRepository {
+        -pg *pgxpool.Pool
+        +GetByLogin()
+        +GetByID()
+        +SaveRefreshToken()
+        +CreateUser()
+        +RevokeAllActiveTokensForUser()
+        +GetUserIDByRefreshToken()
+        +FillInfo()
+    }
+    
+    class UniversityRepository{
+        -pg *pgxpool.Pool
+        +GetRegionIdByName()
+        +GetUniversityIdByName()
+        +FillRegions()
+        +InsertUniversity()
+        +InsertSpeciality()
+    }
 
-    UserService --> UserDatabase : uses
-    AnalyticService --> UniversityDatabase : uses
-    AnalyticService --> UserService : uses
-    UniversityService --> UniversityDatabase : uses
-    Gateway --> UserService : uses
-    Gateway --> AnalyticService : uses
-    UserService --> Logger : uses
-    AnalyticService --> Logger : uses
-    UniversityService --> Logger : uses
-    Gateway --> Logger : uses
-    UserService --> UserConfig : uses
-    AnalyticService --> AnalyticCfg : uses
-    AnalyticService --> Analyzer : uses
-    UniversityService --> UniversityConfig : uses
-    Database <|-- UserDatabase
-    Database <|-- UniversityDatabase
-    AnalyticCfg --> Logger : uses
-    UniversityConfig --> Logger : uses
-    UserConfig --> Logger : uses
+    class Config {
+        +Host     string
+        +Port     string 
+        +Username string 
+        +Password string 
+        +Database string 
+        +MinConns int 
+        +MaxConns int 
+    }
+    
+    UserConfig --> Config
+    UserConfig ..> Logger
+    
+    UniversityConfig --> Config
+    UniversityConfig ..> Logger
+    
+    AnalyticCfg --> Config
+    AnalyticCfg ..> Logger
+    
+    Analyzer ..> Comparison
+    Analyzer ..> Criteria
+    Analyzer ..> University
+    
+    AnalyticService ..> Analyzer
+    AnalyticService ..> University
+    AnalyticService --> AnalyticRepository
+    AnalyticService ..> AnalyticCfg
+    AnalyticService ..> Logger
+    
+    AnalyticRepository ..> AnalyticCfg
+    AnalyticRepository ..> University
+    
+    UserRepository ..> UserConfig
+    UserRepository ..> User
+    
+    UniversityRepository ..> UniversityConfig
+    UniversityRepository ..> University
+    UniversityRepository ..> Speciality
+    UniversityRepository ..> Logger
+    
+    UserService ..> User
+    UserService --> UserRepository
+    UserService ..> UserConfig
+    UserService ..> Logger
+
 ```
