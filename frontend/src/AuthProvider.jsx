@@ -44,16 +44,13 @@ export function AuthProvider({ children }) {
 
             const data = await res.json();
             const newAccess  = data.access;
-            const newRefresh = data.refresh || refreshToken;
             const newExpire  = Date.now() + 10 * 60 * 1000; // +10 минут
 
             // сохраняем и в state, и в localStorage
             setAccessToken(newAccess);
-            setRefreshToken(newRefresh);
             setExpiresAt(newExpire);
 
             localStorage.setItem('accessToken',  newAccess);
-            localStorage.setItem('refreshToken', newRefresh);
             localStorage.setItem('expiresAt',    String(newExpire));
         } catch (err) {
             console.error('Не удалось обновить токен:', err);
