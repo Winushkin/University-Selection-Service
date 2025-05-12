@@ -33,7 +33,10 @@ cd University-Selection-Service
 2. Настрой переменные окружения
 
 ```bash
-cp .env.example .env
+cp analytic_env.example analytic.env
+cp universities_env.example universities.env
+cp user_env.example user.env
+cp user_postgres_env.example user_postgres.env
 ```
 
 3. Запусти проект
