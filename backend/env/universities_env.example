@@ -1,4 +1,4 @@
-DATASET_PATH=path_to_university_dataset
+DATASET_PATH=../result2022.xlsx
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5433
 POSTGRES_USER=your_user
