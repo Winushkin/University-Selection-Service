@@ -2,6 +2,7 @@ package analyze
 
 import (
 	"University-Selection-Service/internal/entities"
+	"fmt"
 	"slices"
 )
 
@@ -80,6 +81,10 @@ func (a *Analyser) GetCriteriaWeights(crt *entities.Criteria, cmp *entities.Comp
 	crt.EducationQuality = crt.EducationQuality / 4.0
 	crt.ScholarshipPrograms = crt.ScholarshipPrograms / 4.0
 
+	fmt.Printf("%f\n", crt.LocalUniversityRating)
+	fmt.Printf("%f\n", crt.Prestige)
+	fmt.Printf("%f\n", crt.EducationQuality)
+	fmt.Printf("%f\n", crt.ScholarshipPrograms)
 	return crt
 }
 
@@ -89,7 +94,7 @@ func (a *Analyser) Analyze(universities []*entities.University, cmp *entities.Co
 	criteria = a.GetCriteriaWeights(criteria, cmp)
 
 	for _, univ := range universities {
-		univ.Relevancy = 1000.0 * (univ.Relevancy/rankSum*criteria.LocalUniversityRating +
+		univ.Relevancy = 1000.0 * (univ.Rank/rankSum*criteria.LocalUniversityRating +
 			float64(univ.Prestige)/float64(prestigeSum)*criteria.Prestige +
 			float64(univ.Quality)/float64(educationQualitySum)*criteria.EducationQuality +
 			float64(univ.Scholarship)/float64(scholarshipProgramsSum)*criteria.ScholarshipPrograms)
