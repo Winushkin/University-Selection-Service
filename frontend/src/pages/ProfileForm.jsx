@@ -126,7 +126,7 @@ function ProfileForm() {
 
 
                     <div className="form-group">
-                        <label>Баллы ЕГЭ:</label>
+                        <label>Среднее значение баллов по предметам ЕГЭ:</label>
                         <input
                             type="text"
                             name="egeScores"

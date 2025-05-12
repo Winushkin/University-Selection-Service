@@ -196,8 +196,8 @@ export default function MainPage() {
                                     <p>Лаборатории: {u.labs ? 'да' : 'нет'}</p>
                                     <p>Спорт. инфра-ры: {u.sport ? 'да' : 'нет'}</p>
                                     <p>Стипендия: {u.scholarship}</p>
-                                    <p>Баллы ЕГЭ для бюджета: {u.BudgetPoints * 3}</p>
-                                    <p>Баллы ЕГЭ для контракта: {u.ContractPoints * 3}</p>
+                                    <p>Баллы ЕГЭ для бюджета: {u.BudgetPoints }</p>
+                                    <p>Баллы ЕГЭ для контракта: {u.ContractPoints }</p>
                                     <p>Балл актуальности: {u.relevancy}</p>
                                     <p>
                                         Сайт:{' '}

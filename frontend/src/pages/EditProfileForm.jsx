@@ -179,7 +179,7 @@ export default function EditProfileForm() {
                 <h2 className="form-title">Редактировать профиль</h2>
                 <form onSubmit={e => e.preventDefault()}>
                     <div className="form-group">
-                        <label>Баллы ЕГЭ:</label>
+                        <label>Среднее значение баллов по предметам ЕГЭ:</label>
                         <input
                             type="text"
                             name="egeScores"
