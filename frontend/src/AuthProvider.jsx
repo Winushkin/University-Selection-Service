@@ -1,58 +1,66 @@
+// src/AuthProvider.jsx
 import React, {
-    createContext,
-    useState,
-    useEffect,
-    useCallback,
-    useContext
+    createContext, useState, useEffect, useCallback, useContext
 } from 'react';
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
+    // --- 1) Инициализация из localStorage
     const [accessToken, setAccessToken]   = useState(() => localStorage.getItem('accessToken'));
     const [refreshToken, setRefreshToken] = useState(() => localStorage.getItem('refreshToken'));
     const [expiresAt, setExpiresAt]       = useState(() => {
-        const v = localStorage.getItem('expiresAt');
-        return v ? Number(v) : null;
+        const raw = localStorage.getItem('expiresAt');
+        return raw ? Number(raw) : null;
     });
 
-   const refreshAccessToken = useCallback(async () => {
+    // --- 2) Функция рефреша
+    const refreshAccessToken = useCallback(async () => {
         if (!refreshToken) return;
         try {
             const res = await fetch('/api/user/refresh', {
                 method: 'POST',
-                headers: {'Content-Type':'application/json'},
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ refresh: refreshToken })
             });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const data = await res.json();
-            const newAccess = data.access;
-            const newExpires = Date.now() + 15 * 60 * 1000;
 
-            // Сохраняем в state и localStorage
+            const data = await res.json();
+            const newAccess  = data.access;
+            const newRefresh = data.refresh  || refreshToken;
+            const newExpire  = Date.now() + 15 * 60 * 1000; // +15 минут
+
+            // --- 3) Сохраняем всё
             setAccessToken(newAccess);
-            setExpiresAt(newExpires);
+            setRefreshToken(newRefresh);
+            setExpiresAt(newExpire);
+
             localStorage.setItem('accessToken',  newAccess);
-            localStorage.setItem('expiresAt',    String(newExpires));
-        } catch (e) {
-            console.error('Не удалось обновить токен:', e);
+            localStorage.setItem('refreshToken', newRefresh);
+            localStorage.setItem('expiresAt',    String(newExpire));
+        } catch (err) {
+            console.error('Не удалось обновить токен:', err);
+            // здесь можно, по желанию, очищать токены при 401
         }
     }, [refreshToken]);
 
+    // --- 4) Один единственный эффект с setTimeout
     useEffect(() => {
-        if (expiresAt && Date.now() >= expiresAt - 60 * 1000) {
-            void refreshAccessToken();
+        if (!expiresAt) return;
+
+        const msUntilRefresh = expiresAt - Date.now() - 60 * 1000;
+        console.log('[Auth] expiresAt =', expiresAt, 'через мс до refresh =', msUntilRefresh);
+
+        if (msUntilRefresh <= 0) {
+            refreshAccessToken();
+            return;
         }
-    }, [expiresAt, refreshAccessToken]);
 
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            if (expiresAt && Date.now() >= expiresAt - 60 * 1000) {
-                void refreshAccessToken();
-            }
-        }, 30 * 1000);
+        const id = setTimeout(() => {
+            refreshAccessToken();
+        }, msUntilRefresh);
 
-        return () => clearInterval(intervalId);
+        return () => clearTimeout(id);
     }, [expiresAt, refreshAccessToken]);
 
     return (
