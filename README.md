@@ -26,19 +26,19 @@
 1. Клонируй репозиторий
 
 ```bash
-$ git clone https://github.com/Winushkin/University-Selection-Service.git
-$ cd University-Selection-Service
+git clone https://github.com/Winushkin/University-Selection-Service.git
+cd University-Selection-Service
 ```
 
 2. Настрой переменные окружения
 
 ```bash
-$ cp .env.example .env
+cp .env.example .env
 ```
 
 3. Запусти проект
 ```bash
-$ make build
+make build
 ```
 
 ## 🧱 Структура проекта
