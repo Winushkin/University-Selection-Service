@@ -26,19 +26,22 @@
 1. Клонируй репозиторий
 
 ```bash
-$ git clone https://github.com/Winushkin/University-Selection-Service.git
-$ cd University-Selection-Service
+git clone https://github.com/Winushkin/University-Selection-Service.git
+cd University-Selection-Service
 ```
 
 2. Настрой переменные окружения
 
 ```bash
-$ cp .env.example .env
+cp analytic_env.example analytic.env
+cp universities_env.example universities.env
+cp user_env.example user.env
+cp user_postgres_env.example user_postgres.env
 ```
 
 3. Запусти проект
 ```bash
-$ make build
+make build
 ```
 
 ## 🧱 Структура проекта
@@ -99,11 +102,11 @@ University-Selection-Service/
 │   ├── internal/
 │   │   ├── analytic/
 │   │   │   ├── analyze/
-│   │   │   │   ├── server.go
-│   │   │   │   └── server_test.g
+│   │   │   │   ├── analyze.go
+│   │   │   │   └── analyze_test.go
 │   │   │   └── server/
-│   │   │       ├── analyze.go
-│   │   │       └── analyze.go
+│   │   │       ├── server.go
+│   │   │       └── server_test.go
 │   │   ├── config/
 │   │   │   ├── analytic_config.go
 │   │   │   ├── analytic_config_test.go
@@ -122,7 +125,7 @@ University-Selection-Service/
 │   │   ├── parser/
 │   │   │   └── parser.go
 │   │   └── pkg/
-│   │       ├──  user/
+│   │       │
 │   │       ├── api/
 │   │       │   ├── allservices.swagger.json
 │   │       │   ├── analytic.pb.go
@@ -192,6 +195,30 @@ University-Selection-Service/
 Приложение **University Selection Service** состоит из двух масштабных частей - _клиентской_ и _серверной_, которые взаимодействуют друг с другом с помощью _HTTP_-запросов.
 
 ## 🌐 Описание клиентской части
+**Клиентская часть** приложения состоит из нескольких страниц и описания логики на языке _JavaScript_, файлов декорирования старниц на языке _css_. Клиентская часть отправляет HTTP-запросы серверной части и обрабатывает её ответы.
+
+Клиентская часть состоит из:
+
+Страниц:
+1. Home.jsx - Страница авторизации - позволяет пользователю перейти на страницы регистрации или входа
+2. LogInForm.jsx - Страница входа - позволяет пользователю войти в профиль
+3. RegistrationForm.jsx - Страница регистрации - позволяет пользователю зарегистрироваться
+4. ProfileForm.jsx - Страница заполнения профиля - позволяет пользователю заполнить данные профиля
+5. MainPage.jsx - Главная страница - позволяет пользователю перейти на страницу редактирования профиля, выйти из профиля, а также подобрать подходящий университет
+6. EditProfileForm.jsx - Страница редактирования профиля - позволяет пользователю отредактировать данные профиля
+
+Файлов декорирования:
+1. Home.module.css - оформление страницы авторизации
+2. MainPage.module.css - оформление главной страницы
+3. ProfileForm.css - оформление страниц заполнения и редактирования профиля
+4. RegistrationForm.css - оформление страницы регистрации
+5. ToggleSwitch.css - оформление переключателей
+
+Описнаие логики:
+1. ToggleSwitch.jsx - описание логики переключателей
+2. AuthProvider.jsx - описание логики автообновления access- и refresh-токенов
+3. App.jsx - описание логики маршрутизации между страницами
+4. main.jsx - описание работы клиентской части
 
 ## 💻 Описание серверной части
 **Серверная часть** приложения состоит из нескольких микросервисов на языке _Go_ и баз данных _PostgreSQL_. Серверная часть обрабатывает HTTP-запросы от клиентской части, и распределяет и по соответсвующим микросервисам, которые, взаимодействуя между собой и с базами данных, собирают ответ и передают его в руки клиентской части.
@@ -397,102 +424,181 @@ sequenceDiagram
 ## Диаграмма class
 ```mermaid
 classDiagram
+    class Comparison {
+        +RatingToPrestige                      int
+        +RatingToEducationQuality              int
+        +RatingToScholarshipPrograms           int
+        +PrestigeToEducationQuality            int
+        +PrestigeToScholarshipPrograms         int
+        +EducationQualityToScholarshipPrograms int
+    }
+    
+    class Speciality {
+        +Id             int
+        +UniversityName string
+        +Name           string
+        +BudgetPoints   int
+        +ContractPoints int
+        +Cost           int
+    }
+    
+    class University {
+        +Id             int
+        +Prestige       int
+        +Name           string
+        +Site           string
+        +Rank           float
+        +Quality        int
+        +ContractPoints int
+        +BudgetPoints   int
+        +Cost           int
+        +Dormitory      bool
+        +Labs           bool
+        +Sport          bool
+        +Scholarship    int
+        +Region         string
+        +Relevancy      float
+    }
+    
+    class User {
+        +Id         int
+        +Login      string
+        +Password   string
+        +Ege        int
+        +Speciality string
+        +Town       string
+        +Financing  string
+    }
+    
+    class Criteria {
+        +LocalUniversityRating float
+        +Prestige              float
+        +EducationQuality      float
+        +ScholarshipPrograms   float
+    }
+    
     class UserService {
-        
+        -api.UserServiceServer
+        -rep       *repositories.UserRepository
+        -jwtSecret string
         +SignUp()
         +Login()
         +Refresh()
         +Fill()
         +Logout()
         +ProfileDataForAnalytic()
-        -UserRepository
-        -UserConfig
-        -logger
     }
 
     class AnalyticService {
+        -api.AnalyticServer
+        -userCli      api.UserServiceClient
+        +RepInterface AnalyticRepositoryInterface
         +Analyze()
-        -AnalyticRepository
-        -userServiceClient
-        -AnalyticCfg
-        -logger
-    }
-
-    class UniversityService {
-        
-    }
-
-    class Gateway {
-        +RegisterAnalyticHandlerFromEndpoint()
-        +RegisterUserServiceHandlerFromEndpoint()
-        -logger
-    }
-
-    class Database {
-        +CRUD operations
-    }
-
-    class UserDatabase {
-        +CRUD operations for users
-    }
-
-    class UniversityDatabase {
-        +CRUD operations for universities
+        +FilterUniversities()
     }
 
     class Logger {
+        -l *zap.Logger
         +Info()
         +Fatal()
         +Error()
     }
 
     class UserConfig {
-        +Postgres
-        +INTPort
-        +RESTPort
-        +JWTSecret
-        +New()
-        -logger
+        +Postgres postgres.Config
+        +INTPort string
+        +RESTPort string
+        +JWTSecret string
+        +NewUserConfig()
     }
 
     class UniversityConfig {
-        +Postgres
-        +DatasetPath
-        +New()
-        -logger
+        +Postgres postgres.Config
+        +DatasetPath string
+        +NewUniversityConfig()
     }
 
     class AnalyticCfg {
-        Postgres  postgres.Config `env:"POSTGRES"`
-        +INTPort
-        +RESTPort
-        +JWTSecret
-        +New()
-        -logger
+        Postgres  postgres.Config
+        +INTPort string
+        +RESTPort string
+        +JWTSecret string
+        +NewAnalyticCfg()
     }
     
     class Analyzer {
         +GetCriteriaWeights()
         +Analyze()
     }
+    
+    class AnalyticRepository {
+        -pg *pgxpool.Pool
+        +GetUniversitiesBySpeciality()
+    }
+    
+    class UserRepository {
+        -pg *pgxpool.Pool
+        +GetByLogin()
+        +GetByID()
+        +SaveRefreshToken()
+        +CreateUser()
+        +RevokeAllActiveTokensForUser()
+        +GetUserIDByRefreshToken()
+        +FillInfo()
+    }
+    
+    class UniversityRepository{
+        -pg *pgxpool.Pool
+        +GetRegionIdByName()
+        +GetUniversityIdByName()
+        +FillRegions()
+        +InsertUniversity()
+        +InsertSpeciality()
+    }
 
-    UserService --> UserDatabase : uses
-    AnalyticService --> UniversityDatabase : uses
-    AnalyticService --> UserService : uses
-    UniversityService --> UniversityDatabase : uses
-    Gateway --> UserService : uses
-    Gateway --> AnalyticService : uses
-    UserService --> Logger : uses
-    AnalyticService --> Logger : uses
-    UniversityService --> Logger : uses
-    Gateway --> Logger : uses
-    UserService --> UserConfig : uses
-    AnalyticService --> AnalyticCfg : uses
-    AnalyticService --> Analyzer : uses
-    UniversityService --> UniversityConfig : uses
-    Database <|-- UserDatabase
-    Database <|-- UniversityDatabase
-    AnalyticCfg --> Logger : uses
-    UniversityConfig --> Logger : uses
-    UserConfig --> Logger : uses
+    class Config {
+        +Host     string
+        +Port     string 
+        +Username string 
+        +Password string 
+        +Database string 
+        +MinConns int 
+        +MaxConns int 
+    }
+    
+    UserConfig --> Config
+    UserConfig ..> Logger
+    
+    UniversityConfig --> Config
+    UniversityConfig ..> Logger
+    
+    AnalyticCfg --> Config
+    AnalyticCfg ..> Logger
+    
+    Analyzer ..> Comparison
+    Analyzer ..> Criteria
+    Analyzer ..> University
+    
+    AnalyticService ..> Analyzer
+    AnalyticService ..> University
+    AnalyticService --> AnalyticRepository
+    AnalyticService ..> AnalyticCfg
+    AnalyticService ..> Logger
+    
+    AnalyticRepository ..> AnalyticCfg
+    AnalyticRepository ..> University
+    
+    UserRepository ..> UserConfig
+    UserRepository ..> User
+    
+    UniversityRepository ..> UniversityConfig
+    UniversityRepository ..> University
+    UniversityRepository ..> Speciality
+    UniversityRepository ..> Logger
+    
+    UserService ..> User
+    UserService --> UserRepository
+    UserService ..> UserConfig
+    UserService ..> Logger
+
 ```
