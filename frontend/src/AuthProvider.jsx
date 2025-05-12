@@ -1,5 +1,3 @@
-// src/AuthProvider.jsx
-
 import React, {
     createContext,
     useState,
@@ -11,74 +9,50 @@ import React, {
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-    // 1) Читаем токены и expiresAt из localStorage при старте
-    const [accessToken, setAccessToken] = useState(
-        () => localStorage.getItem('accessToken')
-    );
-    const [refreshToken, setRefreshToken] = useState(
-        () => localStorage.getItem('refreshToken')
-    );
-    const [expiresAt, setExpiresAt] = useState(() => {
-        const raw = localStorage.getItem('expiresAt');
-        return raw ? Number(raw) : null;
+    const [accessToken, setAccessToken]   = useState(() => localStorage.getItem('accessToken'));
+    const [refreshToken, setRefreshToken] = useState(() => localStorage.getItem('refreshToken'));
+    const [expiresAt, setExpiresAt]       = useState(() => {
+        const v = localStorage.getItem('expiresAt');
+        return v ? Number(v) : null;
     });
 
-    // 2) Функция обновления
-    const refreshAccessToken = useCallback(async () => {
-        if (!refreshToken) return; // если нет refreshToken — нечего обновлять
-
+   const refreshAccessToken = useCallback(async () => {
+        if (!refreshToken) return;
         try {
             const res = await fetch('/api/user/refresh', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type':'application/json'},
                 body: JSON.stringify({ refresh: refreshToken })
             });
-
-            if (res.status === 401) {
-                // если сервер однозначно отверг refresh—очищаем токены
-                throw new Error('refresh_token_invalid');
-            }
-            if (!res.ok) {
-                throw new Error(`HTTP ${res.status}`);
-            }
-
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const data = await res.json();
-            const newAccess  = data.access;
-            const newExpire  = Date.now() + 10 * 60 * 1000; // +10 минут
+            const newAccess = data.access;
+            const newExpires = Date.now() + 15 * 60 * 1000;
 
-            // сохраняем и в state, и в localStorage
+            // Сохраняем в state и localStorage
             setAccessToken(newAccess);
-            setExpiresAt(newExpire);
-
+            setExpiresAt(newExpires);
             localStorage.setItem('accessToken',  newAccess);
-            localStorage.setItem('expiresAt',    String(newExpire));
-        } catch (err) {
-            console.error('Не удалось обновить токен:', err);
-
-            if (err.message === 'refresh_token_invalid') {
-                // лишь при явном отказе сбрасываем
-                setAccessToken(null);
-                setRefreshToken(null);
-                setExpiresAt(null);
-                localStorage.removeItem('accessToken');
-                localStorage.removeItem('refreshToken');
-                localStorage.removeItem('expiresAt');
-            }
-            // при прочих ошибках (сеть, таймаут) — не трогаем токены
+            localStorage.setItem('expiresAt',    String(newExpires));
+        } catch (e) {
+            console.error('Не удалось обновить токен:', e);
         }
     }, [refreshToken]);
 
-    // 3) Запланируем авто-рефреш за минуту до expiresAt
     useEffect(() => {
-        if (!expiresAt) return;
-        const msUntilRefresh = expiresAt - Date.now() - 60 * 1000;
-        if (msUntilRefresh <= 0) {
-            // уже пора
+        if (expiresAt && Date.now() >= expiresAt - 60 * 1000) {
             void refreshAccessToken();
-            return;
         }
-        const id = setTimeout(() => void refreshAccessToken(), msUntilRefresh);
-        return () => clearTimeout(id);
+    }, [expiresAt, refreshAccessToken]);
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            if (expiresAt && Date.now() >= expiresAt - 60 * 1000) {
+                void refreshAccessToken();
+            }
+        }, 30 * 1000);
+
+        return () => clearInterval(intervalId);
     }, [expiresAt, refreshAccessToken]);
 
     return (
