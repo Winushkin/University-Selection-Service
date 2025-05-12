@@ -95,7 +95,7 @@ func (a *Analyser) Analyze(universities []*entities.University, cmp *entities.Co
 			float64(univ.Scholarship)/float64(scholarshipProgramsSum)*criteria.ScholarshipPrograms
 	}
 	slices.SortFunc(universities, func(u1, u2 *entities.University) int {
-		return int(u1.Relevancy - u2.Relevancy)
+		return int(u2.Relevancy - u1.Relevancy)
 	})
 	return universities, nil
 }
