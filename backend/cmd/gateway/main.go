@@ -54,7 +54,7 @@ func main() {
 	}
 	log.Info(ctx, "Starting proxy to User")
 
-	if err := pb.RegisterAnalyticHandlerFromEndpoint(ctx, mux, "analytic_service:8081", opts); err != nil {
+	if err := resilence.Retry(func() error { return pb.RegisterAnalyticHandlerFromEndpoint(ctx, mux, "analytic_service:8081", opts) }, 5, 100); err != nil {
 		log.Error(ctx, "Failed register analytic grpc service", zap.Error(err))
 		return
 	}
