@@ -89,10 +89,10 @@ func (a *Analyser) Analyze(universities []*entities.University, cmp *entities.Co
 	criteria = a.GetCriteriaWeights(criteria, cmp)
 
 	for _, univ := range universities {
-		univ.Relevancy = univ.Relevancy/rankSum*criteria.LocalUniversityRating +
+		univ.Relevancy = 1000.0 * (univ.Relevancy/rankSum*criteria.LocalUniversityRating +
 			float64(univ.Prestige)/float64(prestigeSum)*criteria.Prestige +
 			float64(univ.Quality)/float64(educationQualitySum)*criteria.EducationQuality +
-			float64(univ.Scholarship)/float64(scholarshipProgramsSum)*criteria.ScholarshipPrograms
+			float64(univ.Scholarship)/float64(scholarshipProgramsSum)*criteria.ScholarshipPrograms)
 	}
 	slices.SortFunc(universities, func(u1, u2 *entities.University) int {
 		return int(u2.Relevancy - u1.Relevancy)

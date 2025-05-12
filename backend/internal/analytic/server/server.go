@@ -73,7 +73,7 @@ func (s *Server) Analyze(ctx context.Context, request *api.AnalyzeRequest) (*api
 			Labs:           univ.Labs,
 			Sport:          univ.Sport,
 			Scholarship:    int32(univ.Scholarship),
-			Relevancy:      univ.Relevancy * 1000,
+			Relevancy:      univ.Relevancy,
 			Site:           univ.Site,
 		}
 		univResult.Universities = append(univResult.Universities, u)
