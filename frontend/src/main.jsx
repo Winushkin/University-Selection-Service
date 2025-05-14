@@ -5,6 +5,7 @@ import App from './App.jsx';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './AuthProvider.jsx';
 
+//Инициализация React-рендеринга
 createRoot(document.getElementById('root')).render(
     <React.StrictMode>
         <AuthProvider>
