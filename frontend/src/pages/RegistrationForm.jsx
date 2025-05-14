@@ -5,6 +5,8 @@ import styles from "./Home.module.css";
 import logo from "./logo.png";
 import { useAuth } from '../AuthProvider.jsx';
 
+
+// функция страницы регистрации нового пользователя
 export default function RegistrationForm() {
     const navigate = useNavigate();
 
