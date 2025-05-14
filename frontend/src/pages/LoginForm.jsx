@@ -5,7 +5,7 @@ import styles from "./Home.module.css";
 import logo from "./logo.png";
 import {useAuth} from "../AuthProvider.jsx";
 
-
+// Функция входа в профиль
 function LogInForm() {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
