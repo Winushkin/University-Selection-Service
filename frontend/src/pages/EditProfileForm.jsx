@@ -1,4 +1,3 @@
-// src/pages/EditProfileForm.jsx
 
 import React, { useState, useEffect, useRef } from 'react';
 import './ProfileForm.css';
@@ -63,6 +62,8 @@ const SPECIALTIES = [
     "Бизнес-информатика"
 ];
 
+
+//Функция страницы редактирования профиля
 export default function EditProfileForm() {
     const navigate = useNavigate();
     const { accessToken, refreshAccessToken } = useAuth();
@@ -81,7 +82,6 @@ export default function EditProfileForm() {
         error: null
     });
 
-    // Загрузка профиля один раз
     useEffect(() => {
         if (didFetch.current) return;
         didFetch.current = true;
