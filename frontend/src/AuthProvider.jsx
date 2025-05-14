@@ -1,10 +1,10 @@
-// src/AuthProvider.jsx
 import React, {
     createContext, useState, useEffect, useCallback, useContext
 } from 'react';
 
 const AuthContext = createContext(null);
 
+// --- 0) Функция автообновления
 export function AuthProvider({ children }) {
     // --- 1) Инициализация из localStorage
     const [accessToken, setAccessToken]   = useState(() => localStorage.getItem('accessToken'));
@@ -40,7 +40,6 @@ export function AuthProvider({ children }) {
             localStorage.setItem('expiresAt',    String(newExpire));
         } catch (err) {
             console.error('Не удалось обновить токен:', err);
-            // здесь можно, по желанию, очищать токены при 401
         }
     }, [refreshToken]);
 
