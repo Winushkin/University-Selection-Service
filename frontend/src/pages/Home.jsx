@@ -1,8 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './Home.module.css'; // Подключаем CSS модуль
-import logo from './logo.png'; // Импортируем изображение
+import styles from './Home.module.css'; 
+import logo from './logo.png'; 
 
+//Функция стараницы регистрации и аутентификации
 const Home = () => {
     const navigate = useNavigate();
 
