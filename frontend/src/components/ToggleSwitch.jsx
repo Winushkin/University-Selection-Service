@@ -1,5 +1,7 @@
 import './ToggleSwitch.css';
 
+
+// Функция работы переключателя
 function ToggleSwitch({ name, checked, onChange }) {
     const handleChange = () => {
         onChange(!checked);
