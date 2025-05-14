@@ -8,7 +8,7 @@ import RegistrationForm from "./pages/RegistrationForm.jsx";
 import LogInForm from "./pages/LogInForm.jsx";
 import MainPage from "./pages/MainPage.jsx";
 
-
+// функция маршрутизации
 function App() {
     return (
         <div className="App">
