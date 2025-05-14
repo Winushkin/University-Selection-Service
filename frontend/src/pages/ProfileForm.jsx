@@ -1,4 +1,3 @@
-// src/pages/ProfileForm.jsx
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -64,6 +63,8 @@ const SPECIALTIES = [
     "Бизнес-информатика"
 ];
 
+
+// Функция страницы заполнения профиля
 function ProfileForm() {
     const navigate = useNavigate();
 
