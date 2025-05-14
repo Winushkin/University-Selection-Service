@@ -7,6 +7,8 @@ import ToggleSwitch from '../components/ToggleSwitch';
 import styles from './MainPage.module.css';
 import logo from './logo.png';
 
+
+//Функция главной страницы
 export default function MainPage() {
     const navigate = useNavigate();
     const { accessToken } = useAuth();
