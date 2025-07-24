@@ -1,19 +1,29 @@
-package repositories
+package repository
 
 import (
 	"University-Selection-Service/internal/entities"
 	"University-Selection-Service/pkg/postgres"
 	"context"
+	_ "embed"
 	"fmt"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-const (
-	getUniversitiesBySpecialityRequest = "SELECT u.*, r.name, s.cost, s.budget_points, s.contract_points FROM universities.universities u JOIN universities.regions r ON u.region_id = r.id JOIN universities.specialities s ON u.id = s.university_id WHERE s.name = $1"
+var (
+	//go:embed sql/get_universities_by_speciality.sql
+	getUniversitiesBySpecialityRequest string
+
+	//go:embed sql/get_regions.sql
+	getRegions string
+
+	//go:embed sql/get_specialities.sql
+	getSpecialities string
 )
 
 type AnalyticRepositoryInterface interface {
 	GetUniversitiesBySpeciality(ctx context.Context, specialityName string) ([]*entities.University, error)
+	//GetRegions(ctx context.Context) ([]string, error)
+	//GetSpecialities(ctx context.Context) ([]string, error)
 }
 
 type AnalyticRepository struct {
@@ -53,3 +63,33 @@ func (ur *AnalyticRepository) GetUniversitiesBySpeciality(ctx context.Context,
 	}
 	return result, nil
 }
+
+//func (ur *AnalyticRepository) GetRegions(ctx context.Context) ([]string, error) {
+//	rows, err := ur.pg.Query(ctx, getRegions)
+//	if err != nil {
+//		return nil, fmt.Errorf("GetRegions: %w", err)
+//	}
+//
+//	var regions []string
+//	for rows.Next() {
+//		var region string
+//		err = rows.Scan(&region)
+//		regions = append(regions, region)
+//	}
+//
+//	return regions, nil
+//}
+//
+//func (ur *AnalyticRepository) GetSpecialities(ctx context.Context) ([]string, error) {
+//	rows, err := ur.pg.Query(ctx, getSpecialities)
+//	if err != nil {
+//		return nil, fmt.Errorf("GetSpecialities: %w", err)
+//	}
+//	var specialities []string
+//	for rows.Next() {
+//		var spec string
+//		err = rows.Scan(&spec)
+//		specialities = append(specialities, spec)
+//	}
+//	return specialities, nil
+//}

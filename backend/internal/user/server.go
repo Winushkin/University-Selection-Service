@@ -3,7 +3,7 @@ package user
 import (
 	"University-Selection-Service/internal/config"
 	"University-Selection-Service/internal/entities"
-	"University-Selection-Service/internal/repositories"
+	"University-Selection-Service/internal/user/repository"
 	"University-Selection-Service/pkg/api"
 	"University-Selection-Service/pkg/security"
 	"context"
@@ -19,13 +19,13 @@ import (
 
 type Server struct {
 	api.UserServiceServer
-	rep       *repositories.UserRepository
+	rep       *repository.UserRepository
 	jwtSecret string
 }
 
 // New creates new user server
 func New(ctx context.Context, cfg *config.UserConfig, jwt string) (*Server, error) {
-	r, err := repositories.NewUserRepository(ctx, cfg.Postgres)
+	r, err := repository.NewUserRepository(ctx, cfg.Postgres)
 	if err != nil {
 		return nil, fmt.Errorf("NewUserRepository: %w", err)
 	}

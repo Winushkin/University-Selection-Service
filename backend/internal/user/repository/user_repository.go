@@ -1,10 +1,11 @@
-package repositories
+package repository
 
 import (
 	"University-Selection-Service/internal/entities"
 	"University-Selection-Service/pkg/postgres"
 	"University-Selection-Service/pkg/security"
 	"context"
+	_ "embed"
 	"errors"
 	"fmt"
 	"github.com/jackc/pgx/v5"
@@ -18,14 +19,27 @@ type UserRepository struct {
 	pg *pgxpool.Pool
 }
 
-const (
-	GetByLoginSQLRequest                   = "SELECT id, login, password, coalesce(ege, 0), coalesce(speciality, ''), coalesce(region, ''), coalesce(financing, '')  FROM users.users WHERE login=$1"
-	SaveRefreshTokenSQLRequest             = "INSERT INTO users.refresh_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)"
-	CreateUserSQLRequest                   = "INSERT INTO users.users (login, password) VALUES ($1, $2) RETURNING id"
-	RevokeAllActiveTokensForUserSQLRequest = "DELETE FROM users.refresh_tokens WHERE user_id = $1"
-	GetUserIDByRefreshTokenSQLRequest      = "SELECT user_id FROM users.refresh_tokens WHERE token = $1"
-	GetByIDSQLRequest                      = "SELECT id, login, password, coalesce(ege, 0), coalesce(speciality, ''), coalesce(region, ''), coalesce(financing, '') FROM users.users WHERE id = $1"
-	FillInfoSQLRequest                     = "UPDATE users.users SET ege = $1, speciality = $2, region = $3, financing = $4 WHERE id = $5"
+var (
+	//go:embed sql/get_user_by_login.sql
+	GetByLoginRequest string
+
+	//go:embed sql/save_refresh_token.sql
+	SaveRefreshTokenRequest string
+
+	//go:embed sql/create_user.sql
+	CreateUserRequest string
+
+	//go:embed sql/revoke_all_active_tokens_for_user.sql
+	RevokeAllActiveTokensForUserRequest string
+
+	//go:embed sql/get_user_id_by_refresh_token.sql
+	GetUserIDByRefreshTokenRequest string
+
+	//go:embed sql/get_user_by_id.sql
+	GetUserByIDRequest string
+
+	//go:embed sql/fill_info.sql
+	FillInfoRequest string
 )
 
 // NewUserRepository returns new user repository with connection to DB
@@ -40,7 +54,7 @@ func NewUserRepository(ctx context.Context, cfg postgres.Config) (*UserRepositor
 // GetByLogin returns user by his login
 func (ur *UserRepository) GetByLogin(ctx context.Context, login string) (*entities.User, error) {
 	user := &entities.User{}
-	queryRow := ur.pg.QueryRow(ctx, GetByLoginSQLRequest, login)
+	queryRow := ur.pg.QueryRow(ctx, GetByLoginRequest, login)
 	err := queryRow.Scan(&user.Id, &user.Login, &user.Password, &user.Ege,
 		&user.Speciality, &user.Town, &user.Financing)
 	if err != nil && errors.Is(err, pgx.ErrNoRows) {
@@ -54,7 +68,7 @@ func (ur *UserRepository) GetByLogin(ctx context.Context, login string) (*entiti
 // GetByID returns user by his ID
 func (ur *UserRepository) GetByID(ctx context.Context, id int) (*entities.User, error) {
 	user := &entities.User{}
-	queryRow := ur.pg.QueryRow(ctx, GetByIDSQLRequest, id)
+	queryRow := ur.pg.QueryRow(ctx, GetUserByIDRequest, id)
 	err := queryRow.Scan(&user.Id, &user.Login, &user.Password, &user.Ege,
 		&user.Speciality, &user.Town, &user.Financing)
 	if err != nil && errors.Is(err, pgx.ErrNoRows) {
@@ -68,7 +82,7 @@ func (ur *UserRepository) GetByID(ctx context.Context, id int) (*entities.User, 
 // SaveRefreshToken saves refresh token in DB
 func (ur *UserRepository) SaveRefreshToken(ctx context.Context, id int, token string) error {
 	expiresAt := time.Now().Add(7 * 24 * time.Hour)
-	_, err := ur.pg.Exec(ctx, SaveRefreshTokenSQLRequest, id, token, expiresAt)
+	_, err := ur.pg.Exec(ctx, SaveRefreshTokenRequest, id, token, expiresAt)
 	if err != nil {
 		return fmt.Errorf("SaveRefreshToken: failed to save refresh token: %w", err)
 	}
@@ -78,7 +92,7 @@ func (ur *UserRepository) SaveRefreshToken(ctx context.Context, id int, token st
 // CreateUser inserts user into DB
 func (ur *UserRepository) CreateUser(ctx context.Context, user *entities.User) (int, error) {
 	var id int
-	queryRow := ur.pg.QueryRow(ctx, CreateUserSQLRequest, user.Login, security.HashPassword(user.Password))
+	queryRow := ur.pg.QueryRow(ctx, CreateUserRequest, user.Login, security.HashPassword(user.Password))
 	err := queryRow.Scan(&id)
 	if err != nil {
 		return 0, fmt.Errorf("CreateUser: failed to query users: %w", err)
@@ -88,7 +102,7 @@ func (ur *UserRepository) CreateUser(ctx context.Context, user *entities.User) (
 
 // RevokeAllActiveTokensForUser revokes active users refresh tokens in DB
 func (ur *UserRepository) RevokeAllActiveTokensForUser(ctx context.Context, userId int) error {
-	_, err := ur.pg.Exec(ctx, RevokeAllActiveTokensForUserSQLRequest, userId)
+	_, err := ur.pg.Exec(ctx, RevokeAllActiveTokensForUserRequest, userId)
 	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
 		return fmt.Errorf("RevokeAllActiveTokensForUser: failed to revoke active tokens for users: %w", err)
 	}
@@ -98,7 +112,7 @@ func (ur *UserRepository) RevokeAllActiveTokensForUser(ctx context.Context, user
 // GetUserIDByRefreshToken returns user ID by his refresh token
 func (ur *UserRepository) GetUserIDByRefreshToken(ctx context.Context, refreshToken string) (int, error) {
 	var id int
-	queryRow := ur.pg.QueryRow(ctx, GetUserIDByRefreshTokenSQLRequest, refreshToken)
+	queryRow := ur.pg.QueryRow(ctx, GetUserIDByRefreshTokenRequest, refreshToken)
 	err := queryRow.Scan(&id)
 	if err != nil {
 		return 0, fmt.Errorf("GetUserIDByRefreshToken: failed to query users by refresh token: %w", err)
@@ -108,7 +122,7 @@ func (ur *UserRepository) GetUserIDByRefreshToken(ctx context.Context, refreshTo
 
 // FillInfo inserts user information into DB
 func (ur *UserRepository) FillInfo(ctx context.Context, user *entities.User) error {
-	_, err := ur.pg.Exec(ctx, FillInfoSQLRequest, user.Ege, user.Speciality,
+	_, err := ur.pg.Exec(ctx, FillInfoRequest, user.Ege, user.Speciality,
 		user.Town, user.Financing, user.Id)
 	if err != nil {
 		return fmt.Errorf("FillInfo: failed to fill info: %w", err)

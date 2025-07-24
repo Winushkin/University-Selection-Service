@@ -2,8 +2,8 @@ package analytic
 
 import (
 	"University-Selection-Service/internal/analytic/analyze"
+	"University-Selection-Service/internal/analytic/repository"
 	"University-Selection-Service/internal/entities"
-	"University-Selection-Service/internal/repositories"
 	"University-Selection-Service/pkg/api"
 	"context"
 	"fmt"
@@ -12,7 +12,7 @@ import (
 type Server struct {
 	api.AnalyticServer
 	userCli      api.UserServiceClient
-	RepInterface repositories.AnalyticRepositoryInterface
+	RepInterface repository.AnalyticRepositoryInterface
 }
 
 // New creates new Analytic Server

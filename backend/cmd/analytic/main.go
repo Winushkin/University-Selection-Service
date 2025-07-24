@@ -1,10 +1,10 @@
 package main
 
 import (
+	"University-Selection-Service/internal/analytic/repository"
 	analytic "University-Selection-Service/internal/analytic/server"
 	"University-Selection-Service/internal/config"
 	"University-Selection-Service/internal/interceptors"
-	"University-Selection-Service/internal/repositories"
 	"University-Selection-Service/pkg/api"
 	"University-Selection-Service/pkg/logger"
 	"University-Selection-Service/pkg/resilence"
@@ -51,7 +51,7 @@ func main() {
 	}(conn)
 	client := api.NewUserServiceClient(conn)
 
-	r, err := repositories.NewAnalyticRepository(ctx, cfg.Postgres)
+	r, err := repository.NewAnalyticRepository(ctx, cfg.Postgres)
 	if err != nil {
 		log.Error(ctx, "failed to create repository", zap.Error(err))
 		return

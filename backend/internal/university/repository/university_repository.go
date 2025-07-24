@@ -1,21 +1,29 @@
-package repositories
+package repository
 
 import (
 	"University-Selection-Service/internal/entities"
 	"University-Selection-Service/pkg/logger"
 	"University-Selection-Service/pkg/postgres"
 	"context"
+	_ "embed"
 	"fmt"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"go.uber.org/zap"
 	"strings"
 )
 
-const (
-	insertSpecialityRequest      = "Insert INTO universities.specialities (university_id, name, budget_points, contract_points, cost) VALUES ($1, $2, $3, $4, $5)"
-	insertUniversityRequest      = "INSERT INTO universities.universities (name, site, prestige, rank, quality, scholarship, dormitory, labs, sport, region_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)"
-	getRegionIdByNameRequest     = "SELECT id FROM universities.regions WHERE name = $1"
-	getUniversityIdByNameRequest = "SELECT id FROM universities.universities WHERE name = $1"
+var (
+	//go:embed sql/insert_speciality.sql
+	insertSpecialityRequest string
+
+	//go:embed sql/insert_university.sql
+	insertUniversityRequest string
+
+	//go:embed sql/get_region_id_by_name.sql
+	getRegionIdByNameRequest string
+
+	//go:embed sql/get_university_id_by_name.sql
+	getUniversityIdByNameRequest string
 )
 
 type UniversityRepoInterface interface {
@@ -69,7 +77,7 @@ func (ur *UniversityRepository) FillRegions(ctx context.Context, regions []strin
 	}
 
 	insertRegionsRequest :=
-		fmt.Sprintf("INSERT INTO universities.regions (name) VALUES %s ON CONFLICT (name) DO NOTHING ",
+		fmt.Sprintf("INSERT INTO universities.regions (name) VALUES (%s) ON CONFLICT (name) DO NOTHING ",
 			strings.Join(valuesString, ","))
 	_, err := ur.pg.Exec(ctx, insertRegionsRequest, valuesArgs...)
 

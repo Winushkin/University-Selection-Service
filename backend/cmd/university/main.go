@@ -4,8 +4,8 @@ import (
 	"University-Selection-Service/internal/config"
 	"University-Selection-Service/internal/entities"
 	"University-Selection-Service/internal/parser"
-	"University-Selection-Service/internal/repositories"
 	"University-Selection-Service/internal/university"
+	"University-Selection-Service/internal/university/repository"
 	"University-Selection-Service/pkg/logger"
 	"context"
 	"go.uber.org/zap"
@@ -38,27 +38,27 @@ func main() {
 		specialities = append(specialities, specs...)
 	}
 
-	var repository repositories.UniversityRepoInterface
-	repository, err = repositories.NewUniversityRepository(ctx, cfg.Postgres)
+	var repo repository.UniversityRepoInterface
+	repo, err = repository.NewUniversityRepository(ctx, cfg.Postgres)
 	if err != nil {
 		log.Error(ctx, "failed to connect to university repository", zap.Error(err))
 		return
 	}
 
-	err = repository.FillRegions(ctx, regions)
+	err = repo.FillRegions(ctx, regions)
 	if err != nil {
 		log.Error(ctx, "failed to fill regions", zap.Error(err))
 	}
 
 	for _, univer := range universities {
-		err = repository.InsertUniversity(ctx, &univer)
+		err = repo.InsertUniversity(ctx, &univer)
 		if err != nil {
 			log.Error(ctx, "failed to fill university", zap.Error(err))
 		}
 	}
 
 	for _, speciality := range specialities {
-		err = repository.InsertSpeciality(ctx, speciality)
+		err = repo.InsertSpeciality(ctx, speciality)
 		if err != nil {
 			log.Error(ctx, "failed to insert speciality", zap.Error(err))
 		}
