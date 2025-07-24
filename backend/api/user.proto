@@ -4,7 +4,6 @@ option go_package = "backend/pkg/api";
 
 package api;
 
-
 import "google/api/annotations.proto";
 import "google/api/openapi.proto";
 import "google/api/empty.proto";
