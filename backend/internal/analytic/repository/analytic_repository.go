@@ -13,11 +13,11 @@ var (
 	//go:embed sql/get_universities_by_speciality.sql
 	getUniversitiesBySpecialityRequest string
 
-	//go:embed sql/get_regions.sql
-	getRegions string
-
-	//go:embed sql/get_specialities.sql
-	getSpecialities string
+	////go:embed sql/get_regions.sql
+	//getRegions string
+	//
+	////go:embed sql/get_specialities.sql
+	//getSpecialities string
 )
 
 type AnalyticRepositoryInterface interface {
