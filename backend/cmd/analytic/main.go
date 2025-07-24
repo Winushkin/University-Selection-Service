@@ -7,7 +7,6 @@ import (
 	"University-Selection-Service/internal/repositories"
 	"University-Selection-Service/pkg/api"
 	"University-Selection-Service/pkg/logger"
-	"University-Selection-Service/pkg/postgres"
 	"University-Selection-Service/pkg/resilence"
 	"context"
 	"go.uber.org/zap"
@@ -31,15 +30,7 @@ func main() {
 		return
 	}
 
-	log.Info(ctx, cfg.Postgres.Port)
-
-	db, err := postgres.New(ctx, cfg.Postgres, "universities")
-	if err != nil {
-		log.Error(ctx, "failed to connect to integration postgres", zap.Error(err))
-		return
-	}
-	defer db.Close()
-	log.Info(ctx, "Successfully connected to integration postgres")
+	log.Info(ctx, "Successfully connected to university postgres")
 
 	lis, err := net.Listen("tcp", ":"+cfg.RESTPort)
 	if err != nil {
@@ -61,6 +52,10 @@ func main() {
 	client := api.NewUserServiceClient(conn)
 
 	r, err := repositories.NewAnalyticRepository(ctx, cfg.Postgres)
+	if err != nil {
+		log.Error(ctx, "failed to create repository", zap.Error(err))
+		return
+	}
 
 	srv, err := analytic.New(client, r)
 	if err != nil {

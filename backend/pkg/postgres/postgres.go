@@ -25,7 +25,7 @@ type Config struct {
 // New returns pool of connections to postgres DB
 func New(ctx context.Context, c Config, service string) (*pgxpool.Pool, error) {
 	log := logger.GetLoggerFromCtx(ctx)
-	connstring := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable&pool_min_conns=%d&pool_max_conns=%d",
+	connString := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable&pool_min_conns=%d&pool_max_conns=%d",
 		c.Username,
 		c.Password,
 		c.Host,
@@ -33,7 +33,7 @@ func New(ctx context.Context, c Config, service string) (*pgxpool.Pool, error) {
 		c.Database,
 		c.MinConns,
 		c.MaxConns)
-	conn, err := pgxpool.New(ctx, connstring)
+	conn, err := pgxpool.New(ctx, connString)
 	if err != nil {
 		return nil, fmt.Errorf("new: failed to connect to postgres: %w", err)
 	}

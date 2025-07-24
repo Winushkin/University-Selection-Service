@@ -7,7 +7,6 @@ import (
 	"University-Selection-Service/internal/repositories"
 	"University-Selection-Service/internal/university"
 	"University-Selection-Service/pkg/logger"
-	"University-Selection-Service/pkg/postgres"
 	"context"
 	"go.uber.org/zap"
 )
@@ -31,7 +30,6 @@ func main() {
 
 	for i := 0; i < len(universities); i++ {
 		university.FillUniversityData(&universities[i], i+1)
-
 	}
 
 	specialities := make([]*entities.Speciality, 0)
@@ -39,13 +37,6 @@ func main() {
 		specs := university.CreateSpecialitiesByUniversity(specialitiesSet, &univer)
 		specialities = append(specialities, specs...)
 	}
-
-	db, err := postgres.New(ctx, cfg.Postgres, "universities")
-	if err != nil {
-		log.Error(ctx, "failed to connect to university postgres", zap.Error(err))
-		return
-	}
-	defer db.Close()
 
 	var repository repositories.UniversityRepoInterface
 	repository, err = repositories.NewUniversityRepository(ctx, cfg.Postgres)
