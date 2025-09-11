@@ -44,13 +44,12 @@ func main() {
 		log.Error(ctx, "failed to connect to user server", zap.Error(err))
 	}
 	defer func(conn *grpc.ClientConn) {
-		err := conn.Close()
-		if err != nil {
+		if err := conn.Close(); err != nil {
 			log.Error(ctx, "failed to close client connection", zap.Error(err))
 		}
 	}(conn)
-	client := api.NewUserServiceClient(conn)
 
+	client := api.NewUserServiceClient(conn)
 	r, err := repository.NewAnalyticRepository(ctx, cfg.Postgres)
 	if err != nil {
 		log.Error(ctx, "failed to create repository", zap.Error(err))
@@ -70,7 +69,12 @@ func main() {
 	api.RegisterAnalyticServer(server, srv)
 	reflection.Register(server)
 
-	if err = resilence.Retry(func() error { return server.Serve(lis) }, 5, 100); err != nil {
+	err = resilence.Retry(
+		func() error { return server.Serve(lis) },
+		5, 100,
+	)
+
+	if err != nil {
 		log.Error(ctx, "failed to serve analytic server", zap.Error(err))
 		return
 	}

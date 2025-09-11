@@ -48,7 +48,12 @@ func main() {
 
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 
-	if err := resilence.Retry(func() error { return pb.RegisterUserServiceHandlerFromEndpoint(ctx, mux, "user_service:8080", opts) }, 5, 100); err != nil {
+	err := resilence.Retry(
+		func() error {
+			return pb.RegisterUserServiceHandlerFromEndpoint(ctx, mux, "user_service:8080", opts)
+		},
+		5, 100)
+	if err != nil {
 		log.Error(ctx, "Failed register users grpc service", zap.Error(err))
 		return
 	}
@@ -60,13 +65,15 @@ func main() {
 	}
 	log.Info(ctx, "Starting proxy to Analytic")
 
-	err := mux.HandlePath("GET", "/ping", func(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
-		_, err := w.Write([]byte("pong"))
-		if err != nil {
-			log.Error(ctx, "Failed to write response", zap.Error(err))
-			return
-		}
-	})
+	err = mux.HandlePath("GET", "/ping",
+		func(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+			_, err := w.Write([]byte("pong"))
+			if err != nil {
+				log.Error(ctx, "Failed to write response", zap.Error(err))
+				return
+			}
+		})
+
 	if err != nil {
 		log.Error(ctx, "Failed to register user grpc service", zap.Error(err))
 		return

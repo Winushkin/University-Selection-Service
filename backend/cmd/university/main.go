@@ -45,8 +45,7 @@ func main() {
 		return
 	}
 
-	err = repo.FillRegions(ctx, regions)
-	if err != nil {
+	if err = repo.FillRegions(ctx, regions); err != nil {
 		log.Error(ctx, "failed to fill regions", zap.Error(err))
 	}
 
@@ -58,8 +57,7 @@ func main() {
 	}
 
 	for _, speciality := range specialities {
-		err = repo.InsertSpeciality(ctx, speciality)
-		if err != nil {
+		if err = repo.InsertSpeciality(ctx, speciality); err != nil {
 			log.Error(ctx, "failed to insert speciality", zap.Error(err))
 		}
 	}

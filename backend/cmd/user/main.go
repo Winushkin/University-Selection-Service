@@ -54,7 +54,12 @@ func main() {
 	)
 	api.RegisterUserServiceServer(server, srv)
 	reflection.Register(server)
-	if err = resilence.Retry(func() error { return server.Serve(lis) }, 5, 100); err != nil {
+	err = resilence.Retry(
+		func() error { return server.Serve(lis) },
+		5, 100,
+	)
+
+	if err != nil {
 		log.Error(ctx, "failed to serve gRPC server", zap.Error(err))
 		return
 	}
