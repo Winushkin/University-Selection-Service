@@ -5,9 +5,9 @@
 ---
 ## 📦 Стек технологий
 - Golang
-- gRPC + grpc-gateway
+- gRPC
 - PostgreSQL
-- Docker + Docker Compose
+- Docker
 - Zap logger
 - pgx / SQL миграции
 - Nginx balancer
